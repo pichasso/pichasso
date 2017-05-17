@@ -1,2 +1,2 @@
 # pichasso
-Smart image storing and manipualtion service
+Smart image cropping and compression service
