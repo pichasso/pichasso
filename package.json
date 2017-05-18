@@ -1,0 +1,25 @@
+{
+  "name": "pichasso",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "serve": "nodemon ./bin/www",
+    "lint" : "eslint ./**/*.js",
+    "mocha": "node ./node_modules/mocha/bin/mocha",
+    "test" : "npm run mocha && npm run lint"
+  },
+  "dependencies": {
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "debug": "~2.6.3",
+    "eslint": "^3.19.0",
+    "mocha": "^3.4.1",
+    "nodemon": "^1.11.0"
+  }
+}
