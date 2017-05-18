@@ -56,3 +56,7 @@ typings/
 .env
 
 .vscode
+
+# intellij idea
+/.idea/*
+*.iml
