@@ -6,4 +6,9 @@ router.get('/', function(req, res, next) {
   res.status(501).send('This Route is not yet implemented.');
 });
 
+router.get('/test', function(req, res, next){
+  res.render('test');
+})
+
+
 module.exports = router;
