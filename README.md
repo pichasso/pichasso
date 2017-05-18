@@ -6,7 +6,7 @@ Smart image cropping and compression service
 
 ## Service Test
 
-Open route '/images/test', page will show all options available on this service.
+Open route '/image/test', page will show all options available on this service.
 
 ## Test
 

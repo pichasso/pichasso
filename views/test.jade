@@ -34,7 +34,7 @@ block content
                         div.col-sm-6
                             input#height.form-control(name='height', type='number', value=250, required)
 
-                    div.from-group
+                    div.form-group
                         label.control-label.col-sm-2(for='crop', name='crop')= 'cropping'
                         div.col-sm-6
                             select#crop.form-control(name='crop', disabled='disabled')
@@ -45,8 +45,6 @@ block content
                         div.clearfix
 
                     div.form-group
-
-                    div.from-group
                         label.control-label.col-sm-2(for='format', name='format')= 'format'
                         div.col-sm-6
                             select#format.form-control(name='format', disabled='disabled')
@@ -58,8 +56,6 @@ block content
                         div.clearfix
 
                     div.form-group
-
-                    div.from-group
                         label.control-label.col-sm-2(for='face', name='face')= 'face'
                         div.col-sm-6
                             select#face.form-control(name='format', disabled='disabled')
@@ -68,13 +64,9 @@ block content
                         div.clearfix
 
                     div.form-group
-
-                    div.from-group
                         label.control-label.col-sm-2(for='compress', name='compress')= 'compression'
                         div.col-sm-6
-                            input#compress.form-control(name='compress', type='number', from='0', to='100', step='5', value='80', data-slider-min='0', data-slider-max='100', data-slider-step='5')
-
-                    div.form-group
+                            input#compress.form-control(name='compress', type='number', form='0', to='100', step='5', value='80', data-slider-min='0', data-slider-max='100', data-slider-step='5')
 
                     div.form-group
                         div.col-sm-offset-2.col-sm-6
