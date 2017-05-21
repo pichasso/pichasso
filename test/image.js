@@ -5,7 +5,7 @@ var should = chai.should();
 
 chai.use(chaiHttp);
 
-it('should respond not implemented', () => {
+it.skip('should respond not implemented', () => {
   return chai.request(server)
     .get('/image')
     .then(res => {
