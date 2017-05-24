@@ -1,5 +1,6 @@
 const http = require('http');
 const https = require('https');
+const probe = require('probe-image-size');
 
 function imageLoader(req, res, next) {
     let protocol = http;
@@ -31,6 +32,7 @@ function imageLoader(req, res, next) {
         });
         response.on('end', () => {
             req.image = imageBuffer;
+            req.imageProperties = probe.sync(req.image);
             next();
         });
         response.on('error', (error) => {

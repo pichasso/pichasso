@@ -1,5 +1,4 @@
 const sharp = require('sharp');
-const probe = require('probe-image-size');
 
 function resize(req, res, next) {
   if (!req.query.width && !req.query.height) {
@@ -16,7 +15,7 @@ function resize(req, res, next) {
 
   switch (crop) {
     case 'fill': {
-      const imgProperties = probe.sync(req.image);
+      const imgProperties = req.imageProperties;
       const imgAspectRatio = imgProperties.width / imgProperties.height;
       let fillWidth, fillHeight;
       if (imgAspectRatio >= aspectRatio) {

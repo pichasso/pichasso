@@ -60,12 +60,13 @@ block content
                     div.form-group
                         label.control-label.col-sm-2(for='format', name='format')= 'format'
                         div.col-sm-6
-                            select#format.form-control(name='format', disabled='disabled')
+                            select#format.form-control(name='format')
                                 option(value='')= 'default'
                                 option(value='jpeg')= 'jpeg'
                                 option(value='png')= 'png'
-                                option(value='guetzli')= 'guetzli'
-                                option(value='raz...ing')= 'raz...ing'
+                                option(value='webp')= 'webp'
+                                //option(value='guetzli')= 'guetzli'
+                                //option(value='raz...ing')= 'raz...ing'
 
                     div.form-group
                         label.control-label.col-sm-2(for='face', name='face')= 'face'
