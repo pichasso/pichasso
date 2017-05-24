@@ -61,10 +61,10 @@ block content
                         label.control-label.col-sm-2(for='format', name='format')= 'format'
                         div.col-sm-6
                             select#format.form-control(name='format')
-                                option(value='')= 'default'
+                                option(value='')= 'best accepted (default)'
+                                option(value='webp')= 'webp'
                                 option(value='jpeg')= 'jpeg'
                                 option(value='png')= 'png'
-                                option(value='webp')= 'webp'
                                 //option(value='guetzli')= 'guetzli'
                                 //option(value='raz...ing')= 'raz...ing'
 
@@ -76,11 +76,11 @@ block content
                                 option(value='alg1')= 'alg1 description'
 
                     div.form-group
-                        label.control-label.col-sm-2(for='compress', name='compress')= 'compression'
+                        label.control-label.col-sm-2(for='quality', name='quality')= 'quality'
                         div.col-sm-6
-                            input#compress(name='compress', type='hidden')
-                            div#compress-slider
-                                div#custom-compress-slider-handle.ui-slider-handle
+                            input#quality(name='quality', type='hidden')
+                            div#quality-slider
+                                div#custom-quality-slider-handle.ui-slider-handle
 
                     div.form-group
                         div.col-sm-offset-2.col-sm-6
