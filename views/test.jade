@@ -40,12 +40,22 @@ block content
                     div.form-group
                         label.control-label.col-sm-2(for='crop', name='crop')= 'cropping'
                         div.col-sm-6
-                            select#crop.form-control(name='crop', disabled='disabled')
-                                option(value='')= 'none'
-                                option(value='fill')= 'fill'
+                            select#crop.form-control(name='crop')
+                                option(value='fill')= 'fill (default)'
                                 option(value='fit')= 'fit'
                                 option(value='scale')= 'scale'
-                        div.clearfix
+
+                    div.form-group
+                        label.control-label.col-sm-2(for='gravity', name='gravity')= 'gravity'
+                        div.col-sm-6
+                            select#gravity.form-control(name='gravity')
+                                option(value='')= 'center (default)'
+                                option(value='noth')= 'north'
+                                option(value='east')= 'east'
+                                option(value='south')= 'south'
+                                option(value='west')= 'west'
+                            div
+                                em=('optional when crop=fill')
 
                     div.form-group
                         label.control-label.col-sm-2(for='format', name='format')= 'format'
@@ -56,7 +66,6 @@ block content
                                 option(value='png')= 'png'
                                 option(value='guetzli')= 'guetzli'
                                 option(value='raz...ing')= 'raz...ing'
-                        div.clearfix
 
                     div.form-group
                         label.control-label.col-sm-2(for='face', name='face')= 'face'
@@ -64,7 +73,6 @@ block content
                             select#face.form-control(name='format', disabled='disabled')
                                 option(value='')= 'none'
                                 option(value='alg1')= 'alg1 description'
-                        div.clearfix
 
                     div.form-group
                         label.control-label.col-sm-2(for='compress', name='compress')= 'compression'

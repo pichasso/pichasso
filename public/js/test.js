@@ -6,7 +6,6 @@ $('#compress').slider({
 
 function updateImageUrl() {
   var values = $('#configure-form').serialize();
-  console.log(values);
   $('#result-image').attr('src', '/image?' + values);
 }
 
