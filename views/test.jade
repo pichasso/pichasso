@@ -1,14 +1,17 @@
 extends layout
 
 block scripts
-    script(type='text/javascript', src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp', crossorigin='anonymous')
     script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
 
-    script(type='script/javascript', src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js')
-    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css')
+    link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
+    script(src='//code.jquery.com/ui/1.12.1/jquery-ui.js')
+
+    script(src='/js/test.js')
+
 
 block content
     h1= 'test inteface'
@@ -17,7 +20,7 @@ block content
     div.container-fluid
         div.row
             div.col-sm-8
-                form.form-horizontal(method="get" action="/image")
+                form#configure-form.form-horizontal(method="get" action="/image")
 
                     div.form-group
                         label.control-label.col-sm-2(for='url')= 'image url'
@@ -37,12 +40,22 @@ block content
                     div.form-group
                         label.control-label.col-sm-2(for='crop', name='crop')= 'cropping'
                         div.col-sm-6
-                            select#crop.form-control(name='crop', disabled='disabled')
-                                option(value='')= 'none'
-                                option(value='fill')= 'fill'
+                            select#crop.form-control(name='crop')
+                                option(value='fill')= 'fill (default)'
                                 option(value='fit')= 'fit'
                                 option(value='scale')= 'scale'
-                        div.clearfix
+
+                    div.form-group
+                        label.control-label.col-sm-2(for='gravity', name='gravity')= 'gravity'
+                        div.col-sm-6
+                            select#gravity.form-control(name='gravity')
+                                option(value='')= 'center (default)'
+                                option(value='north')= 'north'
+                                option(value='east')= 'east'
+                                option(value='south')= 'south'
+                                option(value='west')= 'west'
+                            div
+                                em=('optional when crop=fill')
 
                     div.form-group
                         label.control-label.col-sm-2(for='format', name='format')= 'format'
@@ -53,7 +66,6 @@ block content
                                 option(value='png')= 'png'
                                 option(value='guetzli')= 'guetzli'
                                 option(value='raz...ing')= 'raz...ing'
-                        div.clearfix
 
                     div.form-group
                         label.control-label.col-sm-2(for='face', name='face')= 'face'
@@ -61,16 +73,16 @@ block content
                             select#face.form-control(name='format', disabled='disabled')
                                 option(value='')= 'none'
                                 option(value='alg1')= 'alg1 description'
-                        div.clearfix
 
                     div.form-group
                         label.control-label.col-sm-2(for='compress', name='compress')= 'compression'
                         div.col-sm-6
-                            input#compress.form-control(name='compress', type='number', form='0', to='100', step='5', value='80', data-slider-min='0', data-slider-max='100', data-slider-step='5')
+                            input#compress(name='compress', type='hidden')
+                            div#compress-slider
+                                div#custom-compress-slider-handle.ui-slider-handle
 
                     div.form-group
                         div.col-sm-offset-2.col-sm-6
-                            button.btn.btn-primary(type='submit')= 'do the magic...'
-
-
-script(type='script/javascript', src='/js/test.js')
+                            button#update-button.btn.btn-primary(type='submit')= 'do the magic...'
+            div.col-sm-4
+                img#result-image.thumbnail(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150')
