@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const imageLoader = require('../middleware/imageLoader');
-const imageManipulation = require('../controllers/imageManipulation');
+const resize = require('../controllers/resize');
 
 /* GET home page. */
-router.get('/', imageLoader, imageManipulation.resize, (req, res) => {
+router.get('/', imageLoader, resize, (req, res) => {
   res.end(req.image, 'binary');
 });
 

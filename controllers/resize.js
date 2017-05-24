@@ -64,4 +64,4 @@ function resize(req, res, next) {
     });
 }
 
-module.exports.resize = resize;
+module.exports = resize;
