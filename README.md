@@ -1,4 +1,5 @@
-# pichasso
+# pichasso [![Build Status](https://travis-ci.org/pichasso/pichasso.svg?branch=master)](https://travis-ci.org/pichasso/pichasso)
+
 Smart image cropping and compression service
 
 1. `npm install`
