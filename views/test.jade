@@ -7,8 +7,8 @@ block scripts
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp', crossorigin='anonymous')
     script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
 
-    script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.min.js')
-    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.min.css')
+    link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
+    script(src='//code.jquery.com/ui/1.12.1/jquery-ui.js')
 
     script(src='/js/test.js')
 
@@ -69,7 +69,9 @@ block content
                     div.form-group
                         label.control-label.col-sm-2(for='compress', name='compress')= 'compression'
                         div.col-sm-6
-                            input#compress.form-control(name='compress', type='number', form='0', to='100', step='5', value='80', data-slider-min='0', data-slider-max='100', data-slider-step='5')
+                            input#compress(name='compress', type='hidden')
+                            div#compress-slider
+                                div#custom-compress-slider-handle.ui-slider-handle
 
                     div.form-group
                         div.col-sm-offset-2.col-sm-6

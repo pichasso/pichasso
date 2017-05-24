@@ -10,7 +10,7 @@ function updateImageUrl() {
   $('#result-image').attr('src', '/image?' + values);
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
   $('#configure-form').submit(function (e) {
     e.preventDefault();
     updateImageUrl();
@@ -20,4 +20,22 @@ $(document).ready(function(){
     e.preventDefault();
     updateImageUrl();
   });
+
+  var handle = $("#custom-compress-slider-handle");
+  $("#compress-slider").slider({
+    value: 1,
+    step: 5,
+    min: 0,
+    max: 100,
+    value: 80,
+    slide: function (event, ui) {
+      $("#compress").val(ui.value);
+      handle.text(ui.value);
+    },
+    create: function () {
+      handle.text($(this).slider("value"));
+      $("#compress").val($(this).slider("value"));
+    }
+  });
+
 });
