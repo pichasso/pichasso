@@ -5,13 +5,13 @@ var should = chai.should();
 
 chai.use(chaiHttp);
 
-it('should respond not implemented', () => {
+it('should return an image', () => {
   return chai.request(server)
-    .get('/image')
+    .get('/image?url=https://http.cat/100&width=100&height=100')
     .then(res => {
-      throw res;
+      res.should.be.ok;
     })
     .catch(err => {
-      err.should.have.status(501);
+      throw err;
     });
 });
