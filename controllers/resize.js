@@ -9,7 +9,21 @@ function resize(req, res, next) {
   const height = Number(req.query.height);
   const aspectRatio = width / height;
   const crop = req.query.crop || 'fill';
-  const gravity = req.query.gravity ? sharp.gravity[req.query.gravity] : sharp.gravity.center;
+
+  let gravity;
+  if (!req.query.gravity) {
+    gravity = sharp.gravity.center;
+  } else if (sharp.gravity.hasOwnProperty(req.query.gravity)) {
+    gravity = sharp.gravity[req.query.gravity];
+  } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
+    gravity = sharp.strategy[req.query.gravity];
+  } else {
+    res.render(
+      'error',
+      {error: new Error(`invalid gravity ${req.query.gravity}`)}
+    );
+    return;
+  }
 
   let sharpInstance = sharp(req.image);
 
