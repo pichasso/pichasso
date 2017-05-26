@@ -8,7 +8,7 @@ function convert(req, res, next) {
   let options = {
     quality: quality > 0 ? quality : 80, // todo default from config
     progressive: progressive // todo from config
-  }
+  };
 
   // auto best format detection
   if (format === undefined) {
