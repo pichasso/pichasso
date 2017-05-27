@@ -1,0 +1,23 @@
+{
+    "ImageSource": {
+        "LoadById": {
+            "Enabled": true,
+            "SourcePath": "http://yourdomain.tld/images{id}" // will be used for resolving locations by id
+        },
+        "LoadExternalData": {
+            "Enabled": true, // enable loading data by any url
+            "ProtocolsAllowed": [
+                'https',
+                'http'
+            ],
+            "WhitelistRegex": [] // set url regex filters, one must match to proceed 
+        }
+    },
+    "ImageConversion": {
+        "DefaultFormat": "accepted", // use best accepted by client or do not change ["accepted", "keep"]
+        "DefaultQuality": "80", // range 0...100 (lowest...best) used for jpeg
+        "DefaultCropping": "fill",
+        "DefaultGravity": "entropy",
+        "RemoveMetadata": true
+    }
+}
