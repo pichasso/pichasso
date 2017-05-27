@@ -1,5 +1,6 @@
 const sharp = require('sharp');
 const probe = require('probe-image-size');
+const config = require('config');
 
 function resize(req, res, next) {
   if (!req.query.width && !req.query.height) {
@@ -9,11 +10,11 @@ function resize(req, res, next) {
   const width = Number(req.query.width);
   const height = Number(req.query.height);
   const aspectRatio = width / height;
-  const crop = req.query.crop || 'fill';
+  const crop = req.query.crop || config.get('ImageConversion.DefaultCropping') || 'fill';
 
   let gravity;
   if (!req.query.gravity) {
-    gravity = sharp.gravity.center;
+    gravity = config.get('ImageConversion.DefaultGravity') || sharp.gravity.center;
   } else if (sharp.gravity.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.gravity[req.query.gravity];
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
