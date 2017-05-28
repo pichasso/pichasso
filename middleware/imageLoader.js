@@ -6,10 +6,10 @@ function imageLoader(req, res, next) {
 
     let error;
 
-    if (req.query.url.indexOf("://") == -1) {
+    if (req.query.url.indexOf('://') === -1) {
         // assume id in url, create url with given id
-        if (config.get('ImageSource.LoadById.Enabled') != true) {
-            error = new Error("Loading external data has been disabled.");
+        if (config.get('ImageSource.LoadById.Enabled') !== true) {
+            error = new Error('Loading external data has been disabled.');
         }
         let sourcePath = config.get('ImageSource.LoadById.SourcePath');
         if (!sourcePath) {
@@ -18,31 +18,31 @@ function imageLoader(req, res, next) {
         req.query.url = sourcePath.replace(/{id}/gi, req.query.url);
     } else {
         // assume we got an url, check for validity
-        if (config.get('ImageSource.LoadExternalData.Enabled') != true) {
-            error = new Error("Loading external data has been disabled.");
+        if (config.get('ImageSource.LoadExternalData.Enabled') !== true) {
+            error = new Error('Loading external data has been disabled.');
         }
         // check protocol filter
         let allowedProtocols = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
         if (!allowedProtocols) {
             error = new Error('ImageSource.LoadExternalData.ProtocolsAllowed not defined.');
         }
-        let protocolAllowed = allowedProtocols.filter(function(protocol){
-            return req.query.url.indexOf(protocol) == 0;
+        let protocolAllowed = allowedProtocols.filter(function (protocol) {
+            return req.query.url.indexOf(protocol) === 0;
         });
-        if(!protocolAllowed){
+        if (!protocolAllowed) {
             error = new Error('Protocol not allowed.');
         }
         // check url whitelist
         let whitelistRegex = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
-        if(whitelistRegex){
-            let whitelisted = whitelistRegex.filter(function (regex){
+        if (whitelistRegex) {
+            let whitelisted = whitelistRegex.filter(function (regex) {
                 return req.query.url.match(regex);
             });
-            if(!whitelisted){
+            if (!whitelisted) {
                 error = new Error('Domain source not allowed.');
             }
         }
-        
+
     }
 
     if (error !== undefined) {
