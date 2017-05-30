@@ -1,5 +1,6 @@
 const http = require('http');
 const https = require('https');
+const probe = require('probe-image-size');
 const config = require('config');
 
 function imageLoader(req, res, next) {
@@ -57,9 +58,7 @@ function imageLoader(req, res, next) {
         protocol = https;
     }
     protocol.get(req.query.url, (response) => {
-        const {
-            statusCode
-        } = response;
+        const {statusCode} = response;
         const contentLength = Number(response.headers['content-length']);
         const contentType = response.headers['content-type'];
 
@@ -84,12 +83,11 @@ function imageLoader(req, res, next) {
         });
         response.on('end', () => {
             req.image = imageBuffer;
+            req.imageProperties = probe.sync(req.image);
             next();
         });
         response.on('error', (error) => {
-            res.status(500).render('error', {
-                error: error
-            });
+            res.status(500).render('error', {error: error});
         });
     });
 }

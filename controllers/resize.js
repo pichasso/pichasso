@@ -31,7 +31,7 @@ function resize(req, res, next) {
 
   switch (crop) {
     case 'fill': {
-      const imgProperties = probe.sync(req.image);
+      const imgProperties = req.imageProperties;
       const imgAspectRatio = imgProperties.width / imgProperties.height;
       let fillWidth, fillHeight;
       if (imgAspectRatio >= aspectRatio) {

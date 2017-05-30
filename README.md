@@ -2,12 +2,14 @@
 
 Smart image cropping and compression service
 
-1. `npm install`
-2. `DEBUG=pichasso:* npm run serve`
+1. `docker-compose build`
+2. `docker-compose up`
+
+The web service runs on port `3000`. Debugging is available on port `9229`.
 
 ## Service Test
 
-Open route '/image/test', page will show all options available on this service.
+Open route `/image/test`, page will show all options available on this service.
 
 ## Test
 
