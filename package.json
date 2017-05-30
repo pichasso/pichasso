@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "express": "~4.15.2",
+    "config":"~1.26.1",
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "probe-image-size": "~3.0.0",
