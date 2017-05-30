@@ -7,15 +7,21 @@ a {
     color: #00B7FF;
 }
 
-#compress-slider {
+#quality-slider {
     margin-top: 10px;
 }
 
-#custom-compress-slider-handle {
+#custom-quality-slider-handle {
     width: 3em;
     height: 1.6em;
     top: 50%;
     margin-top: -.8em;
     text-align: center;
     line-height: 1.6em;
+}
+
+div.image {
+    overflow: overflow;
+    background: gray;
+    box-shadow: 5px 5px 5px lightgray;
 }

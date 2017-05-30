@@ -19,35 +19,35 @@ block content
 
     div.container-fluid
         div.row
-            div.col-sm-8
+            div.col-sm-6
                 form#configure-form.form-horizontal(method="get" action="/image")
 
                     div.form-group
-                        label.control-label.col-sm-2(for='url')= 'image url'
-                        div.col-sm-6
+                        label.control-label.col-sm-4(for='url')= 'image'
+                        div.col-sm-8
                             input#url.form-control(type='url', name='url', placeholder='give me any url to an image', required)
 
                     div.form-group
-                        label.control-label.col-sm-2(for='width', name='width')= 'width'
-                        div.col-sm-6
+                        label.control-label.col-sm-4(for='width', name='width')= 'width'
+                        div.col-sm-8
                             input#width.form-control(name='width', type='number', value=250, required)
 
                     div.form-group
-                        label.control-label.col-sm-2(for='height', name='height')= 'height'
-                        div.col-sm-6
+                        label.control-label.col-sm-4(for='height', name='height')= 'height'
+                        div.col-sm-8
                             input#height.form-control(name='height', type='number', value=250, required)
 
                     div.form-group
-                        label.control-label.col-sm-2(for='crop', name='crop')= 'cropping'
-                        div.col-sm-6
+                        label.control-label.col-sm-4(for='crop', name='crop')= 'cropping'
+                        div.col-sm-8
                             select#crop.form-control(name='crop')
                                 option(value='fill')= 'fill (default)'
                                 option(value='fit')= 'fit'
                                 option(value='scale')= 'scale'
 
                     div.form-group
-                        label.control-label.col-sm-2(for='gravity', name='gravity')= 'gravity'
-                        div.col-sm-6
+                        label.control-label.col-sm-4(for='gravity', name='gravity')= 'gravity'
+                        div.col-sm-8
                             select#gravity.form-control(name='gravity')
                                 option(value='')= 'center (default)'
                                 option(value='north')= 'north'
@@ -60,31 +60,33 @@ block content
                                 em=('only considered, if crop is set to fill')
 
                     div.form-group
-                        label.control-label.col-sm-2(for='format', name='format')= 'format'
-                        div.col-sm-6
-                            select#format.form-control(name='format', disabled='disabled')
-                                option(value='')= 'default'
+                        label.control-label.col-sm-4(for='format', name='format')= 'format'
+                        div.col-sm-8
+                            select#format.form-control(name='format')
+                                option(value='')= 'best accepted (default)'
+                                option(value='webp')= 'webp'
                                 option(value='jpeg')= 'jpeg'
                                 option(value='png')= 'png'
-                                option(value='guetzli')= 'guetzli'
-                                option(value='raz...ing')= 'raz...ing'
+                                //option(value='guetzli')= 'guetzli'
+                                //option(value='raz...ing')= 'raz...ing'
 
                     div.form-group
-                        label.control-label.col-sm-2(for='face', name='face')= 'face'
-                        div.col-sm-6
+                        label.control-label.col-sm-4(for='face', name='face')= 'face'
+                        div.col-sm-8
                             select#face.form-control(name='format', disabled='disabled')
                                 option(value='')= 'none'
                                 option(value='alg1')= 'alg1 description'
 
                     div.form-group
-                        label.control-label.col-sm-2(for='compress', name='compress')= 'compression'
-                        div.col-sm-6
-                            input#compress(name='compress', type='hidden')
-                            div#compress-slider
-                                div#custom-compress-slider-handle.ui-slider-handle
+                        label.control-label.col-sm-4(for='quality', name='quality')= 'quality'
+                        div.col-sm-8
+                            input#quality(name='quality', type='hidden')
+                            div#quality-slider
+                                div#custom-quality-slider-handle.ui-slider-handle
 
                     div.form-group
-                        div.col-sm-offset-2.col-sm-6
+                        div.col-sm-offset-4.col-sm-8
                             button#update-button.btn.btn-primary(type='submit')= 'do the magic...'
-            div.col-sm-4
-                img#result-image.thumbnail(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150')
+            div.col-sm-6
+                div#result-image-thumbnail.image
+                    img#result-image(src='https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150')
