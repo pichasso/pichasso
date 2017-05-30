@@ -7,6 +7,7 @@ $('#compress').slider({
 function updateImageUrl() {
   var values = $('#configure-form').serialize();
   $('#result-image').attr('src', '/image?' + values);
+  $('#result-image-link').attr('href', '/image?' + values);
 }
 
 $(document).ready(function () {
