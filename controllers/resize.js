@@ -6,8 +6,8 @@ function resize(req, res, next) {
     next();
   }
 
-  const width = Number(req.query.width);
-  const height = Number(req.query.height);
+  const width = getWidth(req);
+  const height = getHeight(req);
   const aspectRatio = width / height;
   const crop = req.query.crop || 'fill';
 
@@ -76,6 +76,26 @@ function resize(req, res, next) {
     .catch((error) => {
       res.render('error', {error: error});
     });
+}
+
+function getWidth(req) {
+  if (req.query.width) {
+    return Number(req.query.width);
+  }
+
+  const properties = probe.sync(req.image);
+  const aspectRatio = properties.width / properties.height;
+  return Math.ceil(Number(req.query.height) * aspectRatio);
+}
+
+function getHeight(req) {
+  if (req.query.height) {
+    return Number(req.query.height);
+  }
+
+  const properties = probe.sync(req.image);
+  const aspectRatio = properties.width / properties.height;
+  return Math.ceil(Number(req.query.width) / aspectRatio);
 }
 
 module.exports = resize;
