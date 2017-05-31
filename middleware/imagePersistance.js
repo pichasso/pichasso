@@ -3,7 +3,7 @@ const fileCache = require('../middleware/fileCache');
 
 function imagePersistance(req, res, next) {
   let queryHash = hash(req.query);
-  console.log('hash', req.query, queryHash);
+  // console.log('DEBUG: hash', req.query, queryHash);
 
   fileCache.saveFile(queryHash, req.query.format, function (err) {
     console.log(err);

@@ -1,11 +1,16 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
 
-var index = require('./routes/index');
-var image = require('./routes/image');
+const fileCache = require('./middleware/fileCache');
 
-var app = express();
+const index = require('./routes/index');
+const image = require('./routes/image');
+
+const app = express();
+
+// setup cache folder
+fileCache.createCacheFolder();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
