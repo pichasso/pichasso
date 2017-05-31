@@ -38,9 +38,7 @@ function convert(req, res, next) {
       next();
     })
     .catch((error) => {
-      res.render('error', {
-        error: error
-      });
+      return next(error);
     });
 }
 

@@ -4,7 +4,7 @@ const config = require('config');
 
 function resize(req, res, next) {
   if (!req.query.width && !req.query.height) {
-    next();
+    next(new Error('height or width parameter required'));
   }
 
   const width = getWidth(req);
@@ -20,11 +20,7 @@ function resize(req, res, next) {
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.strategy[req.query.gravity];
   } else {
-    res.render(
-      'error',
-      {error: new Error(`invalid gravity ${req.query.gravity}`)}
-    );
-    return;
+    return next(new Error(`invalid gravity ${req.query.gravity}`));
   }
 
   let sharpInstance = sharp(req.image);
@@ -61,11 +57,7 @@ function resize(req, res, next) {
       break;
     }
     default: {
-      res.render(
-        'error',
-        {error: new Error(`invalid cropping method ${crop}`)}
-      );
-      return;
+      return next(new Error(`invalid cropping method ${crop}`));
     }
   }
 
@@ -75,7 +67,7 @@ function resize(req, res, next) {
       next();
     })
     .catch((error) => {
-      res.render('error', {error: error});
+      return next(error);
     });
 }
 
