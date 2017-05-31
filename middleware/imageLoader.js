@@ -47,10 +47,7 @@ function imageLoader(req, res, next) {
     }
 
     if (error !== undefined) {
-        res.status(500).render('error', { // todo make module
-            error: error
-        });
-        return;
+        return next(error);
     }
 
     let protocol = http;
@@ -58,7 +55,9 @@ function imageLoader(req, res, next) {
         protocol = https;
     }
     protocol.get(req.query.url, (response) => {
-        const {statusCode} = response;
+        const {
+            statusCode
+        } = response;
         const contentLength = Number(response.headers['content-length']);
         const contentType = response.headers['content-type'];
 
@@ -68,11 +67,8 @@ function imageLoader(req, res, next) {
             error = new Error(`Invalid content-type. Expected image, but received ${contentType}.`);
         }
 
-        if (error) {
-            res.status(500).render('error', {
-                error: error
-            });
-            return;
+        if (error !== undefined) {
+            return next(error);
         }
 
         const imageBuffer = Buffer.alloc(contentLength);
@@ -87,7 +83,7 @@ function imageLoader(req, res, next) {
             next();
         });
         response.on('error', (error) => {
-            res.status(500).render('error', {error: error});
+            return next(error);
         });
     });
 }
