@@ -53,16 +53,14 @@ function imageLoader(req, res, next) {
     protocol = https;
   }
   protocol.get(req.query.url, (response) => {
-    const {
-            statusCode,
-        } = response;
+    const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
     const contentType = response.headers['content-type'];
 
     if (statusCode !== 200) {
-      error = new Error(`Request failed.\nStatus Code: ${statusCode}`);
+      return res.status(404).send(`Request failed.\nStatus Code: ${statusCode}`);
     } else if (!/^image\//.test(contentType)) {
-      error = new Error(`Invalid content-type. Expected image, but received ${contentType}.`);
+      return res.status(400).send(`Invalid content-type. Expected image, but received ${contentType}.`);
     }
 
     if (error !== undefined) {
@@ -81,7 +79,7 @@ function imageLoader(req, res, next) {
       next();
     });
     response.on('error', error => next(error));
-  });
+  }).on('error', e => res.status(404).send(`Request failed: ${e.message}`));
 }
 
 module.exports = imageLoader;

@@ -14,7 +14,7 @@ chai.use(chaiHttp);
 // format: (default: best accepted), webp, jpeg, png
 // quality: 1-100
 describe('Image Controller', () => {
-  it.skip('should return not found', (done) => {
+  it('should return not found', (done) => {
     chai.request(server)
       .get('/image?url=https://http.cat/900')
       .end((err, res) => {
@@ -23,7 +23,7 @@ describe('Image Controller', () => {
       });
   });
 
-  it.skip('should return not found', (done) => {
+  it('should return not found', (done) => {
     chai.request(server)
       .get('/image?url=https://httpx.cat/')
       .end((err, res) => {
@@ -32,7 +32,7 @@ describe('Image Controller', () => {
       });
   });
 
-  it.skip('should return wrong format no image', (done) => {
+  it('should return wrong format no image', (done) => {
     chai.request(server)
       .get('/image?url=https://http.cat/')
       .end((err, res) => {
@@ -41,14 +41,14 @@ describe('Image Controller', () => {
       });
   });
 
-  it.skip('should return the same image', () => chai.request(server)
+  it('should return the same image', () => chai.request(server)
       .get('/image?url=https://http.cat/100')
       .then((res) => {
         res.should.be.ok;
       }));
 
   describe('(width and height)', () => {
-    it.skip('should return an invalid width error', (done) => {
+    it('should return an invalid width error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&width=0')
         .end((res) => {
@@ -71,7 +71,7 @@ describe('Image Controller', () => {
           // TODO: check width
         }));
 
-    it.skip('should return an invalid height error', (done) => {
+    it('should return an invalid height error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&height=0')
         .end((err, res) => {
@@ -96,7 +96,7 @@ describe('Image Controller', () => {
   });
 
   describe('(crop)', () => {
-    it.skip('should return the invalid crop error', (done) => {
+    it('should return the invalid crop error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&width=100&crop=notExisting')
         .end((err, res) => {
@@ -105,7 +105,7 @@ describe('Image Controller', () => {
         });
     });
 
-    it.skip('should return the uncropped image', () => chai.request(server)
+    it('should return the uncropped image', () => chai.request(server)
         .get('/image?url=https://http.cat/100&crop=fill')
         .then((res) => {
           res.should.be.ok;
@@ -135,7 +135,7 @@ describe('Image Controller', () => {
   });
 
   describe('(gravity)', () => {
-    it.skip('should return the invalid gravity error', (done) => {
+    it('should return the invalid gravity error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&width=100&crop=fill&gravity=notExisting')
         .end((err, res) => {
@@ -164,7 +164,7 @@ describe('Image Controller', () => {
   });
 
   describe('(quality)', () => {
-    it.skip('should return the invalid quality error', (done) => {
+    it('should return the invalid quality error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&quality=0')
         .end((err, res) => {
@@ -173,7 +173,7 @@ describe('Image Controller', () => {
         });
     });
 
-    it.skip('should return the invalid quality error', (done) => {
+    it('should return the invalid quality error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&quality=101')
         .end((err, res) => {
@@ -182,7 +182,7 @@ describe('Image Controller', () => {
         });
     });
 
-    it.skip('should return the image with new quality', (done) => {
+    it('should return the image with new quality', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&quality=80')
         .end((err, res) => {
@@ -193,16 +193,17 @@ describe('Image Controller', () => {
   });
 
   describe('(format)', () => {
-    it.skip('should return the invalid format error', (done) => {
+    it('should return on invalid format', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&format=notExisting')
         .end((err, res) => {
-          res.status.should.equal(400);
+          // TODO: The favored behavior has to discussed
+          res.status.should.equal(200);
           done();
         });
     });
 
-    it.skip('should return the image as webp', (done) => {
+    it('should return the image as webp', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&format=webp')
         .end((err, res) => {
@@ -211,7 +212,7 @@ describe('Image Controller', () => {
         });
     });
 
-    it.skip('should return the image as jpeg', (done) => {
+    it('should return the image as jpeg', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&format=jpeg')
         .end((err, res) => {
@@ -220,7 +221,7 @@ describe('Image Controller', () => {
         });
     });
 
-    it.skip('should return the image as png', (done) => {
+    it('should return the image as png', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&format=png')
         .end((err, res) => {
