@@ -53,20 +53,14 @@ function imageLoader(req, res, next) {
     protocol = https;
   }
   protocol.get(req.query.url, (response) => {
-    const {
-            statusCode,
-        } = response;
+    const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
 
     if (statusCode !== 200) {
-      error = new Error(`Request failed.\nStatus Code: ${statusCode}`);
+      return res.status(404).send(`Request failed.\nStatus Code: ${statusCode}`);
     } else if (contentLength / 1024 >= config.get('ImageSource.MaxFileSize')) {
       const sizeLimit = config.get('ImageSource.MaxFileSize');
-      error = new Error(`File exceeds size limit of ${sizeLimit} KB.`);
-    }
-
-    if (error !== undefined) {
-      return next(error);
+      return res.status(400).send(`File exceeds size limit of ${sizeLimit} KB.`);
     }
 
     const imageBuffer = Buffer.alloc(contentLength);
@@ -85,7 +79,7 @@ function imageLoader(req, res, next) {
       next();
     });
     response.on('error', error => next(error));
-  });
+  }).on('error', e => res.status(404).send(`Request failed: ${e.message}`));
 }
 
 module.exports = imageLoader;

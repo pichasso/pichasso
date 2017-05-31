@@ -8,16 +8,16 @@
     "development": "nodemon --legacy-watch --inspect=0.0.0.0:9229 ./bin/www",
     "lint": "eslint ./**/*.js",
     "mocha": "node ./node_modules/mocha/bin/mocha",
-    "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "test": "npm run lint && npm run istanbul",
     "beautify": "eslint --fix ."
   },
   "dependencies": {
     "express": "~4.15.2",
     "config": "~1.26.1",
-    "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "probe-image-size": "~3.0.0",
+    "pug": "~2.0.0-rc.1",
     "sharp": "~0.17.3"
   },
   "devDependencies": {
