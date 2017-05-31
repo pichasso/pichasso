@@ -153,7 +153,7 @@ describe('Image Controller', () => {
   describe('(gravity)', () => {
     it('should return the invalid gravity error', (done) => {
       chai.request(server)
-        .get('/image?url=https://http.cat/100&width=100&crop=fill&gravity=notExisting')
+        .get('/image?url=https://http.cat/100&width=100&height=150&crop=fill&gravity=notExisting')
         .end((err, res) => {
           res.status.should.equal(400);
           done();
@@ -162,7 +162,7 @@ describe('Image Controller', () => {
 
     it('should return the cropped (east) image', (done) => {
       chai.request(server)
-        .get('/image?url=https://http.cat/100&width=100&crop=fill&gravity=east')
+        .get('/image?url=https://http.cat/100&width=100&height=150&crop=fill&gravity=east')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
@@ -171,7 +171,7 @@ describe('Image Controller', () => {
 
     it('should return the cropped (entropy) image', (done) => {
       chai.request(server)
-        .get('/image?url=https://http.cat/100&width=100&crop=fill&gravity=entropy')
+        .get('/image?url=https://http.cat/100&width=100&height=150&crop=fill&gravity=entropy')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
@@ -224,6 +224,7 @@ describe('Image Controller', () => {
         .get('/image?url=https://http.cat/100&format=webp')
         .end((err, res) => {
           res.status.should.equal(200);
+          res.headers['content-type'].should.equal('image/webp');
           done();
         });
     });
@@ -233,6 +234,7 @@ describe('Image Controller', () => {
         .get('/image?url=https://http.cat/100&format=jpeg')
         .end((err, res) => {
           res.status.should.equal(200);
+          res.headers['content-type'].should.equal('image/jpeg');
           done();
         });
     });
@@ -242,6 +244,7 @@ describe('Image Controller', () => {
         .get('/image?url=https://http.cat/100&format=png')
         .end((err, res) => {
           res.status.should.equal(200);
+          res.headers['content-type'].should.equal('image/png');
           done();
         });
     });

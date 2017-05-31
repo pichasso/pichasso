@@ -6,18 +6,15 @@ function resize(req, res, next) {
   let width;
   let height;
   if (!req.query.width && !req.query.height) {
-    const properties = probe.sync(req.image);
-    width = properties.width;
-    height = properties.height;
+    width = req.imageProperties.width;
+    height = req.imageProperties.height;
   } else if (!req.query.width) {
     height = Number(req.query.height);
-    const properties = probe.sync(req.image);
-    const aspectRatio = properties.width / properties.height;
+    const aspectRatio = req.imageProperties.width / req.imageProperties.height;
     width = Math.ceil(Number(height) / aspectRatio);
   } else if (!req.query.height) {
     width = Number(req.query.width);
-    const properties = probe.sync(req.image);
-    const aspectRatio = properties.width / properties.height;
+    const aspectRatio = req.imageProperties.width / req.imageProperties.height;
     height = Math.ceil(Number(width) / aspectRatio);
   } else {
     width = Number(req.query.width);
@@ -47,8 +44,7 @@ function resize(req, res, next) {
   switch (crop) {
     case 'fill':
       {
-        const imgProperties = req.imageProperties;
-        const imgAspectRatio = imgProperties.width / imgProperties.height;
+        const imgAspectRatio = req.imageProperties.width / req.imageProperties.height;
         let fillWidth,
           fillHeight;
         if (imgAspectRatio >= aspectRatio) {
