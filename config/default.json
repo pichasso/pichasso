@@ -2,7 +2,7 @@
     "ImageSource": {
         "LoadById": {
             "Enabled": true,
-            "SourcePath": "http://yourdomain.tld/images{id}" // will be used for resolving locations by id
+            "SourcePath": "https://open.hpi.de/files/{id}" // will be used for resolving locations by id
         },
         "LoadExternalData": {
             "Enabled": true, // enable loading data by any url
