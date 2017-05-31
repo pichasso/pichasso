@@ -5,7 +5,7 @@ const config = require('config');
 
 function imageLoader(req, res, next) {
 
-    let error;
+  let error;
 
     if (req.query.url.indexOf('://') === -1) {
         // assume id in url, create url with given id

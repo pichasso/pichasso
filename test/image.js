@@ -1,8 +1,8 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var server = require('../app.js');
-var should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../app.js');
 
+chai.should();
 chai.use(chaiHttp);
 
 it('should return an image', () => {

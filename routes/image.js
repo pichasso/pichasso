@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = new express.Router();
 const imageLoader = require('../middleware/imageLoader');
 const resize = require('../controllers/resize');
 const convert = require('../controllers/convert');
@@ -9,7 +9,7 @@ router.get('/', imageLoader, resize, convert, (req, res) => {
   res.end(req.image, 'binary');
 });
 
-router.get('/test', function(req, res, next){
+router.get('/test', function(req, res){
   res.render('test');
 });
 
