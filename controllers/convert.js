@@ -1,13 +1,13 @@
+const config = require('config');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
   let sharpInstance = sharp(req.image);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
-  let quality = Number(req.query.quality); // used for webp, jpeg
-  let progressive = true; // used for jpeg, png
+  let quality = Number(req.query.quality);
   let options = {
-    quality: quality > 0 ? quality : 80, // todo default from config
-    progressive: progressive // todo from config
+    quality: quality > 0 ? quality : config.get('ImageConversion.DefaultQuality'), // used for webp, jpeg
+    progressive: config.get('ImageConversion.Progressive'), // used for jpeg, png
   };
 
   // auto best format detection
