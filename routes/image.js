@@ -6,10 +6,12 @@ const convert = require('../controllers/convert');
 
 /* GET image. */
 router.get('/', imageLoader, resize, convert, (req, res) => {
+  res.setHeader("Cache-Control", "public, max-age=2592000");
+  res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
   res.end(req.image, 'binary');
 });
 
-router.get('/test', function(req, res, next){
+router.get('/test', function (req, res, next) {
   res.render('test');
 });
 
