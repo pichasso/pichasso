@@ -30,10 +30,8 @@ function convert(req, res, next) {
   if (format.id !== req.imageProperties.type) {
     sharpInstance
       .toFormat(format, options);
-    res.type(format.id);
-  } else {
-    res.type(format.id);
   }
+  res.type(format.id);
 
   sharpInstance.toBuffer()
     .then((buffer) => {

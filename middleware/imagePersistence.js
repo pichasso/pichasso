@@ -1,7 +1,7 @@
 const hash = require('object-hash');
 const fileCache = require('../middleware/fileCache');
 
-function imagePersistance(req, res, next) {
+function imagePersistence(req, res, next) {
   let queryHash = hash(req.query);
   // console.log('DEBUG: hash', req.query, queryHash);
 
@@ -12,4 +12,4 @@ function imagePersistance(req, res, next) {
   next();
 }
 
-module.exports = imagePersistance;
+module.exports = imagePersistence;
