@@ -15,11 +15,11 @@
   "dependencies": {
     "express": "~4.15.2",
     "config": "~1.26.1",
-    "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "probe-image-size": "~3.0.0",
-    "sharp": "~0.17.3",
-    "object-hash":"1.1.8"
+    "object-hash":"1.1.8",
+    "pug": "~2.0.0-rc.1",
+    "sharp": "~0.17.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
