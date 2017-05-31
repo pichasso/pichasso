@@ -1,7 +1,6 @@
 const express = require('express');
-const router = express.Router();
-const config = reqiuire('config');
-
+const router = new express.Router();
+const config = require('config');
 const imageLoader = require('../middleware/imageLoader');
 const persist = require('../middleware/imagePersistance');
 const resize = require('../controllers/resize');
@@ -14,7 +13,7 @@ router.get('/', imageLoader, resize, convert, persist (req, res) => {
   res.end(req.image, 'binary');
 });
 
-router.get('/test', function (req, res, next) {
+router.get('/test', function (req, res) {
   res.render('test');
 });
 

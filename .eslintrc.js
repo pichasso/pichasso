@@ -4,6 +4,13 @@ module.exports = {
     "es6": true,
     "mocha" : true
   },
+  "plugins": [
+    "es-beautifier"
+  ],
+  "extends": [
+    "plugin:es-beautifier/standard"
+  ]
+,
   "rules": {
     "array-bracket-spacing": [2, "never"],
     "block-scoped-var": 2,
@@ -14,8 +21,8 @@ module.exports = {
     "eol-last": 2,
     "eqeqeq": [2, "smart"],
     "max-depth": [1, 3],
-    "max-len": [1, 80],
-    "max-statements": [1, 15],
+    "max-len": [1, 120],
+    // "max-statements": [1, 15],
     "new-cap": 1,
     "no-extend-native": 2,
     "no-mixed-spaces-and-tabs": 2,
