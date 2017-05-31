@@ -10,11 +10,11 @@ function resize(req, res, next) {
   const width = getWidth(req);
   const height = getHeight(req);
   const aspectRatio = width / height;
-  const crop = req.query.crop || config.get('ImageConversion.DefaultCropping') || 'fill';
+  const crop = req.query.crop || config.get('ImageConversion.DefaultCropping');
 
   let gravity;
   if (!req.query.gravity) {
-    gravity = config.get('ImageConversion.DefaultGravity') || sharp.gravity.center;
+    gravity = config.get('ImageConversion.DefaultGravity');
   } else if (sharp.gravity.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.gravity[req.query.gravity];
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
