@@ -35,9 +35,6 @@ function convert(req, res, next) {
     res.type(format.id);
   }
 
-  // add format to request query
-  req.query.format = format.id;
-
   sharpInstance.toBuffer()
     .then((buffer) => {
       req.image = buffer;

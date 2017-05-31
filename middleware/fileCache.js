@@ -9,8 +9,11 @@ fileCache = {
       fs.mkdir(filepath);
     }
   },
-  saveFile: function (filename, format, data, error) {
-    fs.writeFile(filepath + filename + '.' + format, data, error);
+  saveFile: function (filename, format, data) {
+    fs.writeFile(filepath + filename + '.' + format, data, 'utf8', function (err) {
+      if (err) throw err;
+      // console.log('DEBUG: The file has been saved!');
+    });
   },
   // loadFile: function (hash, error) {
       // filepath
