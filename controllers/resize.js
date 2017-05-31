@@ -24,12 +24,8 @@ function resize(req, res, next) {
     height = Number(req.query.height);
   }
 
-  if (width < 1) {
-    return res.status(400).send(`invalid cropping width ${width}`);
-  }
-
-  if (height < 1) {
-    return res.status(400).send(`invalid cropping height ${height}`);
+  if (width < 1 || height < 1) {
+    return res.status(400).send(`invalid cropping size ${width}x${height}`);
   }
 
   const aspectRatio = width / height;

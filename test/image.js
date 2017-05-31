@@ -93,6 +93,22 @@ describe('Image Controller', () => {
           res.should.be.ok;
           // TODO: check height
         }));
+
+
+    it('should return the height and width scaled (square) image', () => chai.request(server)
+      .get('/image?url=https://http.cat/100&height=100&width=100')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check height
+      }));
+
+
+    it('should return the height and width scaled (rect) image ', () => chai.request(server)
+      .get('/image?url=https://http.cat/100&height=100&width=200')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check height
+      }));
   });
 
   describe('(crop)', () => {
@@ -230,4 +246,15 @@ describe('Image Controller', () => {
         });
     });
   });
+
+  it('should render the test interface', (done) => {
+    chai.request(server)
+      .get('/image/test')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.text.should.have.string('test inteface');
+        done();
+      });
+  });
 });
+

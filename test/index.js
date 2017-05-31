@@ -5,7 +5,8 @@ const server = require('../app.js');
 chai.should();
 chai.use(chaiHttp);
 
-it('should render the home page', () => chai.request(server)
+it('should render the home page', () => {
+  chai.request(server)
     .get('/')
     .then((res) => {
       res.should.have.status(200);
@@ -13,4 +14,13 @@ it('should render the home page', () => chai.request(server)
     })
     .catch((err) => {
       throw err;
-    }));
+    });
+});
+
+it('should not find this page', () => {
+  chai.request(server)
+    .get('/notExisting')
+    .end((res) => {
+      res.should.have.status(404);
+    });
+});
