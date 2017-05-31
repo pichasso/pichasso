@@ -9,7 +9,7 @@ router.get('/', imageLoader, resize, convert, (req, res) => {
   res.end(req.image, 'binary');
 });
 
-router.get('/test', function(req, res){
+router.get('/test', function (req, res) {
   res.render('test');
 });
 

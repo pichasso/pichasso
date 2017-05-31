@@ -9,11 +9,12 @@
     "lint": "eslint ./**/*.js",
     "mocha": "node ./node_modules/mocha/bin/mocha",
     "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
-    "test": "npm run lint && npm run istanbul"
+    "test": "npm run lint && npm run istanbul",
+    "beautify": "eslint --fix ."
   },
   "dependencies": {
     "express": "~4.15.2",
-    "config":"~1.26.1",
+    "config": "~1.26.1",
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "probe-image-size": "~3.0.0",
@@ -25,6 +26,7 @@
     "codecov": "^2.2.0",
     "debug": "~2.6.3",
     "eslint": "^3.19.0",
+    "eslint-plugin-es-beautifier": "^1.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.1",
     "nodemon": "^1.11.0"

@@ -26,39 +26,44 @@ function resize(req, res, next) {
   let sharpInstance = sharp(req.image);
 
   switch (crop) {
-    case 'fill': {
-      const imgProperties = req.imageProperties;
-      const imgAspectRatio = imgProperties.width / imgProperties.height;
-      let fillWidth, fillHeight;
-      if (imgAspectRatio >= aspectRatio) {
-        fillWidth = Math.ceil(aspectRatio * height);
-        fillHeight = height;
-      } else {
-        fillWidth = width;
-        fillHeight = Math.ceil(width / imgAspectRatio);
-      }
-      sharpInstance
+    case 'fill':
+      {
+        const imgProperties = req.imageProperties;
+        const imgAspectRatio = imgProperties.width / imgProperties.height;
+        let fillWidth,
+          fillHeight;
+        if (imgAspectRatio >= aspectRatio) {
+          fillWidth = Math.ceil(aspectRatio * height);
+          fillHeight = height;
+        } else {
+          fillWidth = width;
+          fillHeight = Math.ceil(width / imgAspectRatio);
+        }
+        sharpInstance
         .resize(fillWidth, fillHeight)
         .max()
         .resize(width, height)
         .crop(gravity);
-      break;
-    }
-    case 'fit': {
-      sharpInstance
+        break;
+      }
+    case 'fit':
+      {
+        sharpInstance
         .resize(width, height)
         .max();
-      break;
-    }
-    case 'scale': {
-      sharpInstance
+        break;
+      }
+    case 'scale':
+      {
+        sharpInstance
         .resize(width, height)
         .ignoreAspectRatio();
-      break;
-    }
-    default: {
-      return next(new Error(`invalid cropping method ${crop}`));
-    }
+        break;
+      }
+    default:
+      {
+        return next(new Error(`invalid cropping method ${crop}`));
+      }
   }
 
   sharpInstance.toBuffer()
@@ -66,9 +71,7 @@ function resize(req, res, next) {
       req.image = buffer;
       next();
     })
-    .catch((error) => {
-      return next(error);
-    });
+    .catch(error => next(error));
 }
 
 function getWidth(req) {
