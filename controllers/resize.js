@@ -1,26 +1,41 @@
 const sharp = require('sharp');
-const probe = require('probe-image-size');
 const config = require('config');
 
 function resize(req, res, next) {
+  let width;
+  let height;
   if (!req.query.width && !req.query.height) {
-    next();
+    width = req.imageProperties.width;
+    height = req.imageProperties.height;
+  } else if (!req.query.width) {
+    height = Number(req.query.height);
+    const aspectRatio = req.imageProperties.width / req.imageProperties.height;
+    width = Math.ceil(Number(height) / aspectRatio);
+  } else if (!req.query.height) {
+    width = Number(req.query.width);
+    const aspectRatio = req.imageProperties.width / req.imageProperties.height;
+    height = Math.ceil(Number(width) / aspectRatio);
+  } else {
+    width = Number(req.query.width);
+    height = Number(req.query.height);
   }
 
-  const width = getWidth(req);
-  const height = getHeight(req);
+  if (width < 1 || height < 1) {
+    return res.status(400).send(`invalid cropping size ${width}x${height}`);
+  }
+
   const aspectRatio = width / height;
-  const crop = req.query.crop || config.get('ImageConversion.DefaultCropping') || 'fill';
+  const crop = req.query.crop || config.get('ImageConversion.DefaultCropping');
 
   let gravity;
   if (!req.query.gravity) {
-    gravity = config.get('ImageConversion.DefaultGravity') || sharp.gravity.center;
+    gravity = config.get('ImageConversion.DefaultGravity');
   } else if (sharp.gravity.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.gravity[req.query.gravity];
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.strategy[req.query.gravity];
   } else {
-    return next(new Error(`invalid gravity ${req.query.gravity}`));
+    return res.status(400).send(`invalid gravity ${req.query.gravity}`);
   }
 
   let sharpInstance = sharp(req.image);
@@ -28,8 +43,7 @@ function resize(req, res, next) {
   switch (crop) {
     case 'fill':
       {
-        const imgProperties = req.imageProperties;
-        const imgAspectRatio = imgProperties.width / imgProperties.height;
+        const imgAspectRatio = req.imageProperties.width / req.imageProperties.height;
         let fillWidth,
           fillHeight;
         if (imgAspectRatio >= aspectRatio) {
@@ -62,7 +76,7 @@ function resize(req, res, next) {
       }
     default:
       {
-        return next(new Error(`invalid cropping method ${crop}`));
+        return res.status(400).send(`invalid cropping method ${crop}`);
       }
   }
 
@@ -72,26 +86,6 @@ function resize(req, res, next) {
       next();
     })
     .catch(error => next(error));
-}
-
-function getWidth(req) {
-  if (req.query.width) {
-    return Number(req.query.width);
-  }
-
-  const properties = probe.sync(req.image);
-  const aspectRatio = properties.width / properties.height;
-  return Math.ceil(Number(req.query.height) * aspectRatio);
-}
-
-function getHeight(req) {
-  if (req.query.height) {
-    return Number(req.query.height);
-  }
-
-  const properties = probe.sync(req.image);
-  const aspectRatio = properties.width / properties.height;
-  return Math.ceil(Number(req.query.width) / aspectRatio);
 }
 
 module.exports = resize;

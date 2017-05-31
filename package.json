@@ -8,7 +8,7 @@
     "development": "nodemon --legacy-watch --inspect=0.0.0.0:9229 ./bin/www",
     "lint": "eslint ./**/*.js",
     "mocha": "node ./node_modules/mocha/bin/mocha",
-    "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "test": "npm run lint && npm run istanbul",
     "beautify": "eslint --fix ."
   },

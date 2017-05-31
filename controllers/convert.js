@@ -5,8 +5,11 @@ function convert(req, res, next) {
   let sharpInstance = sharp(req.image);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = Number(req.query.quality);
+  if (req.query.quality && (quality < 1 || quality > 100)) {
+    return res.status(400).send(`invalid quality ${quality}, has to be between 1 and 100`);
+  }
   let options = {
-    quality: quality > 0 ? quality : config.get('ImageConversion.DefaultQuality'), // used for webp, jpeg
+    quality: quality ? quality : config.get('ImageConversion.DefaultQuality'), // used for webp, jpeg
     progressive: config.get('ImageConversion.Progressive'), // used for jpeg, png
   };
 
