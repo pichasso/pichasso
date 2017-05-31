@@ -11,7 +11,8 @@
                 "http"
             ],
             "WhitelistRegex": [] // set url regex filters, one must match to proceed
-        }
+        },
+        "MaxFileSize": 51200
     },
     "ImageConversion": {
         "DefaultFormat": "accepted", // use best accepted by client or do not change ["accepted", "keep"]
