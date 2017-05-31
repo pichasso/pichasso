@@ -73,8 +73,7 @@ function imageLoader(req, res, next) {
       req.image = imageBuffer;
       req.imageProperties = probe.sync(req.image);
       if (!req.imageProperties) {
-        next(new Error('The requested file is not an image.'));
-        return;
+        return res.status(400).send('The requested file is not an image.');
       }
       next();
     });
