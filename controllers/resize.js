@@ -4,7 +4,7 @@ const config = require('config');
 
 function resize(req, res, next) {
   if (!req.query.width && !req.query.height) {
-    next(new Error('height or width parameter required'));
+    next();
   }
 
   const width = getWidth(req);
