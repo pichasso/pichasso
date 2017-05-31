@@ -37,11 +37,7 @@ function convert(req, res, next) {
       req.image = buffer;
       next();
     })
-    .catch((error) => {
-      res.render('error', {
-        error: error
-      });
-    });
+    .catch(error => next(error));
 }
 
 module.exports = convert;

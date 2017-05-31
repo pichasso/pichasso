@@ -5,14 +5,12 @@ const server = require('../app.js');
 chai.should();
 chai.use(chaiHttp);
 
-it('should render the home page', () => {
-  return chai.request(server)
+it('should render the home page', () => chai.request(server)
     .get('/')
-    .then(res => {
+    .then((res) => {
       res.should.have.status(200);
       res.text.should.have.string('Pichasso is running');
     })
-    .catch(err => {
+    .catch((err) => {
       throw err;
-    });
-});
+    }));
