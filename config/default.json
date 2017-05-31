@@ -1,8 +1,8 @@
 {
     "ImageSource": {
         "LoadById": {
-            "Enabled": false,
-            "SourcePath": "http://yourdomain.tld/images{id}"
+            "Enabled": true,
+            "SourcePath": "https://open.hpi.de/files/{id}"
         },
         "LoadExternalData": {
             "Enabled": true,

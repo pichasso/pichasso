@@ -20,53 +20,50 @@ function resize(req, res, next) {
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.strategy[req.query.gravity];
   } else {
-    res.render(
-      'error',
-      {error: new Error(`invalid gravity ${req.query.gravity}`)}
-    );
-    return;
+    return next(new Error(`invalid gravity ${req.query.gravity}`));
   }
 
   let sharpInstance = sharp(req.image);
 
   switch (crop) {
-    case 'fill': {
-      const imgProperties = req.imageProperties;
-      const imgAspectRatio = imgProperties.width / imgProperties.height;
-      let fillWidth, fillHeight;
-      if (imgAspectRatio >= aspectRatio) {
-        fillWidth = Math.ceil(aspectRatio * height);
-        fillHeight = height;
-      } else {
-        fillWidth = width;
-        fillHeight = Math.ceil(width / imgAspectRatio);
-      }
-      sharpInstance
+    case 'fill':
+      {
+        const imgProperties = req.imageProperties;
+        const imgAspectRatio = imgProperties.width / imgProperties.height;
+        let fillWidth,
+          fillHeight;
+        if (imgAspectRatio >= aspectRatio) {
+          fillWidth = Math.ceil(aspectRatio * height);
+          fillHeight = height;
+        } else {
+          fillWidth = width;
+          fillHeight = Math.ceil(width / imgAspectRatio);
+        }
+        sharpInstance
         .resize(fillWidth, fillHeight)
         .max()
         .resize(width, height)
         .crop(gravity);
-      break;
-    }
-    case 'fit': {
-      sharpInstance
+        break;
+      }
+    case 'fit':
+      {
+        sharpInstance
         .resize(width, height)
         .max();
-      break;
-    }
-    case 'scale': {
-      sharpInstance
+        break;
+      }
+    case 'scale':
+      {
+        sharpInstance
         .resize(width, height)
         .ignoreAspectRatio();
-      break;
-    }
-    default: {
-      res.render(
-        'error',
-        {error: new Error(`invalid cropping method ${crop}`)}
-      );
-      return;
-    }
+        break;
+      }
+    default:
+      {
+        return next(new Error(`invalid cropping method ${crop}`));
+      }
   }
 
   sharpInstance.toBuffer()
@@ -74,9 +71,7 @@ function resize(req, res, next) {
       req.image = buffer;
       next();
     })
-    .catch((error) => {
-      res.render('error', {error: error});
-    });
+    .catch(error => next(error));
 }
 
 function getWidth(req) {
