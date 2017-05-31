@@ -29,8 +29,11 @@ function convert(req, res, next) {
       .toFormat(format, options);
     res.type(format.id);
   } else {
-    res.type(req.imageProperties.mime);
+    res.type(format.id);
   }
+
+  // add format to request query
+  req.query.format = format.id;
 
   sharpInstance.toBuffer()
     .then((buffer) => {
