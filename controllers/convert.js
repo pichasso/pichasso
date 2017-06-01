@@ -1,4 +1,5 @@
 const config = require('config');
+const error = require('http-errors');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
