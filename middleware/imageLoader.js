@@ -53,7 +53,7 @@ function imageLoader(req, res, next) {
     const contentType = response.headers['content-type'];
 
     if (statusCode !== 200) {
-      return next(new error.NotFound(`Request failed.`));
+      return next(new error.NotFound('Request failed.'));
     } else if (!/^image\//.test(contentType)) {
       return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
     }
@@ -70,7 +70,6 @@ function imageLoader(req, res, next) {
       next();
     });
     response.on('error', error => next(error));
-
   }).on('error', e => next(new error.NotFound(`Request failed: ${e.message}`)));
 }
 

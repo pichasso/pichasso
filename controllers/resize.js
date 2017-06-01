@@ -1,6 +1,5 @@
-const sharp = require('sharp');
-const probe = require('probe-image-size');
 const config = require('config');
+const sharp = require('sharp');
 
 function resize(req, res, next) {
   let width;
