@@ -55,16 +55,12 @@ function imageLoader(req, res, next) {
   protocol.get(req.query.url, (response) => {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
-    const contentType = response.headers['content-type'];
 
     if (statusCode !== 200) {
       return res.status(404).send(`Request failed.\nStatus Code: ${statusCode}`);
-    } else if (!/^image\//.test(contentType)) {
-      return res.status(400).send(`Invalid content-type. Expected image, but received ${contentType}.`);
-    }
-
-    if (error !== undefined) {
-      return next(error);
+    } else if (contentLength / 1024 >= config.get('ImageSource.MaxFileSize')) {
+      const sizeLimit = config.get('ImageSource.MaxFileSize');
+      return res.status(400).send(`File exceeds size limit of ${sizeLimit} KB.`);
     }
 
     const imageBuffer = Buffer.alloc(contentLength);
@@ -76,6 +72,9 @@ function imageLoader(req, res, next) {
     response.on('end', () => {
       req.image = imageBuffer;
       req.imageProperties = probe.sync(req.image);
+      if (!req.imageProperties) {
+        return res.status(400).send('The requested file is not an image.');
+      }
       next();
     });
     response.on('error', error => next(error));
