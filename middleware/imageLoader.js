@@ -5,7 +5,7 @@ const https = require('https');
 const probe = require('probe-image-size');
 
 function imageLoader(req, res, next) {
-  if(req.completed){
+  if (req.completed) {
     next();
   }
   if (req.query.url.indexOf('://') === -1) {

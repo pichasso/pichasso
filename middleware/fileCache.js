@@ -14,8 +14,8 @@ fileCache = {
       if (err) throw err;
     });
   },
- load: function (hash, error) {
-      return fs.readFileSync(filepath+hash,'utf8');
+  load: function (hash) {
+    return fs.readFileSync(filepath + hash, 'utf8');
   },
   exists: function (hash) {
     return fs.existsSync(filepath + hash);

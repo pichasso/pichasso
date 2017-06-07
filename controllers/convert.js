@@ -3,7 +3,7 @@ const error = require('http-errors');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
-  if(req.completed){
+  if (req.completed) {
     next();
   }
   let sharpInstance = sharp(req.image);

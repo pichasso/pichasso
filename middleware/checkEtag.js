@@ -1,6 +1,4 @@
-const cache = require('../middleware/fileCache');
-
-function checkEtag(req, res, next) {  
+function checkEtag(req, res, next) {
   let etag = req.get('If-None-Match');
   if (etag) {
     res.set('Etag', etag);
