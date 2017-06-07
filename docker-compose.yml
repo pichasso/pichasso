@@ -1,7 +1,9 @@
-version: '2'
+version: '3'
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.development
     command: npm run development
     environment:
       NODE_ENV: development
