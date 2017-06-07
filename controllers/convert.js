@@ -19,7 +19,8 @@ function convert(req, res, next) {
 
   // auto best format detection
   if (format === undefined) {
-    if (req.accepts('image/webp')) {
+    let accept = req.get('accept');
+    if (/image\/webp/.test(accept)) {
       format = sharp.format['webp'];
     } else {
       if (sharpInstance.hasAlpha) {
