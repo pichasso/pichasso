@@ -1,4 +1,4 @@
-FROM node:7.10
+FROM node:8
 
 EXPOSE 3000 9229
 
@@ -9,5 +9,3 @@ ADD ./package.json /usr/src/app/
 RUN npm install --quiet
 
 ADD ./ /usr/src/app
-
-CMD npm run development

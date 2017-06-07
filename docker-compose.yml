@@ -2,9 +2,12 @@ version: '2'
 services:
   web:
     build: .
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    command: npm run development
+    environment:
+      NODE_ENV: development
     ports:
       - 3000:3000
       - 9229:9229
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules

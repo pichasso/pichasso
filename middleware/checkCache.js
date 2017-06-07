@@ -1,5 +1,6 @@
 const cache = require('../middleware/fileCache');
 const hash = require('object-hash');
+const probe = require('probe-image-size');
 
 function checkCache(req, res, next) {
   console.log('check cache')
@@ -10,11 +11,15 @@ function checkCache(req, res, next) {
   }
 
   let queryHash = hash(req.query);
+    console.log('check cache for', req.query, queryHash);
 
   if (cache.exists(queryHash)) {
-    req.image = cache.load(queryHash, function(err){
-      next(err);
-    });
+    req.image = cache.load(queryHash);
+    req.imageProperties = probe.sync(req.image);
+    if (!req.imageProperties) {
+        return res.status(400).send('The requested file is not an image.');
+      }
+        res.type(req.imageProperties.type);
       res.set('Etag', queryHash);
     req.completed = true;
   } 

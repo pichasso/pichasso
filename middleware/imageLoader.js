@@ -1,39 +1,38 @@
+const config = require('config');
+const error = require('http-errors');
 const http = require('http');
 const https = require('https');
 const probe = require('probe-image-size');
-const config = require('config');
 
 function imageLoader(req, res, next) {
   if(req.completed){
     next();
   }
-  let error;
-
   if (req.query.url.indexOf('://') === -1) {
         // assume id in url, create url with given id
     if (config.get('ImageSource.LoadById.Enabled') !== true) {
-      error = new Error('Loading external data has been disabled.');
+      return next(new error.BadRequest('Loading external data has been disabled.'));
     }
     let sourcePath = config.get('ImageSource.LoadById.SourcePath');
     if (!sourcePath) {
-      error = new Error('ImageSource.LoadById.SourcePath not defined.');
+      return next(new error.InternalServerError('ImageSource.LoadById.SourcePath not defined.'));
     }
     req.query.url = sourcePath.replace(/{id}/gi, req.query.url);
   } else {
         // assume we got an url, check for validity
     if (config.get('ImageSource.LoadExternalData.Enabled') !== true) {
-      error = new Error('Loading external data has been disabled.');
+      return next(new error.BadRequest('Loading external data has been disabled.'));
     }
         // check protocol filter
     let allowedProtocols = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
     if (!allowedProtocols) {
-      error = new Error('ImageSource.LoadExternalData.ProtocolsAllowed not defined.');
+      return next(new error.InternalServerError('ImageSource.LoadExternalData.ProtocolsAllowed not defined.'));
     }
     let protocolAllowed = allowedProtocols.filter(function (protocol) {
       return req.query.url.indexOf(protocol) === 0;
     });
     if (!protocolAllowed) {
-      error = new Error('Protocol not allowed.');
+      return next(new error.BadRequest('Protocol not allowed.'));
     }
         // check url whitelist
     let whitelistRegex = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
@@ -42,13 +41,9 @@ function imageLoader(req, res, next) {
         return req.query.url.match(regex);
       });
       if (!whitelisted) {
-        error = new Error('Domain source not allowed.');
+        return next(new error.BadRequest('Domain source not allowed.'));
       }
     }
-  }
-
-  if (error !== undefined) {
-    return next(error);
   }
 
   let protocol = http;
@@ -61,13 +56,9 @@ function imageLoader(req, res, next) {
     const contentType = response.headers['content-type'];
 
     if (statusCode !== 200) {
-      return res.status(404).send(`Request failed.\nStatus Code: ${statusCode}`);
+      return next(new error.NotFound('Request failed.'));
     } else if (!/^image\//.test(contentType)) {
-      return res.status(400).send(`Invalid content-type. Expected image, but received ${contentType}.`);
-    }
-
-    if (error !== undefined) {
-      return next(error);
+      return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
     }
 
     const imageBuffer = Buffer.alloc(contentLength);
@@ -79,10 +70,13 @@ function imageLoader(req, res, next) {
     response.on('end', () => {
       req.image = imageBuffer;
       req.imageProperties = probe.sync(req.image);
+      if (!req.imageProperties) {
+        return res.status(400).send('The requested file is not an image.');
+      }
       next();
     });
     response.on('error', error => next(error));
-  }).on('error', e => res.status(404).send(`Request failed: ${e.message}`));
+  }).on('error', e => next(new error.NotFound(`Request failed: ${e.message}`)));
 }
 
 module.exports = imageLoader;
