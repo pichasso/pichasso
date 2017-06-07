@@ -15,13 +15,13 @@ function checkCache(req, res, next) {
     req.image = cache.load(queryHash);
     req.imageProperties = probe.sync(req.image);
     if (!req.imageProperties) {
-      console.log('error loading file from cache', queryHash);
+      console.error('error loading file from cache', queryHash);
       cache.remove(queryHash);
-      return next();
+    } else {
+      res.type(req.imageProperties.type);
+      res.set('Etag', queryHash);
+      req.completed = true;
     }
-    res.type(req.imageProperties.type);
-    res.set('Etag', queryHash);
-    req.completed = true;
   }
   return next();
 }
