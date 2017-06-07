@@ -5,6 +5,9 @@ const https = require('https');
 const probe = require('probe-image-size');
 
 function imageLoader(req, res, next) {
+  if (req.completed) {
+    return next();
+  }
   if (req.query.url.indexOf('://') === -1) {
         // assume id in url, create url with given id
     if (config.get('ImageSource.LoadById.Enabled') !== true) {

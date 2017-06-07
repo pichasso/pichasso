@@ -21,5 +21,9 @@
         "DefaultGravity": "entropy",
         "Progressive": true,
         "RemoveMetadata": true
+    },
+    "Caching":{
+        "Expires": 2629000000,
+        "Imagepath": "/tmp/imagecache/"
     }
 }

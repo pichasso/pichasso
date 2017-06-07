@@ -3,6 +3,9 @@ const error = require('http-errors');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
+  if (req.completed) {
+    return next();
+  }
   let sharpInstance = sharp(req.image);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = Number(req.query.quality);
@@ -16,7 +19,8 @@ function convert(req, res, next) {
 
   // auto best format detection
   if (format === undefined) {
-    if (req.accepts('image/webp')) {
+    let accept = req.get('accept');
+    if (/image\/webp/.test(accept)) {
       format = sharp.format['webp'];
     } else {
       if (sharpInstance.hasAlpha) {
@@ -31,15 +35,13 @@ function convert(req, res, next) {
   if (format.id !== req.imageProperties.type) {
     sharpInstance
       .toFormat(format, options);
-    res.type(format.id);
-  } else {
-    res.type(req.imageProperties.mime);
   }
+  res.type(format.id);
 
   sharpInstance.toBuffer()
     .then((buffer) => {
       req.image = buffer;
-      next();
+      return next();
     })
     .catch(error => next(error));
 }
