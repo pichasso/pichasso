@@ -1,6 +1,6 @@
-const sharp = require('sharp');
-const probe = require('probe-image-size');
 const config = require('config');
+const error = require('http-errors');
+const sharp = require('sharp');
 
 function resize(req, res, next) {
   let width;
@@ -22,7 +22,7 @@ function resize(req, res, next) {
   }
 
   if (width < 1 || height < 1) {
-    return res.status(400).send(`invalid cropping size ${width}x${height}`);
+    return next(new error.BadRequest(`Invalid cropping size ${width}x${height}`));
   }
 
   const aspectRatio = width / height;
@@ -36,7 +36,7 @@ function resize(req, res, next) {
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.strategy[req.query.gravity];
   } else {
-    return res.status(400).send(`invalid gravity ${req.query.gravity}`);
+    return next(new error.BadRequest(`Invalid gravity ${req.query.gravity}`));
   }
 
   let sharpInstance = sharp(req.image);
@@ -77,7 +77,7 @@ function resize(req, res, next) {
       }
     default:
       {
-        return res.status(400).send(`invalid cropping method ${crop}`);
+        return next(new error.BadRequest(`Invalid cropping method ${crop}`));
       }
   }
 

@@ -1,4 +1,5 @@
 const config = require('config');
+const error = require('http-errors');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
@@ -6,7 +7,7 @@ function convert(req, res, next) {
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = Number(req.query.quality);
   if (req.query.quality && (quality < 1 || quality > 100)) {
-    return res.status(400).send(`invalid quality ${quality}, has to be between 1 and 100`);
+    return next(new error.BadRequest(`invalid quality ${quality}, has to be between 1 and 100`));
   }
   let options = {
     quality: quality ? quality : config.get('ImageConversion.DefaultQuality'), // used for webp, jpeg

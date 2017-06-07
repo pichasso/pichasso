@@ -15,6 +15,7 @@
   "dependencies": {
     "express": "~4.15.2",
     "config": "~1.26.1",
+    "http-errors": "~1.6.1",
     "morgan": "~1.8.1",
     "probe-image-size": "~3.0.0",
     "pug": "~2.0.0-rc.1",
