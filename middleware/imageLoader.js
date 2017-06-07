@@ -50,6 +50,7 @@ function imageLoader(req, res, next) {
   protocol.get(req.query.url, (response) => {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
+    const contentType = response.headers['content-type'];
 
     if (statusCode !== 200) {
       return next(new error.NotFound('Request failed.'));
