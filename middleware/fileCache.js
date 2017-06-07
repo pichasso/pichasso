@@ -10,16 +10,18 @@ fileCache = {
     }
   },
   add: function (filename, format, data) {
-    fs.writeFile(filepath + filename, data, 'utf8', function (err) {
+    fs.writeFile(filepath + filename, data, function (err) {
       if (err) throw err;
     });
   },
   load: function (hash) {
-    return fs.readFileSync(filepath + hash, 'utf8');
+    return fs.readFileSync(filepath + hash);
   },
   exists: function (hash) {
     return fs.existsSync(filepath + hash);
   },
-
+  remove: function (hash) {
+    return true; // todo implement
+  },
 };
 module.exports = fileCache;

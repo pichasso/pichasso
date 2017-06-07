@@ -17,7 +17,9 @@ function checkCache(req, res, next) {
     req.image = cache.load(queryHash);
     req.imageProperties = probe.sync(req.image);
     if (!req.imageProperties) {
-      return res.status(400).send('The requested file is not an image.');
+      console.log('error loading file from cache', queryHash);
+      cache.remove(queryHash);
+      next();
     }
     res.type(req.imageProperties.type);
     res.set('Etag', queryHash);
