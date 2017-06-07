@@ -50,7 +50,6 @@ function imageLoader(req, res, next) {
   protocol.get(req.query.url, (response) => {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
-    const contentType = response.headers['content-type'];
 
     if (statusCode !== 200) {
       return next(new error.NotFound('Request failed.'));
@@ -67,6 +66,9 @@ function imageLoader(req, res, next) {
     response.on('end', () => {
       req.image = imageBuffer;
       req.imageProperties = probe.sync(req.image);
+      if (!req.imageProperties) {
+        return res.status(400).send('The requested file is not an image.');
+      }
       next();
     });
     response.on('error', error => next(error));
