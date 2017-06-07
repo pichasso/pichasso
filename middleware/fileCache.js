@@ -4,25 +4,22 @@ const config = require('config');
 let filepath = config.get('Caching.Imagepath');
 
 fileCache = {
-  createCacheFolder: function () {
+  init: function () {
     if (!fs.existsSync(filepath)) {
       fs.mkdir(filepath);
     }
   },
   saveFile: function (filename, format, data) {
-    fs.writeFile(filepath + filename + '.' + format, data, 'utf8', function (err) {
+    fs.writeFile(filepath + filename, data, 'utf8', function (err) {
       if (err) throw err;
       // console.log('DEBUG: The file has been saved!');
     });
   },
-  // loadFile: function (hash, error) {
-      // filepath
-  // },
+ load: function (hash, error) {
+      return fs.readFileSync(filepath+hash,error);
+  },
   exists: function (hash) {
-    let extensions = ['webp', 'png', 'jpeg'];
-    return extensions.filter(function (ext) {
-      return fs.existsSync(filepath + hash + '.' + ext);
-    });
+    return fs.existsSync(filepath + hash);
   },
 
 };

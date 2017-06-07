@@ -2,6 +2,9 @@ const config = require('config');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
+  if(req.completed){
+    next();
+  }
   let sharpInstance = sharp(req.image);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = Number(req.query.quality);

@@ -2,6 +2,9 @@ const sharp = require('sharp');
 const config = require('config');
 
 function resize(req, res, next) {
+  if(req.completed){
+    next();
+  }
   let width;
   let height;
   if (!req.query.width && !req.query.height) {

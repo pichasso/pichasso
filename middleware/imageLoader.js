@@ -4,6 +4,9 @@ const probe = require('probe-image-size');
 const config = require('config');
 
 function imageLoader(req, res, next) {
+  if(req.completed){
+    next();
+  }
   let error;
 
   if (req.query.url.indexOf('://') === -1) {

@@ -10,7 +10,7 @@ const image = require('./routes/image');
 const app = express();
 
 // setup cache folder
-fileCache.createCacheFolder();
+fileCache.init();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
