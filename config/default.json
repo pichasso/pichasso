@@ -2,20 +2,21 @@
     "ImageSource": {
         "LoadById": {
             "Enabled": true,
-            "SourcePath": "http://yourdomain.tld/images{id}" // will be used for resolving locations by id
+            "SourcePath": "https://open.hpi.de/files/{id}"
         },
         "LoadExternalData": {
-            "Enabled": true, // enable loading data by any url
+            "Enabled": true,
             "ProtocolsAllowed": [
                 "https",
                 "http"
             ],
-            "WhitelistRegex": [] // set url regex filters, one must match to proceed
-        }
+            "WhitelistRegex": []
+        },
+        "MaxFileSize": 51200
     },
     "ImageConversion": {
-        "DefaultFormat": "accepted", // use best accepted by client or do not change ["accepted", "keep"]
-        "DefaultQuality": 80, // range 0...100 (lowest...best) used for jpeg
+        "DefaultFormat": "accepted",
+        "DefaultQuality": 80,
         "DefaultCropping": "fill",
         "DefaultGravity": "entropy",
         "Progressive": true,
