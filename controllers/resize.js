@@ -4,7 +4,7 @@ const sharp = require('sharp');
 
 function resize(req, res, next) {
   if (req.completed) {
-    next();
+    return next();
   }
   let width;
   let height;
@@ -87,7 +87,7 @@ function resize(req, res, next) {
   sharpInstance.toBuffer()
     .then((buffer) => {
       req.image = buffer;
-      next();
+      return next();
     })
     .catch(error => next(error));
 }

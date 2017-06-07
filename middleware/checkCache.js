@@ -19,13 +19,13 @@ function checkCache(req, res, next) {
     if (!req.imageProperties) {
       console.log('error loading file from cache', queryHash);
       cache.remove(queryHash);
-      next();
+      return next();
     }
     res.type(req.imageProperties.type);
     res.set('Etag', queryHash);
     req.completed = true;
   }
-  next();
+  return next();
 }
 
 module.exports = checkCache;

@@ -4,7 +4,7 @@ const sharp = require('sharp');
 
 function convert(req, res, next) {
   if (req.completed) {
-    next();
+    return next();
   }
   let sharpInstance = sharp(req.image);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
@@ -40,7 +40,7 @@ function convert(req, res, next) {
   sharpInstance.toBuffer()
     .then((buffer) => {
       req.image = buffer;
-      next();
+      return next();
     })
     .catch(error => next(error));
 }

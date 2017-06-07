@@ -3,7 +3,7 @@ const fileCache = require('../middleware/fileCache');
 
 function imagePersistence(req, res, next) {
   if (req.completed) {
-    next();
+    return next();
   }
 
   let queryHash = hash(req.query);
@@ -14,7 +14,7 @@ function imagePersistence(req, res, next) {
 
   res.set('Etag', queryHash);
 
-  next();
+  return next();
 }
 
 module.exports = imagePersistence;
