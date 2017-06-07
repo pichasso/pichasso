@@ -3,6 +3,7 @@ services:
   web:
     build: .
     command: npm run development
+    Dockerfile: Dockerfile.development
     environment:
       NODE_ENV: development
     ports:
