@@ -11,7 +11,9 @@ fileCache = {
   },
   add: function (filename, format, data) {
     fs.writeFile(filepath + filename, data, function (err) {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+      }
     });
   },
   load: function (hash) {
@@ -21,7 +23,11 @@ fileCache = {
     return fs.existsSync(filepath + hash);
   },
   remove: function (hash) {
-    return true; // todo implement
+    if (fs.existsSync(filepath + hash)) {
+      return fs.unlinkSync(filepath + hash);
+    } else {
+      return false;
+    }
   },
 };
 module.exports = fileCache;
