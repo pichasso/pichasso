@@ -10,7 +10,7 @@
     "mocha": "node ./node_modules/mocha/bin/mocha",
     "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "test": "npm run lint && npm run istanbul",
-    "beautify": "eslint --fix ."
+    "beautify": "eslint --fix . --ignore-path .gitignore"
   },
   "dependencies": {
     "express": "~4.15.2",
