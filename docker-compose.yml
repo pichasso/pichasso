@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.development
     command: npm run development
     environment:
-      ENV: development
+      NODE_ENV: development
     ports:
       - 3000:3000
       - 9229:9229
