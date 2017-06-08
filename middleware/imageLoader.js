@@ -51,6 +51,7 @@ function imageLoader(req, res, next) {
     protocol = https;
   }
   protocol.get(req.query.url, (response) => {
+
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
     const contentType = response.headers['content-type'];
