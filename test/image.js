@@ -19,6 +19,7 @@ describe('Image Controller', () => {
       .get('/image?url=https://http.cat/900')
       .end((err, res) => {
         res.status.should.equal(404);
+        res.text.should.have.string('Request failed');
         done();
       });
   });
@@ -28,6 +29,7 @@ describe('Image Controller', () => {
       .get('/image?url=https://httpx.cat/')
       .end((err, res) => {
         res.status.should.equal(404);
+        res.text.should.have.string('Request failed');
         done();
       });
   });
@@ -37,12 +39,30 @@ describe('Image Controller', () => {
       .get('/image?url=https://http.cat/')
       .end((err, res) => {
         res.status.should.equal(400);
+        res.text.should.have.string('Invalid content-type');
+        done();
+      });
+  });
+
+  it('should return file too large', (done) => {
+    chai.request(server)
+      .get('/image?url=https://upload.wikimedia.org/wikipedia/commons/2/2c/' +
+        'A_new_map_of_Great_Britain_according_to_the_newest_and_most_exact_observations_%288342715024%29.jpg')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.text.should.have.string('File exceeds size limit');
         done();
       });
   });
 
   it('should return the same image', () => chai.request(server)
       .get('/image?url=https://http.cat/100')
+      .then((res) => {
+        res.should.be.ok;
+      }));
+
+  it('should handle response header without content-length', () => chai.request(server)
+      .get('/image?url=https://i1.sndcdn.com/avatars-000049805703-zgm5k2-t500x500.jpg')
       .then((res) => {
         res.should.be.ok;
       }));

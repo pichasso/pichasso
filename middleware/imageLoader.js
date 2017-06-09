@@ -8,6 +8,7 @@ function imageLoader(req, res, next) {
   if (req.completed) {
     return next();
   }
+
   if (req.query.url.indexOf('://') === -1) {
         // assume id in url, create url with given id
     if (config.get('ImageSource.LoadById.Enabled') !== true) {
@@ -54,24 +55,36 @@ function imageLoader(req, res, next) {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
     const contentType = response.headers['content-type'];
+    const sizeLimit = config.get('ImageSource.MaxFileSize');
 
     if (statusCode !== 200) {
       return next(new error.NotFound('Request failed.'));
     } else if (!/^image\//.test(contentType)) {
       return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
+    } else if (sizeLimit && contentLength / 1024 >= sizeLimit) {
+      return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
     }
 
-    const imageBuffer = Buffer.alloc(contentLength);
+    let imageBuffer = Buffer.alloc(contentLength);
     let bufPosition = 0;
     response.on('data', (chunk) => {
-      chunk.copy(imageBuffer, bufPosition);
+      if (!contentLength) {
+        const extendedLength = bufPosition + chunk.length;
+        if (sizeLimit && extendedLength / 1024 >= sizeLimit) {
+          return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
+        }
+        let extendedBuffer = Buffer.alloc(extendedLength);
+        if (imageBuffer.length) extendedBuffer.fill(imageBuffer);
+        imageBuffer = extendedBuffer;
+      }
+      imageBuffer.fill(chunk, bufPosition);
       bufPosition += chunk.length;
     });
     response.on('end', () => {
       req.image = imageBuffer;
       req.imageProperties = probe.sync(req.image);
       if (!req.imageProperties) {
-        return res.status(400).send('The requested file is not an image.');
+        return next(new error.BadRequest('The requested file is not an image.'));
       }
       next();
     });
