@@ -2,8 +2,6 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 
-const fileCache = require('./middleware/fileCache');
-
 const index = require('./routes/index');
 const image = require('./routes/image');
 
