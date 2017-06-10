@@ -31,6 +31,7 @@
     "eslint-plugin-es-beautifier": "^1.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.1",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "sinon": "~2.3.4"
   }
 }
