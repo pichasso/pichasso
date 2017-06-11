@@ -17,13 +17,13 @@ function checkCache(req, res, next) {
       .metadata()
       .then((metadata) => {
         req.imageProperties = metadata;
-        res.type(metadata.type);
+        res.type(metadata.format);
         res.set('Etag', queryHash);
         req.completed = true;
         return next();
       })
-      .catch(() => {
-        console.error('error loading file from cache', queryHash);
+      .catch((error) => {
+        console.error('error loading file from cache', queryHash, error);
         cache.remove(queryHash);
         return next();
       });
