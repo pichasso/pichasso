@@ -19,20 +19,16 @@ function convert(req, res, next) {
 
   // auto best format detection
   if (format === undefined) {
-    let accept = req.get('accept');
-    if (/image\/webp/.test(accept)) {
-      format = sharp.format['webp'];
+    // if webp is accepted, it is set before checking the cache
+    if (req.imageProperties.hasAlpha) {
+      format = sharp.format['png'];
     } else {
-      if (sharpInstance.hasAlpha) {
-        format = sharp.format['png'];
-      } else {
-        format = sharp.format['jpeg'];
-      }
+      format = sharp.format['jpeg'];
     }
   }
 
   // format conversion & set response type
-  if (format.id !== req.imageProperties.type) {
+  if (format.id !== req.imageProperties.format) {
     sharpInstance
       .toFormat(format, options);
   }

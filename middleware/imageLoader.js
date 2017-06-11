@@ -2,7 +2,7 @@ const config = require('config');
 const error = require('http-errors');
 const http = require('http');
 const https = require('https');
-const probe = require('probe-image-size');
+const sharp = require('sharp');
 
 function imageLoader(req, res, next) {
   if (req.completed) {
@@ -82,11 +82,13 @@ function imageLoader(req, res, next) {
     });
     response.on('end', () => {
       req.image = imageBuffer;
-      req.imageProperties = probe.sync(req.image);
-      if (!req.imageProperties) {
-        return next(new error.BadRequest('The requested file is not an image.'));
-      }
-      next();
+      sharp(imageBuffer)
+        .metadata()
+        .then((metadata) => {
+          req.imageProperties = metadata;
+          next();
+        })
+        .catch(err => next(new error.BadRequest(`Request failed: ${err.message}`)));
     });
     response.on('error', error => next(error));
   }).on('error', e => next(new error.NotFound(`Request failed: ${e.message}`)));
