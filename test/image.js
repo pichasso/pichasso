@@ -268,6 +268,27 @@ describe('Image Controller', () => {
           done();
         });
     });
+
+    it('should return the image as png automatically, if it has an alpha channel', (done) => {
+      chai.request(server)
+        .get('/image?url=https://www.sarasoueidan.com/images/svg-vs-gif--circle-on-transparent-background.gif')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.headers['content-type'].should.equal('image/png');
+          done();
+        });
+    });
+
+    it('should return the image as webp automatically, if accepted', (done) => {
+      chai.request(server)
+        .get('/image?url=https://http.cat/100')
+        .set('Accept', 'image/webp')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.headers['content-type'].should.equal('image/webp');
+          done();
+        });
+    });
   });
 
   it('should render the test interface', (done) => {

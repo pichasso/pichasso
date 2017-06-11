@@ -17,7 +17,6 @@
     "config": "~1.26.1",
     "http-errors": "~1.6.1",
     "morgan": "~1.8.1",
-    "probe-image-size": "~3.0.0",
     "object-hash": "1.1.8",
     "pug": "~2.0.0-rc.1",
     "sharp": "~0.17.3"
@@ -31,6 +30,7 @@
     "eslint-plugin-es-beautifier": "^1.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.1",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "sinon": "~2.3.4"
   }
 }

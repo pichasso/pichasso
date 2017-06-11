@@ -2,15 +2,10 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 
-const fileCache = require('./middleware/fileCache');
-
 const index = require('./routes/index');
 const image = require('./routes/image');
 
 const app = express();
-
-// setup cache folder
-fileCache.init();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

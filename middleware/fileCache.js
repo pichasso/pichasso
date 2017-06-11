@@ -1,33 +1,42 @@
 const fs = require('fs');
 const config = require('config');
 
-let filepath = config.get('Caching.Imagepath');
-
-fileCache = {
-  init: function () {
-    if (!fs.existsSync(filepath)) {
-      fs.mkdir(filepath);
+class FileCache {
+  constructor() {
+    this.filePath = config.get('Caching.Imagepath');
+    if (!fs.existsSync(this.filePath)) {
+      fs.mkdir(this.filePath);
     }
-  },
-  add: function (filename, format, data) {
-    fs.writeFile(filepath + filename, data, function (err) {
+  }
+
+  add(filename, format, data) {
+    fs.writeFile(this.filePath + filename, data, function (err) {
       if (err) {
         console.log(err);
       }
     });
-  },
-  load: function (hash) {
-    return fs.readFileSync(filepath + hash);
-  },
-  exists: function (hash) {
-    return fs.existsSync(filepath + hash);
-  },
-  remove: function (hash) {
-    if (fs.existsSync(filepath + hash)) {
-      return fs.unlinkSync(filepath + hash);
-    } else {
-      return false;
+  }
+
+  load(hash) {
+    return fs.readFileSync(this.filePath + hash);
+  }
+
+  exists(hash) {
+    return fs.existsSync(this.filePath + hash);
+  }
+
+  remove(hash) {
+    if (fs.existsSync(this.filePath + hash)) {
+      return fs.unlinkSync(this.filePath + hash);
     }
-  },
-};
-module.exports = fileCache;
+    return false;
+  }
+
+  clear() {
+    fs.readdir(this.filePath, (err, files) => {
+      files.forEach(each => this.remove(each));
+    });
+  }
+}
+
+module.exports = new FileCache();
