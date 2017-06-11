@@ -74,5 +74,25 @@ describe('Cache', () => {
           });
       });
   });
+
+  it('should download the file again, if cache fails', (done) => {
+    sinon.spy(fileCache, 'remove');
+    chai.request(server)
+      .get('/image?url=https://http.cat/400')
+      .end((err, res) => {
+        res.status.should.equal(200);
+        const etag = res.headers.etag;
+        const cachedFilePath = config.get('Caching.Imagepath') + etag;
+        fs.writeFileSync(cachedFilePath, 'invalid data');
+        chai.request(server)
+          .get('/image?url=https://http.cat/400')
+          .end((err, res) => {
+            res.should.be.ok;
+            fileCache.remove.calledWith(etag);
+            fileCache.remove.restore();
+            done();
+          });
+      });
+  });
 });
 
