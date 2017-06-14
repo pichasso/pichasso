@@ -62,4 +62,4 @@ typings/
 *.iml
 
 # Docker
-*.override.yml
+docker-compose.override.yml
