@@ -198,20 +198,22 @@ describe('Image Controller', () => {
         });
     });
 
-    it('should return the cropped (faces) image without faces', (done) => {
+    it('should return the cropped (faces) image without faces', function (done) {
+      this.timeout(5000);
       chai.request(server)
         .get('/image?url=https://upload.wikimedia.org/wikipedia/commons/8/8c/Telefunken_FuBK.jpg' +
-          '&width=100&height=150&crop=fill&gravity=entropy')
+          '&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
         });
     });
 
-    it('should return the cropped (faces) image with face', (done) => {
+    it('should return the cropped (faces) image with face', function (done) {
+      this.timeout(5000);
       chai.request(server)
         .get('/image?url=http://www.loupiote.com/photos_l/15703433919-tristan-savatier-mountain-hiking' +
-          '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=entropy')
+          '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
