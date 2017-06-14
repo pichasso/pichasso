@@ -1,4 +1,4 @@
-FROM node:8
+FROM siomiz/node-opencv:2.4.x
 
 EXPOSE 3000 9229
 

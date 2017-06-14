@@ -15,11 +15,13 @@
   "dependencies": {
     "express": "~4.15.2",
     "config": "~1.26.1",
+    "faced": "~1.2.0",
     "http-errors": "~1.6.1",
     "morgan": "~1.8.1",
     "object-hash": "1.1.8",
     "pug": "~2.0.0-rc.1",
-    "sharp": "~0.17.3"
+    "sharp": "~0.17.3",
+    "smartcrop-sharp": "~1.0.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",
