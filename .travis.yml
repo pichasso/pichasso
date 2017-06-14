@@ -1,18 +1,9 @@
 language: node_js
-node_js:
-  - "7"
-  - "8"
-env:
-  - CXX=g++-4.8
 script:
-  - npm test
-  - codecov
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-      - libopencv-dev
+  - docker-compose build
+  - docker-compose run frontend npm test
+  - docker-compose run frontend codecov
+services:
+  - docker
 notifications:
   slack: hpi:ndJzCSHEaofBnyHTHURo0DFO
