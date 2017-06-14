@@ -1,26 +1,19 @@
-sudo: required
-language: generic
-services:
-  - docker
+language: node_js
+node_js:
+  - "7"
+  - "8"
+dist: jessie
 env:
-  global:
-    - DOCKER_VERSION=17.05.0
-    - DOCKER_COMPOSE_VERSION=1.13.0
-before_install:
-  # list docker-engine versions
-  - apt-cache madison docker-engine
-  # upgrade docker-engine to specific version
-  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
-  # reinstall docker-compose at specific version
-  - sudo rm -f /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
+  - CXX=g++-4.8
 script:
-  - docker version
-  - docker-compose version
-  - docker-compose build
-  - docker-compose run frontend npm test
-  - docker-compose run frontend codecov
+  - npm test
+  - codecov
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - libopencv-dev
 notifications:
   slack: hpi:ndJzCSHEaofBnyHTHURo0DFO
