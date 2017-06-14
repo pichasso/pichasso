@@ -13,5 +13,6 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+      - libopencv-dev=2.4
 notifications:
   slack: hpi:ndJzCSHEaofBnyHTHURo0DFO
