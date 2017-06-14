@@ -60,3 +60,6 @@ typings/
 # intellij idea
 /.idea/*
 *.iml
+
+# Docker
+docker-compose.override.yml

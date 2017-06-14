@@ -7,6 +7,20 @@ Smart image cropping and compression service
 
 The web service runs on port `3000`. Debugging is available on port `9229`.
 
+### Binding ports locally
+
+To set up your personal port mapping, you can create a file named `docker-compose.override.yml` in the root directory:
+
+```yaml
+version: '3'
+services:
+  web:
+    ports:
+      - 3000:3000
+      # Port of node debugger
+      - 9229:9229
+```
+
 ## Service Test
 
 Open route `/image/test`, page will show all options available on this service.
