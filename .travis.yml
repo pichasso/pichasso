@@ -2,10 +2,9 @@ sudo: required
 language: generic
 services:
   - docker
-
 env:
   global:
-    - DOCKER_VERSION=17.05.0-ce
+    - DOCKER_VERSION=17.05.0
     - DOCKER_COMPOSE_VERSION=1.13.0
 before_install:
   # list docker-engine versions
@@ -23,6 +22,5 @@ script:
   - docker-compose build
   - docker-compose run frontend npm test
   - docker-compose run frontend codecov
-
 notifications:
   slack: hpi:ndJzCSHEaofBnyHTHURo0DFO
