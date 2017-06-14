@@ -46,12 +46,13 @@ function resize(req, res, next) {
     return next(new error.BadRequest(`Invalid gravity ${req.query.gravity}`));
   }
 
-  cropImage(req, width, height, aspectRatio, crop, gravity)
-    .then(sharpInstance => sharpInstance.toBuffer()
-      .then((buffer) => {
-        req.image = buffer;
-        return next();
-      })
+  return cropImage(req, width, height, aspectRatio, crop, gravity)
+    .then(sharpInstance =>
+      sharpInstance.toBuffer()
+        .then((buffer) => {
+          req.image = buffer;
+          return next();
+        })
     )
     .catch(error => next(error));
 }
@@ -59,35 +60,12 @@ function resize(req, res, next) {
 function cropImage(req, width, height, aspectRatio, crop, gravity) {
   return new Promise((resolve, reject) => {
     const sharpInstance = sharp(req.image);
+
     switch (crop) {
       case 'fill':
         {
-          const imgAspectRatio = req.imageProperties.width / req.imageProperties.height;
-          let fillWidth,
-            fillHeight;
-          if (imgAspectRatio >= aspectRatio) {
-            fillWidth = Math.ceil(aspectRatio * height);
-            fillHeight = height;
-          } else {
-            fillWidth = width;
-            fillHeight = Math.ceil(width / imgAspectRatio);
-          }
-          if (gravity === 'faces') {
-            resolve(faceDetection(req.image, width, height)
-              .then(region => sharpInstance
-                .extract(region)
-                .resize(width, height))
-            );
-            break;
-          } else {
-            resolve(sharpInstance
-              .resize(fillWidth, fillHeight)
-              .max()
-              .resize(width, height)
-              .crop(gravity)
-            );
-            break;
-          }
+          resolve(cropFill(req, width, height, aspectRatio, gravity));
+          break;
         }
       case 'fit':
         {
@@ -111,6 +89,34 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
         }
     }
   });
+}
+
+function cropFill(req, width, height, aspectRatio, gravity) {
+  if (gravity === 'faces') {
+    return faceDetection(req.image, width, height)
+      .then(region =>
+        sharpInstance
+          .extract(region)
+          .resize(width, height)
+      );
+  }
+
+  const imgAspectRatio = req.imageProperties.width / req.imageProperties.height;
+  let fillWidth,
+    fillHeight;
+  if (imgAspectRatio >= aspectRatio) {
+    fillWidth = Math.ceil(aspectRatio * height);
+    fillHeight = height;
+  } else {
+    fillWidth = width;
+    fillHeight = Math.ceil(width / imgAspectRatio);
+  }
+
+  return sharpInstance
+    .resize(fillWidth, fillHeight)
+    .max()
+    .resize(width, height)
+    .crop(gravity);
 }
 
 module.exports = resize;
