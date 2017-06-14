@@ -197,6 +197,26 @@ describe('Image Controller', () => {
           done();
         });
     });
+
+    it('should return the cropped (faces) image without faces', (done) => {
+      chai.request(server)
+        .get('/image?url=https://upload.wikimedia.org/wikipedia/commons/8/8c/Telefunken_FuBK.jpg' +
+          '&width=100&height=150&crop=fill&gravity=entropy')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          done();
+        });
+    });
+
+    it('should return the cropped (faces) image with face', (done) => {
+      chai.request(server)
+        .get('/image?url=http://www.loupiote.com/photos_l/15703433919-tristan-savatier-mountain-hiking' +
+          '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=entropy')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          done();
+        });
+    });
   });
 
   describe('(quality)', () => {

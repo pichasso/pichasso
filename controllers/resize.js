@@ -64,7 +64,7 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
     switch (crop) {
       case 'fill':
         {
-          resolve(cropFill(req, width, height, aspectRatio, gravity));
+          resolve(cropFill(sharpInstance, req, width, height, aspectRatio, gravity));
           break;
         }
       case 'fit':
@@ -91,7 +91,7 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
   });
 }
 
-function cropFill(req, width, height, aspectRatio, gravity) {
+function cropFill(sharpInstance, req, width, height, aspectRatio, gravity) {
   if (gravity === 'faces') {
     return faceDetection(req.image, width, height)
       .then(region =>

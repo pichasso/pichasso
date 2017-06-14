@@ -5,23 +5,20 @@ const smartcrop = require('smartcrop-sharp');
 function detect(image, width, height) {
   return new Promise((resolve) => {
     faced.detect(image, (faces) => {
-      if (!faces) {
-        resolve([]);
-      }
-
-      const faceMap = faces.map(each => ({
-        x: each.getX(),
-        y: each.getY(),
-        width: each.getWidth(),
-        height: each.getHeight(),
-        weight: 1.0,
-      }));
-
       const options = {
         width: width,
         height: height,
-        boost: faceMap,
       };
+
+      if (faces) {
+        options.boost = faces.map(each => ({
+          x: each.getX(),
+          y: each.getY(),
+          width: each.getWidth(),
+          height: each.getHeight(),
+          weight: 1.0,
+        }));
+      }
 
       smartcrop.crop(image, options).then((result) => {
         const crop = result.topCrop;
