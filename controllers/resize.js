@@ -1,11 +1,13 @@
 const config = require('config');
 const error = require('http-errors');
+const faceDetection = require('./faceDetection');
 const sharp = require('sharp');
 
 function resize(req, res, next) {
   if (req.completed) {
     return next();
   }
+
   let width;
   let height;
   if (!req.query.width && !req.query.height) {
@@ -34,6 +36,8 @@ function resize(req, res, next) {
   let gravity;
   if (!req.query.gravity) {
     gravity = config.get('ImageConversion.DefaultGravity');
+  } else if (req.query.gravity === 'faces') {
+    gravity = 'faces';
   } else if (sharp.gravity.hasOwnProperty(req.query.gravity)) {
     gravity = sharp.gravity[req.query.gravity];
   } else if (sharp.strategy.hasOwnProperty(req.query.gravity)) {
@@ -42,54 +46,71 @@ function resize(req, res, next) {
     return next(new error.BadRequest(`Invalid gravity ${req.query.gravity}`));
   }
 
-  let sharpInstance = sharp(req.image);
-
-  switch (crop) {
-    case 'fill':
-      {
-        const imgAspectRatio = req.imageProperties.width / req.imageProperties.height;
-        let fillWidth,
-          fillHeight;
-        if (imgAspectRatio >= aspectRatio) {
-          fillWidth = Math.ceil(aspectRatio * height);
-          fillHeight = height;
-        } else {
-          fillWidth = width;
-          fillHeight = Math.ceil(width / imgAspectRatio);
-        }
-        sharpInstance
-        .resize(fillWidth, fillHeight)
-        .max()
-        .resize(width, height)
-        .crop(gravity);
-        break;
-      }
-    case 'fit':
-      {
-        sharpInstance
-        .resize(width, height)
-        .max();
-        break;
-      }
-    case 'scale':
-      {
-        sharpInstance
-        .resize(width, height)
-        .ignoreAspectRatio();
-        break;
-      }
-    default:
-      {
-        return next(new error.BadRequest(`Invalid cropping method ${crop}`));
-      }
-  }
-
-  sharpInstance.toBuffer()
-    .then((buffer) => {
-      req.image = buffer;
-      return next();
-    })
+  cropImage(req, width, height, aspectRatio, crop, gravity)
+    .then(sharpInstance => sharpInstance.toBuffer()
+      .then((buffer) => {
+        req.image = buffer;
+        return next();
+      })
+    )
     .catch(error => next(error));
+}
+
+function cropImage(req, width, height, aspectRatio, crop, gravity) {
+  return new Promise((resolve, reject) => {
+    const sharpInstance = sharp(req.image);
+    switch (crop) {
+      case 'fill':
+        {
+          const imgAspectRatio = req.imageProperties.width / req.imageProperties.height;
+          let fillWidth,
+            fillHeight;
+          if (imgAspectRatio >= aspectRatio) {
+            fillWidth = Math.ceil(aspectRatio * height);
+            fillHeight = height;
+          } else {
+            fillWidth = width;
+            fillHeight = Math.ceil(width / imgAspectRatio);
+          }
+          if (gravity === 'faces') {
+            resolve(faceDetection(req.image, width, height)
+              .then(region => sharpInstance
+                .extract(region)
+                .resize(width, height))
+            );
+            break;
+          } else {
+            resolve(sharpInstance
+              .resize(fillWidth, fillHeight)
+              .max()
+              .resize(width, height)
+              .crop(gravity)
+            );
+            break;
+          }
+        }
+      case 'fit':
+        {
+          resolve(sharpInstance
+            .resize(width, height)
+            .max()
+          );
+          break;
+        }
+      case 'scale':
+        {
+          resolve(sharpInstance
+            .resize(width, height)
+            .ignoreAspectRatio()
+          );
+          break;
+        }
+      default:
+        {
+          reject(new error.BadRequest(`Invalid cropping method ${crop}`));
+        }
+    }
+  });
 }
 
 module.exports = resize;
