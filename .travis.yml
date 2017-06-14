@@ -1,5 +1,4 @@
 sudo: required
-language: node_js
 script:
   - docker-compose build
   - docker-compose run frontend npm test
