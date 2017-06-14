@@ -2,12 +2,12 @@ language: node_js
 node_js:
   - "8"
 dist: trusty
-script:
-  - npm test
 addons:
   apt:
     packages:
       - libopencv-dev
+script:
+  - npm test
   - codecov
 notifications:
   slack: hpi:ndJzCSHEaofBnyHTHURo0DFO
