@@ -59,9 +59,9 @@ function imageLoader(req, res, next) {
 
     if (statusCode !== 200) {
       return next(new error.NotFound('Request failed.'));
-    } else if (!/^image\//.test(contentType)) {
+    } else if (contentType && !/^image\//.test(contentType)) {
       return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
-    } else if (sizeLimit && contentLength / 1024 >= sizeLimit) {
+    } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
       return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
     }
 
