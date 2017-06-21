@@ -30,3 +30,17 @@ Open route `/image/test`, page will show all options available on this service.
 `npm test`
 or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
+
+## API
+
+Parameters to be defined: 
+
+`image` allows to give a link to the service
+
+`width` and `height` of the return image
+
+| Cropping | Effect |
+| --- | --- |
+| fill | uses one `gravity` effect to fill the whole size |
+| fit | The image is fit inside the width and height attributes |
+| scale | The image is scaled into both width and height attributes |
