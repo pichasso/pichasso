@@ -7,16 +7,17 @@ const persist = require('../middleware/imagePersistence');
 const imageLoader = require('../middleware/imageLoader');
 const resize = require('../controllers/resize');
 const convert = require('../controllers/convert');
+const parseUrl = require('../middleware/parseUrl');
 
 /* GET image. */
-router.get('/', checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
+router.get('/test', function (req, res) {
+  res.render('test');
+});
+
+router.get('/:image/*', parseUrl, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
   res.end(req.image, 'binary');
-});
-
-router.get('/test', function (req, res) {
-  res.render('test');
 });
 
 module.exports = router;
