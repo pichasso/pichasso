@@ -38,6 +38,18 @@ or `npm run lint` (will only lint)
 | image | url | Image which will be processed and returned |
 | width | number | A number greater than zero which defines the width |
 | height | number | A number greater than zero which defines the height |
-| crop | fill | uses one `gravity` effect to fill the whole size |
-| crop | fit | The image is fit inside the width and height attributes |
-| crop | scale | The image is scaled into both width and height attributes |
+| *crop* | fill | uses one `gravity` effect to fill the whole size |
+|  | fit | The image is fit inside the width and height attributes |
+|  | scale | The image is scaled into both width and height attributes |
+| *gravity* | entropy | Returns the image according to Shannon entropy |
+|  | faces | Centers the image around the faces in the image |
+|  | center | Returns the center part of the image |
+|  | north, east, south, west | Returns the image aligned to the given direction |
+| *format* | best accepted (default) | If the browser supports webp this type will be returned otherwise depending if there is transparency there will be either png or jpeg |
+|  | webp | Returns the image in the webp format |
+|  | jpeg | Returns the image in the jpeg format. If there is transparency the background color will be white |
+|  | png | Returns the image in the png format |
+| *quality* | quality | Adjust the quality between 0 and 100. Higher means better quality |
+
+
+
