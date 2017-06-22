@@ -1,5 +1,5 @@
 {
     "crop": ["fill","fit","scale"],
-    "gravity": ["entropy","faces","center","north","east","south","west"],
+    "gravity": ["entropy","faces","attention","center","north","east","south","west"],
     "format": ["best","webp","jpeg","png"]
 }
