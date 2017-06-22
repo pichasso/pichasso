@@ -1,0 +1,29 @@
+{
+    "ImageSource": {
+        "LoadById": {
+            "Enabled": true,
+            "SourcePath": "https://open.hpi.de/files/{id}"
+        },
+        "LoadExternalData": {
+            "Enabled": false,
+            "ProtocolsAllowed": [
+                "https",
+                "http"
+            ],
+            "WhitelistRegex": []
+        },
+        "MaxFileSize": 51200
+    },
+    "ImageConversion": {
+        "DefaultFormat": "accepted",
+        "DefaultQuality": 75,
+        "DefaultCropping": "fill",
+        "DefaultGravity": "entropy",
+        "Progressive": true,
+        "RemoveMetadata": true
+    },
+    "Caching":{
+        "Expires": 2629000000,
+        "Imagepath": "/tmp/imagecache/"
+    }
+}
