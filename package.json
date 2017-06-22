@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production node ./bin/www",
+    "start": "node ./bin/www",
+    "production": "NODE_ENV=production node ./bin/www",
     "serve": "nodemon ./bin/www",
     "development": "nodemon --legacy-watch --inspect=0.0.0.0:9229 ./bin/www",
     "lint": "eslint ./**/*.js",
