@@ -14,10 +14,14 @@ router.get('/test', function (req, res) {
   res.render('test');
 });
 
-router.get('/:image/*', parseUrl, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
+function prepareResult(res) {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
   res.end(req.image, 'binary');
+}
+
+router.get('/:path/*', parseUrl, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
+  prepareResult(res);
 });
 
 module.exports = router;

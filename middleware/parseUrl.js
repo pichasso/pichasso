@@ -1,21 +1,26 @@
-const regExp = {
-  width: /\/w(?:idth)?_(\w+)/,
-  height: /\/h(?:eight)?_(\w+)/,
-  crop: /\/c(?:rop)?_(\w+)/,
-  gravity: /\/g(?:ravity)?_(\w+)/,
-  quality: /\/q(?:uality)?_(\w+)/,
-  format: /\/f(?:ormat)?_(\w+)/,
-};
-
 
 function parseUrl(req, res, next) {
-  console.log('image', req.params.image);
-  req.query.url = req.params.image;
+  console.log('image', req.originalUrl);
 
-  for (let param in regExp) {
-    const match = req.path.match(regExp[param]);
-    req.query[param] = match ? match[1] : undefined;
-    console.log(param, req.query[param]);
+  if (req.query.url) {
+    return next();
+  }
+
+  let path = req.originalUrl;
+
+  req.query.url = decodeURIComponent(/^\/image\/([^\/]*)/g.exec(path)[1]);
+
+  let params = {},
+    rx = /(\w+)_(\w+)/g;
+
+  let queries = path.substring(path.indexOf(req.query.url) + req.query.url.length, path.length);
+
+  while ((M = rx.exec(queries)) != null) {
+    params[M[1]] = M[2];
+  }
+
+  if (Object.keys(params).length) {
+    Object.assign(req.query, params);
   }
 
   next();
