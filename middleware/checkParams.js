@@ -5,7 +5,6 @@ function checkParams(req, res, next) {
   // console.log("Request: ", req.query);
 
   if (req.query.hasOwnProperty('width')) {
-
     if (req.query.width < 1) {
       return next(new error.BadRequest('Invalid width value'));
     }
