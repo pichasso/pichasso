@@ -19,8 +19,7 @@ router.get('/', checkEtag, checkCache, imageLoader, resize, convert, persist, fu
 router.get('/test', function (req, res, next) {
   if (req.app.get('env') === 'development') {
     res.render('test');
-  }
-  else {
+  } else {
     return next(new error.NotFound());
   }
 });
