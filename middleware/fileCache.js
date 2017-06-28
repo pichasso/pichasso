@@ -1,5 +1,6 @@
 const fs = require('fs');
 const config = require('config');
+const cron = require('cron');
 
 class FileCache {
   constructor() {
@@ -8,6 +9,30 @@ class FileCache {
       fs.mkdir(this.filePath);
     }
     this.cache = this.loadCache();
+    let cleanupCronInterval = config.get('Caching.CleanupCronInterval');
+    let expirationTimeSeconds = config.get('Caching.Expires');
+    let fileCache = this;
+    if (cleanupCronInterval && expirationTimeSeconds) {
+      try {
+        this.cleanupJob = new cron.CronJob(
+          cleanupCronInterval,
+          function () {
+            console.log('cache cleanup starts... with current cache size', fileCache.cache.size);
+            fileCache.cleanup(expirationTimeSeconds);
+          },
+          function () {
+            console.log('cache cleanup finished... with current cache size', fileCache.cache.size);
+          },
+          true
+        );
+        fileCache.cleanupJob.start();
+        console.log('enabled removal of cached files on expiration after', expirationTimeSeconds, 'seconds using cron filter ’', cleanupCronInterval, '’');
+      } catch (ex) {
+        console.log('cleanup cron pattern ’', cleanupCronInterval, '’ not valid');
+      }
+    } else {
+      console.log('cache cleanup disabled, add Caching.CleanupCronInterval and Caching.Expires to configuration.');
+    }
   }
 
   loadCache() {
@@ -39,8 +64,9 @@ class FileCache {
 
   remove(hash) {
     if (fs.existsSync(this.filePath + hash)) {
-      this.cache.remove(filename);
+      this.cache.delete(hash);
       fs.unlinkSync(this.filePath + hash);
+      console.log('removed cached file', hash);
       return true;
     }
     return false;
@@ -49,6 +75,19 @@ class FileCache {
   clear() {
     fs.readdir(this.filePath, (err, files) => {
       files.forEach(file => this.remove(file));
+    });
+  }
+
+  cleanup(expirationTimeSeconds) {
+    let expirationDate = new Date();
+    expirationDate = expirationDate - expirationTimeSeconds;
+    console.log('remove files from cache, older than', expirationDate);
+    this.cache.forEach(file => {
+      fs.stat(this.filePath + file, (err, stats) => {
+        if (stats.birthtime < expirationDate) {
+          this.remove(file);
+        }
+      });
     });
   }
 }
