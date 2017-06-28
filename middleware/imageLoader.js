@@ -36,9 +36,9 @@ function imageLoader(req, res, next) {
       return next(new error.BadRequest('Protocol not allowed.'));
     }
         // check url whitelist
-    let whitelistRegex = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
+    let whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
     if (whitelistRegex) {
-      let whitelisted = whitelistRegex.filter(function (regex) {
+      let whitelisted = whitelistRegex.some(function (regex) {
         return req.query.url.match(regex);
       });
       if (!whitelisted) {
