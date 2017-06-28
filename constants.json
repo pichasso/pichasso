@@ -1,5 +1,7 @@
 {
     "crop": ["fill","fit","scale"],
     "gravity": ["entropy","faces","attention","center","north","east","south","west"],
-    "format": ["best","webp","jpeg","png"]
+    "format": ["webp","jpeg","png"],
+    "max-width": 3840,
+    "max-height": 2160
 }
