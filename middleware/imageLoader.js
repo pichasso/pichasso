@@ -37,7 +37,7 @@ function imageLoader(req, res, next) {
     }
         // check url whitelist
     let whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
-    if (whitelistRegex) {
+    if (whitelistRegex.length) {
       let whitelisted = whitelistRegex.some(function (regex) {
         return req.query.url.match(regex);
       });
