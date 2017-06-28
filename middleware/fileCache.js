@@ -82,7 +82,7 @@ class FileCache {
     let expirationDate = new Date();
     expirationDate = expirationDate - expirationTimeSeconds;
     console.log('remove files from cache, older than', expirationDate);
-    this.cache.forEach(file => {
+    this.cache.forEach((file) => {
       fs.stat(this.filePath + file, (err, stats) => {
         if (stats.birthtime < expirationDate) {
           this.remove(file);
