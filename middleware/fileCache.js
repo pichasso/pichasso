@@ -7,12 +7,24 @@ class FileCache {
     if (!fs.existsSync(this.filePath)) {
       fs.mkdir(this.filePath);
     }
+    this.cache = this.loadCache();
+  }
+
+  loadCache() {
+    let cache = new Set();
+    fs.readdirSync(this.filePath).forEach((file) => {
+      cache.add(file);
+    });
+    console.log('cache contains currently', cache.size, 'elements');
+    return cache;
   }
 
   add(filename, format, data) {
+    this.cache.add(filename);
     fs.writeFile(this.filePath + filename, data, function (err) {
       if (err) {
-        console.log(err);
+        this.cache.remove(filename);
+        console.log('cache add error', filename, err);
       }
     });
   }
@@ -22,19 +34,21 @@ class FileCache {
   }
 
   exists(hash) {
-    return fs.existsSync(this.filePath + hash);
+    return this.cache.has(hash);
   }
 
   remove(hash) {
     if (fs.existsSync(this.filePath + hash)) {
-      return fs.unlinkSync(this.filePath + hash);
+      this.cache.remove(filename);
+      fs.unlinkSync(this.filePath + hash);
+      return true;
     }
     return false;
   }
 
   clear() {
     fs.readdir(this.filePath, (err, files) => {
-      files.forEach(each => this.remove(each));
+      files.forEach(file => this.remove(file));
     });
   }
 }
