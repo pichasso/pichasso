@@ -5,7 +5,7 @@ const error = require('http-errors');
 /* GET home page. */
 router.get('/', function (req, res, next) {
   if (req.app.get('env') === 'development') {
-    res.render('index', { title: 'Pichasso' });
+    res.render('index', {title: 'Pichasso'});
   } else {
     return next(new error.Forbidden());
   }
