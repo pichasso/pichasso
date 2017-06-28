@@ -19,8 +19,7 @@
         "DefaultQuality": 80,
         "DefaultCropping": "fill",
         "DefaultGravity": "entropy",
-        "Progressive": true,
-        "RemoveMetadata": true
+        "Progressive": true
     },
     "Caching":{
         "Expires": 2629000000,
