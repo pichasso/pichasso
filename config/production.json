@@ -2,10 +2,10 @@
     "ImageSource": {
         "LoadById": {
             "Enabled": true,
-            "SourcePath": "https://open.hpi.de/files/{id}"
+            "SourcePath": "https://staging.openhpi.de/files/{id}"
         },
         "LoadExternalData": {
-            "Enabled": true,
+            "Enabled": false,
             "ProtocolsAllowed": [
                 "https",
                 "http"
@@ -16,7 +16,7 @@
     },
     "ImageConversion": {
         "DefaultFormat": "accepted",
-        "DefaultQuality": 80,
+        "DefaultQuality": 75,
         "DefaultCropping": "fill",
         "DefaultGravity": "entropy",
         "Progressive": true
