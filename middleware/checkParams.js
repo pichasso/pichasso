@@ -7,6 +7,10 @@ function checkParams(req, res, next) {
     return next(new error.BadRequest('Undefined resource location.'));
   }
 
+  /**
+   * Check resource parameter
+   */
+
   if (req.query.url.match(/:\/\//)) {
     // assume we got an url, check for validity
     if (!config.get('ImageSource.LoadExternalData.Enabled')) {
@@ -35,27 +39,34 @@ function checkParams(req, res, next) {
     req.query.url = sourcePath.replace(/{id}/gi, req.query.url);
   }
 
+  /**
+   * Check image size
+   */
+
+  const maxEdgeLength = config.get('ImageConversion.MaxEdgeLength') > 0 ?
+      config.get('ImageConversion.MaxEdgeLength') : Number.MAX_SAFE_INTEGER;
+
   if (req.query.width) {
-    const maxWidth = config.get('ImageConversion.MaxWidth') > 0 ?
-      config.get('ImageConversion.MaxWidth') : Number.MAX_SAFE_INTEGER;
-    const width = parseIntWithLimits(req.query.width, 1, maxWidth);
+    const width = parseIntWithLimits(req.query.width, 1, maxEdgeLength);
     if (isNaN(width)) {
-      return next(new error.BadRequest(`Invalid width. Expected integer between 1 and ${maxWidth}, ` +
+      return next(new error.BadRequest(`Invalid width. Expected integer between 1 and ${maxEdgeLength}, ` +
         `but received ${req.query.width}.`));
     }
     req.query.width = width;
   }
 
   if (req.query.height) {
-    const maxHeight = config.get('ImageConversion.MaxHeight') > 0 ?
-      config.get('ImageConversion.MaxHeight') : Number.MAX_SAFE_INTEGER;
-    const height = parseIntWithLimits(req.query.height, 1, maxHeight);
+    const height = parseIntWithLimits(req.query.height, 1, maxEdgeLength);
     if (isNaN(height)) {
-      return next(new error.BadRequest(`Invalid height. Expected integer between 1 and ${maxHeight}, ` +
+      return next(new error.BadRequest(`Invalid height. Expected integer between 1 and ${maxEdgeLength}, ` +
         `but received ${req.query.height}.`));
     }
     req.query.height = height;
   }
+
+  /**
+   * Check other conversion parameters
+   */
 
   if (req.query.crop && !constants.crop.includes(req.query.crop)) {
     return next(new error.BadRequest(`Invalid cropping method, received ${req.query.crop}.`));
