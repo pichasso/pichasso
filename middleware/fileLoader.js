@@ -1,6 +1,8 @@
 const config = require('config');
 const error = require('http-errors');
 var request = require('request');
+var gs = require('node-gs');
+var fs = require('fs');
 
 function fileLoader(req, res, next) {
   if (req.completed) {
@@ -46,24 +48,24 @@ function fileLoader(req, res, next) {
     }
   }
 
-  req.pipe(request(req.params.file)).pipe(res);
-
-  // const Ghostscript = require('ghostscript-js')
-
-  // const gs = new Ghostscript()
-
-  // gs.exec([
-  //   '-q',
-  //   '-dNOPAUSE',
-  //   '-dBATCH',
-  //   '-sDEVICE=tiff24nc',
-  //   '-r300',
-  //   '-sOutputFile=output-%03d.tiff',
-  //   'input.pdf'
-  // ], (error, result) => {
-  //   if (err) return console.log(error);
-  //   console.log(result)
-  // });
+  //req.pipe(request(req.params.file)).pipe(res);
+  
+  let input = request(req.params.file);
+  gs(input)
+    .output(res)
+    .option('-sDEVICE=pdfwrite')
+    .option('-dPDFSETTINGS=/printer') // other options: /printer /ebook /screen
+    .option('-q')
+    .option('-o')
+    .exec(function (error, stdout, stderr) {
+      if (error) {
+        return next(error)
+      } else {
+        console.log('done piping', req.params.file);
+        res.download(stdout);
+        return next();
+      }
+    });
 }
 
 module.exports = fileLoader;
