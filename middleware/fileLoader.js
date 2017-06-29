@@ -2,13 +2,12 @@ const config = require('config');
 const error = require('http-errors');
 var request = require('request');
 var gs = require('node-gs');
-var fs = require('fs');
 
 function fileLoader(req, res, next) {
   if (req.completed) {
     return next();
   }
-
+  let quality = 'screen';
   // todo move to parameter test
   if (req.params.file.indexOf('://') === -1) {
     // assume id in url, create url with given id
@@ -46,33 +45,40 @@ function fileLoader(req, res, next) {
         return next(new error.BadRequest('Domain source not allowed.'));
       }
     }
+    // check quality
+    let qualities = ['printer', 'screen'];
+    if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
+      quality = req.params.quality;
+    }
+    quality = '-dPDFSETTINGS=/' + quality;
   }
-  request({ method: 'GET', encoding: null, url: req.params.file }, function (err, resp, body) {
-    gs()
-      // .option('-sDEVICE=pdfwrite')
-      // .option('-dPDFSETTINGS=/printer') // other options: /printer /ebook /screen
-      .batch()
-      .output('-')
-      .device('pdfwrite') // target writer / format
-      .option('-dPDFSETTINGS=/printer') // other basic compression options: /printer /ebook /screen
-      //.option('-r150') // image resolution
-      .option('-q') // quite mode to write only file to stdout
-      //.option('-o')
-      .on('data', function (data) {
-        //console.log('[sg] Data:', data.toString());
-      })
-      .exec(body, function (error, stdout, stderr) {
-        if (error) {
-          console.log(error);
-          return next(error)
-        } else {
-          console.log('done piping', req.params.file);
-          console.log('size of pdf', stdout.length);
+  request(
+    {
+      method: 'GET',
+      encoding: null,
+      url: req.params.file,
+    },
+    function (error, resp, body) {
+      if (error) {
+        console.log(error);
+        return next(new error.NotFound());
+      }
+      gs()
+        .batch()
+        .output('-') // do only write to stdout
+        .device('pdfwrite') // target writer / format
+        .option(quality)
+        .option('-q') // quite mode to write only file to stdout
+        .exec(body, function (error, stdout /* ,stderr*/) {
+          console.log('compressed', req.params.file, 'length', stdout ? stdout.length : 0, 'quality', quality);
+          if (error) {
+            console.log(' - failed:', error);
+            return next(new error.NotFound());
+          }
           req.compressedFile = stdout;
           return next();
-        }
-      });
-  });
+        });
+    });
 }
 
 module.exports = fileLoader;
