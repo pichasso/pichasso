@@ -47,36 +47,32 @@ function fileLoader(req, res, next) {
       }
     }
   }
-
-  // request(req.params.file).pipe(res);
-
-  let input = request(req.params.file);
-  input = fs.readFileSync('/Users/tobiaswollowski/Downloads/openwho_documents/ERC_ModuleC1_ERC_Systems_IND.pdf');
-
-  gs()
-    // .option('-sDEVICE=pdfwrite')
-    // .option('-dPDFSETTINGS=/printer') // other options: /printer /ebook /screen
-    .batch()
-    .output('-')
-    .device('pdfwrite') // target writer / format
-    .option('-dPDFSETTINGS=/printer') // other basic compression options: /printer /ebook /screen
-    //.option('-r150') // image resolution
-    .option('-q') // quite mode to write only file to stdout
-    //.option('-o')
-    .on('data', function (data) {
-      //console.log('[sg] Data:', data.toString());
-    })
-    .exec(input, function (error, stdout, stderr) {
-      if (error) {
-        console.log(error);
-        return next(error)
-      } else {
-        console.log('done piping', req.params.file);
-        console.log('size of pdf', stdout.length);
-        req.compressedFile = stdout;
-        return next();
-      }
-    });
+  request({ method: 'GET', encoding: null, url: req.params.file }, function (err, resp, body) {
+    gs()
+      // .option('-sDEVICE=pdfwrite')
+      // .option('-dPDFSETTINGS=/printer') // other options: /printer /ebook /screen
+      .batch()
+      .output('-')
+      .device('pdfwrite') // target writer / format
+      .option('-dPDFSETTINGS=/printer') // other basic compression options: /printer /ebook /screen
+      //.option('-r150') // image resolution
+      .option('-q') // quite mode to write only file to stdout
+      //.option('-o')
+      .on('data', function (data) {
+        //console.log('[sg] Data:', data.toString());
+      })
+      .exec(body, function (error, stdout, stderr) {
+        if (error) {
+          console.log(error);
+          return next(error)
+        } else {
+          console.log('done piping', req.params.file);
+          console.log('size of pdf', stdout.length);
+          req.compressedFile = stdout;
+          return next();
+        }
+      });
+  });
 }
 
 module.exports = fileLoader;
