@@ -1,5 +1,4 @@
 const config = require('config');
-const error = require('http-errors');
 const sharp = require('sharp');
 
 function convert(req, res, next) {
@@ -8,7 +7,7 @@ function convert(req, res, next) {
   }
   let sharpInstance = sharp(req.image);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
-  let quality = Number(req.query.quality);
+  let quality = req.query.quality;
 
   let options = {
     quality: quality ? quality : config.get('ImageConversion.DefaultQuality'), // used for webp, jpeg

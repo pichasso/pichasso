@@ -251,12 +251,12 @@ describe('Image Controller', () => {
   });
 
   describe('(format)', () => {
-    it('should return on invalid format', (done) => {
+    it('should return invalid format error', (done) => {
       chai.request(server)
         .get('/image?url=https://http.cat/100&format=notExisting')
         .end((err, res) => {
           // TODO: The favored behavior has to discussed
-          res.status.should.equal(200);
+          res.status.should.equal(400);
           done();
         });
     });

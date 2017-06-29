@@ -15,10 +15,12 @@
         "MaxFileSize": 51200
     },
     "ImageConversion": {
-        "DefaultFormat": "accepted",
-        "DefaultQuality": 80,
         "DefaultCropping": "fill",
+        "DefaultFormat": "accepted",
         "DefaultGravity": "entropy",
+        "DefaultQuality": 80,
+        "MaxHeight": 2160,
+        "MaxWidth": 3840,
         "Progressive": true,
         "RemoveMetadata": true
     },

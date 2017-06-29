@@ -9,44 +9,6 @@ function imageLoader(req, res, next) {
     return next();
   }
 
-  if (req.query.url.indexOf('://') === -1) {
-        // assume id in url, create url with given id
-    if (config.get('ImageSource.LoadById.Enabled') !== true) {
-      return next(new error.BadRequest('Loading external data has been disabled.'));
-    }
-    let sourcePath = config.get('ImageSource.LoadById.SourcePath');
-    if (!sourcePath) {
-      return next(new error.InternalServerError('ImageSource.LoadById.SourcePath not defined.'));
-    }
-    req.query.url = sourcePath.replace(/{id}/gi, req.query.url);
-  } else {
-        // assume we got an url, check for validity
-    if (config.get('ImageSource.LoadExternalData.Enabled') !== true) {
-      return next(new error.BadRequest('Loading external data has been disabled.'));
-    }
-        // check protocol filter
-    let allowedProtocols = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
-    if (!allowedProtocols) {
-      return next(new error.InternalServerError('ImageSource.LoadExternalData.ProtocolsAllowed not defined.'));
-    }
-    let protocolAllowed = allowedProtocols.filter(function (protocol) {
-      return req.query.url.indexOf(protocol) === 0;
-    });
-    if (!protocolAllowed) {
-      return next(new error.BadRequest('Protocol not allowed.'));
-    }
-        // check url whitelist
-    let whitelistRegex = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
-    if (whitelistRegex) {
-      let whitelisted = whitelistRegex.filter(function (regex) {
-        return req.query.url.match(regex);
-      });
-      if (!whitelisted) {
-        return next(new error.BadRequest('Domain source not allowed.'));
-      }
-    }
-  }
-
   let protocol = http;
   if (/^https/.test(req.query.url)) {
     protocol = https;
@@ -86,6 +48,7 @@ function imageLoader(req, res, next) {
         .metadata()
         .then((metadata) => {
           req.imageProperties = metadata;
+          req.imageProperties.aspectRatio = metadata.width / metadata.height;
           next();
         })
         .catch(err => next(new error.BadRequest(`Request failed: ${err.message}`)));

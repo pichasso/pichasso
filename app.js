@@ -4,8 +4,12 @@ const logger = require('morgan');
 
 const index = require('./routes/index');
 const image = require('./routes/image');
+const checkConfig = require('./controllers/checkConfig');
 
 const app = express();
+
+// check configuration before starting server
+checkConfig();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
