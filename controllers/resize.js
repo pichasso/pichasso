@@ -15,7 +15,7 @@ function resize(req, res, next) {
     height = req.imageProperties.height;
   } else if (!req.query.width) {
     height = req.query.height;
-    width = Math.ceil(height / req.imageProperties.aspectRatio);
+    width = Math.ceil(height * req.imageProperties.aspectRatio);
   } else if (!req.query.height) {
     width = req.query.width;
     height = Math.ceil(width / req.imageProperties.aspectRatio);
