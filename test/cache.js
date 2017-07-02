@@ -94,5 +94,15 @@ describe('Cache', () => {
           });
       });
   });
+
+  it('should not fail when removing not existing file', (done) => {
+    fileCache.remove('notExisting');
+    done();
+  });
+
+  it('should fail save when file creation is not possible', (done) => {
+    fileCache.add('', '', null);
+    done();
+  });
 });
 
