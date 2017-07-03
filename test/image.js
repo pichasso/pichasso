@@ -1,6 +1,10 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app.js');
+const sinon = require('sinon');
+const config = require('config');
+
+const sandbox = sinon.sandbox.create();
 
 chai.should();
 chai.use(chaiHttp);
@@ -14,6 +18,20 @@ chai.use(chaiHttp);
 // format: (default: best accepted), webp, jpeg, png
 // quality: 1-100
 describe('Image Controller', () => {
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it('should return undefined resource', (done) => {
+    chai.request(server)
+      .get('/image')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.text.should.have.string('Undefined resource location');
+        done();
+      });
+  });
+
   it('should return not found', (done) => {
     chai.request(server)
       .get('/image?url=https://http.cat/900')
@@ -40,6 +58,58 @@ describe('Image Controller', () => {
       .end((err, res) => {
         res.status.should.equal(400);
         res.text.should.have.string('Invalid content-type');
+        done();
+      });
+  });
+
+  it('should return external data disabled', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('ImageSource.LoadExternalData.Enabled')
+      .returns(false);
+    stub.callThrough();
+    chai.request(server)
+      .get('/image?url=https://http.cat/')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.text.should.have.string('Loading external data has been disabled.');
+        done();
+      });
+  });
+
+  it('should return protocol not allowed', (done) => {
+    chai.request(server)
+      .get('/image?url=htp://http.cat/')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.text.should.have.string('Protocol not allowed');
+        done();
+      });
+  });
+
+  it('should return domain source not allowed', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('ImageSource.LoadExternalData.WhitelistRegex')
+      .returns(['onlythisdomain\.com']);
+    stub.callThrough();
+    chai.request(server)
+      .get('/image?url=https://http.cat/')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.text.should.have.string('Domain source not allowed');
+        done();
+      });
+  });
+
+  it('should return loading by id disabled', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('ImageSource.LoadById.Enabled')
+      .returns(false);
+    stub.callThrough();
+    chai.request(server)
+      .get('/image?url=1234567')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.text.should.have.string('Loading data by id has been disabled.');
         done();
       });
   });

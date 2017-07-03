@@ -32,7 +32,7 @@ function checkQueryParams(req, res, next) {
   } else {
     // assume id in url, create url with given id
     if (!config.get('ImageSource.LoadById.Enabled')) {
-      return next(new error.BadRequest('Loading data by has been disabled.'));
+      return next(new error.BadRequest('Loading data by id has been disabled.'));
     }
 
     const sourcePath = config.get('ImageSource.LoadById.SourcePath');
