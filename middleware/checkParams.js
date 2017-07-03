@@ -24,7 +24,7 @@ function checkParams(req, res, next) {
 
     const whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
     if (whitelistRegex.length > 0) {
-      const whitelisted = whitelistRegex.some((regex) => { return req.query.url.match(regex) });
+      const whitelisted = whitelistRegex.some(regex => req.query.url.match(regex));
       if (!whitelisted) {
         return next(new error.BadRequest('Domain source not allowed.'));
       }
