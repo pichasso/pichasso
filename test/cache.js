@@ -16,6 +16,10 @@ describe('Cache', () => {
     fileCache.clear();
   });
 
+  afterEach(() => {
+    sandbox.restore();
+  });
+
   it('should cache the requested image', (done) => {
     chai.request(server)
       .get('/image?url=https://http.cat/400')
