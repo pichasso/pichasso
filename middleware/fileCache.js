@@ -26,7 +26,8 @@ class FileCache {
           true
         );
         fileCache.cleanupJob.start();
-        console.log('enabled removal of cached files on expiration after', expirationTimeSeconds, 'seconds using cron filter ’', cleanupCronInterval, '’');
+        console.log('enabled removal of cached files on expiration after', expirationTimeSeconds,
+          'seconds using cron filter ’', cleanupCronInterval, '’');
       } catch (ex) {
         console.log('cleanup cron pattern ’', cleanupCronInterval, '’ not valid');
       }
@@ -45,16 +46,19 @@ class FileCache {
   }
 
   add(filename, format, data) {
-    this.cache.add(filename);
+    let cache = this.cache;
     fs.writeFile(this.filePath + filename, data, function (err) {
       if (err) {
-        this.cache.remove(filename);
         console.log('cache add error', filename, err);
+      } else {
+        cache.add(filename);
+        console.log('cache successfully added file', filename);
       }
     });
   }
 
   load(hash) {
+    console.log('cache send cached file', hash);
     return fs.readFileSync(this.filePath + hash);
   }
 
@@ -63,13 +67,21 @@ class FileCache {
   }
 
   remove(hash) {
-    if (fs.existsSync(this.filePath + hash)) {
-      this.cache.delete(hash);
-      fs.unlinkSync(this.filePath + hash);
-      console.log('removed cached file', hash);
-      return true;
-    }
-    return false;
+    let cache = this.cache;
+    fs.exists(this.filePath + hash, (exists) => {
+      if (!exists) {
+        console.log('cache could not delete file from filesystem, does not exist:', hash);
+        return;
+      }
+      fs.unlink(this.filePath + hash, (err) => {
+        if (err) {
+          console.log('cache could not delete file from filesystem:', err);
+          return;
+        }
+        cache.delete(hash);
+        console.log('cache successfully removed file', hash);
+      });
+    });
   }
 
   clear() {
@@ -81,9 +93,12 @@ class FileCache {
   cleanup(expirationTimeSeconds) {
     let expirationDate = new Date();
     expirationDate = expirationDate - expirationTimeSeconds;
-    console.log('remove files from cache, older than', expirationDate);
+    console.log('remove files from cache, older than', new Date(expirationDate));
     this.cache.forEach((file) => {
       fs.stat(this.filePath + file, (err, stats) => {
+        if (err) {
+          console.log('error reading file cache for cleanup', err);
+        }
         if (stats.birthtime < expirationDate) {
           this.remove(file);
         }
