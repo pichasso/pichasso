@@ -24,7 +24,7 @@ function checkParams(req, res, next) {
 
     const whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
     if (whitelistRegex.length > 0) {
-      const whitelisted = whitelistRegex.some(req.query.url.match);
+      const whitelisted = whitelistRegex.some((regex) => { return req.query.url.match(regex) });
       if (!whitelisted) {
         return next(new error.BadRequest('Domain source not allowed.'));
       }
@@ -44,7 +44,7 @@ function checkParams(req, res, next) {
    */
 
   const maxEdgeLength = config.get('ImageConversion.MaxEdgeLength') > 0 ?
-      config.get('ImageConversion.MaxEdgeLength') : Number.MAX_SAFE_INTEGER;
+    config.get('ImageConversion.MaxEdgeLength') : Number.MAX_SAFE_INTEGER;
 
   if (req.query.width) {
     const width = parseIntWithLimits(req.query.width, 1, maxEdgeLength);
