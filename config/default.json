@@ -22,8 +22,7 @@
         "DefaultGravity": "entropy",
         "DefaultQuality": 80,
         "MaxEdgeLength": 3840,
-        "Progressive": true,
-        "RemoveMetadata": true
+        "Progressive": true
     },
     "Caching":{
         "Expires": 2629000000,

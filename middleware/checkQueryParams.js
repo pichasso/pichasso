@@ -2,7 +2,7 @@ const config = require('config');
 const constants = require('../constants.json');
 const error = require('http-errors');
 
-function checkParams(req, res, next) {
+function checkQueryParams(req, res, next) {
   if (!req.query.url) {
     return next(new error.BadRequest('Undefined resource location.'));
   }
@@ -101,4 +101,4 @@ function parseIntWithLimits(value, min, max) {
   return integer;
 }
 
-module.exports = checkParams;
+module.exports = checkQueryParams;

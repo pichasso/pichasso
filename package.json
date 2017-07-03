@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "config": "~1.26.1",
-    "es-beautifier": "^0.7.0",
     "express": "~4.15.2",
     "faced": "~1.2.0",
     "http-errors": "~1.6.1",
