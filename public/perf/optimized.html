@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="preconnect" href="https://player.vimeo.com/">
+    <link rel="preconnect" href="https://images-openhpi.azureedge.net/">
+    <link rel="preconnect" href="https://openhpi-staging.azureedge.net/">
+    <link rel="preconnect" href="https://f.vimeocdn.com/">
+    <link rel="preconnect" href="https://ssl.google-analytics.com/">
+    <link rel="preconnect" href="https://i.vimeocdn.com/">
+
     <script>
       //<![CDATA[
       window.gon={};gon.in_app=false;
@@ -42,333 +49,330 @@
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta content="openHPI Staging" name="apple-mobile-web-app-title" />
     <link rel="stylesheet" media="all" href="https://openhpi-staging.azureedge.net/assets/bootstrap-e4ff7713dd236ca743e3d7776c981a3ea7cef2ffa7f439f777076239bd9c5894.css" />
-    <link rel="stylesheet" media="all" href="https://openhpi-staging.azureedge.net/assets/application_openhpi-f84044310fb259c0d92d2b97eb3d724c3884201a8259f8f991b55e6d86fb63bb.css" />
+    <link rel="stylesheet" media="all" href="https://openhpi-staging.azureedge.net/assets/application_openhpi-cb4ff3f3dea4ce45eaa9edb1072a06d1698c0a839a35cc947b7ceb0364f5965b.css" />
   
     <link rel="stylesheet" media="screen" href="https://openhpi-staging.azureedge.net/assets/vendor-f567d4280b2b57c05ef13c3cffae87078da6cfe8f56b50436d227b9660bd2d54.css" />
-    <link rel="stylesheet" media="screen" href="https://openhpi-staging.azureedge.net/assets/xikolo-frontend-e646af140c4ddc3ec1da318755f21bc72826aa26990fe95afe8e27ad47dd0dce.css" />
-    <link rel="import" href="https://openhpi-staging.azureedge.net/assets/vulcanized-3e0319fb4bd8e2d3774dcf634488d9163f053b2fa7917e4ddbb869d1f28aefa0.html">
+    <link rel="stylesheet" media="screen" href="https://openhpi-staging.azureedge.net/assets/xikolo-frontend-a235226c7dd05ae5f5ed910a8c732d437f5c1a0f924f16d3358a2c296f2b6a6e.css" />
     <meta content="{&quot;brand&quot;:&quot;openhpi&quot;,&quot;site_name&quot;:&quot;openHPI Staging&quot;,&quot;ui_primary_color&quot;:&quot;#de6212&quot;,&quot;on_demand&quot;:false}" name="site-config" />
     <meta content="[]" name="enabled-features" />
     <meta content="{}" name="user-features" />
   </head>
   <body class="openhpi home-controller index-action   " data-images-url="" data-offset="150" data-sitename="openHPI Staging" data-spy="scroll" data-target=".scrollspy-target">
-    <div class="header clearfix hidden-xs">
-      <div class="container">
-        <div class="brand"><a href="https://hpi.de/" target="_blank" title="HPI Homepage"><img src="https://openhpi-staging.azureedge.net/assets/hpi-claim_01-0334077b2c79347e5f1330cd00ad54a84e501d28c0c3fec55081181ac7d14bee.png" alt="Hpi claim 01" /></a></div>
-        <div class="slogan">Design IT. Create Knowledge.</div>
-      </div>
+  <div class="header clearfix hidden-xs">
+    <div class="container">
+      <div class="brand"><a href="https://hpi.de/" target="_blank" title="HPI Homepage"><img src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/hpi-claim_01-0334077b2c79347e5f1330cd00ad54a84e501d28c0c3fec55081181ac7d14bee.png&width=187&height=35" alt="Hpi claim 01" /></a></div>
+      <div class="slogan">Design IT. Create Knowledge.</div>
     </div>
-    <nav class="navbar navbar-inverse hidden-print" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="/"><img alt="Logo" id="welcome01" srcset="https://openhpi-staging.azureedge.net/assets/logo_openhpi_small-71b6a1a7bbb5426ecd5851c453ac98d963397c4c24ac1125ac3517c0f292b32d.png, https://openhpi-staging.azureedge.net/assets/logo_openhpi-155a11eefd46841c38fb009a2d9b84d28550a0c920fbf50b591b3aa1f7c0190c.png 2x" src="https://openhpi-staging.azureedge.net/assets/logo_openhpi_small-71b6a1a7bbb5426ecd5851c453ac98d963397c4c24ac1125ac3517c0f292b32d.png" /></a>
-          <div class="dropdown pull-right">
-            <ul class="dropdown-menu" role="menu">
-              <li class="flag flag-de"></li>
-              <li class="flag flag-uk"></li>
-            </ul>
-          </div>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/pages/about">About openHPI Staging</a></li>
-            <li id="navcourses"><a href="/courses">Courses</a></li>
-            <li><a href="/news">News</a></li>
-            <li class="dropdown dropdown-arrow visible-md visible-lg visible-sm">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="xikolo-icon icon-language ml5 vmiddle"></span><span class="vmiddle ml5">English</span><span class="caret vmiddle"></span></a>
-              <ul aria-labelledby="languageChooser" class="dropdown-menu" role="menu">
-                <li class="active"><a href="/?locale=en">English</a></li>
-                <li><a href="/?locale=de">Deutsch</a></li>
-                <li><a href="/?locale=cn">中文</a></li>
-                <li class="divider"></li>
-                <li><a href="https://openhpi.cn" target="_blank">中文</a></li>
-              </ul>
-            </li>
-            <li class="visible-xs">
-              <div>
-                <span class="vmiddle white"></span>
-                <ul class="list-inline inline-block vmiddle">
-                  <li class="active"><a href="/?locale=en">English</a></li>
-                  <li><a href="/?locale=de">Deutsch</a></li>
-                  <li><a href="/?locale=cn">中文</a></li>
-                  <li><a href="https://openhpi.cn" target="_blank">中文</a></li>
-                </ul>
-              </div>
-            </li>
-            <li class="dropdown dropdown-arrow invisible-to-md">
-              <a class="dropdown-toggle js-login" data-toggle="dropdown" href="#" id="js-login-toggle">Log in<span class="caret"></span></a>
-              <ul class="dropdown-menu login-dropdown pb10">
-                <div class="row" id="login-form">
-                  <div class="col-md-12">
-                    <h4>Log in with credentials</h4>
-                    <div class="identity">
-                      <form class="simple_form login" action="https://staging.openhpi.de/sessions" accept-charset="UTF-8" method="post">
-                        <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="/p7rV4R2gpIAqXN1Nt1hUGYDLAphW8VPD3hWSYjSjTSIOO+Qa9sV9Yzp06Q3hx4Se1+bZZ7Pda/YYIzyij2uKA==" />
-                        <div class="login">
-                          <div class="login_error"></div>
-                          <div class="form-group email required login_email">
-                            <label class="email required" for="login_email"><abbr title="required">*</abbr> E-mail</label>
-                            <div>
-                              <div><input class="string email required form-control form-control" required="required" aria-required="true" placeholder="E-mail" type="email" name="login[email]" id="login_email" /></div>
-                            </div>
-                          </div>
-                          <div style="margin-bottom:0px" class="form-group password required login_password">
-                            <label class="password required" for="login_password"><abbr title="required">*</abbr> Password</label>
-                            <div>
-                              <div><input class="password required form-control" required="required" aria-required="true" placeholder="Password" type="password" name="login[password]" id="login_password" /></div>
-                            </div>
-                          </div>
-                          <a class="small" href="/account/reset/new">Forgot your password?</a>
-                          <div class="buttons has-spinner"><input type="submit" name="commit" value="Log in" class="btn btn-primary btn js-submit btn btn-primary full-width has-spinner" id="login" data-inactive-text="Loading ..." /></div>
-                        </div>
-                      </form>
-                    </div>
-                    <hr class="divider" />
-                    <h4>New here?</h4>
-                    <a class="js-register btn btn-default full-width" href="/account/new">Create new account</a>
-                  </div>
-                </div>
-              </ul>
-            </li>
-            <li class="visible-to-md"><a href="/sessions/new">Log in</a></li>
+  </div>
+  <nav class="navbar navbar-inverse hidden-print" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="/"><img alt="Logo" id="welcome01" srcset="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/logo_openhpi_small-71b6a1a7bbb5426ecd5851c453ac98d963397c4c24ac1125ac3517c0f292b32d.png, https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/logo_openhpi-155a11eefd46841c38fb009a2d9b84d28550a0c920fbf50b591b3aa1f7c0190c.png 2x" src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/logo_openhpi_small-71b6a1a7bbb5426ecd5851c453ac98d963397c4c24ac1125ac3517c0f292b32d.png" /></a>
+        <div class="dropdown pull-right">
+          <ul class="dropdown-menu" role="menu">
+            <li class="flag flag-de"></li>
+            <li class="flag flag-uk"></li>
           </ul>
         </div>
       </div>
-    </nav>
-    <div class="wrapper">
-      <div class="container">
-        <noscript>
-          <div class="alert alert-warning-border mt10"><span class="xikolo-icon icon-warning mr10"></span><span class="ml5 kill-underline-force"><a target="_blank" href="http://www.enable-javascript.com/">Please enable Javascript in your browser!!</a></span></div>
-        </noscript>
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/pages/about">About openHPI Staging</a></li>
+          <li id="navcourses"><a href="/courses">Courses</a></li>
+          <li><a href="/news">News</a></li>
+          <li class="dropdown dropdown-arrow visible-md visible-lg visible-sm">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="xikolo-icon icon-language ml5 vmiddle"></span><span class="vmiddle ml5">English</span><span class="caret vmiddle"></span></a>
+            <ul aria-labelledby="languageChooser" class="dropdown-menu" role="menu">
+              <li class="active"><a href="/?locale=en">English</a></li>
+              <li><a href="/?locale=de">Deutsch</a></li>
+              <li><a href="/?locale=cn">中文</a></li>
+              <li class="divider"></li>
+              <li><a href="https://openhpi.cn" target="_blank">中文</a></li>
+            </ul>
+          </li>
+          <li class="visible-xs">
+            <div>
+              <span class="vmiddle white"></span>
+              <ul class="list-inline inline-block vmiddle">
+                <li class="active"><a href="/?locale=en">English</a></li>
+                <li><a href="/?locale=de">Deutsch</a></li>
+                <li><a href="/?locale=cn">中文</a></li>
+                <li><a href="https://openhpi.cn" target="_blank">中文</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="dropdown dropdown-arrow invisible-to-md">
+            <a class="dropdown-toggle js-login" data-toggle="dropdown" href="#" id="js-login-toggle">Log in<span class="caret"></span></a>
+            <ul class="dropdown-menu login-dropdown pb10">
+              <div class="row" id="login-form">
+                <div class="col-md-12">
+                  <h4>Log in with credentials</h4>
+                  <div class="identity">
+                    <form class="simple_form login" action="https://staging.openhpi.de/sessions" accept-charset="UTF-8" method="post">
+                      <input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="/p7rV4R2gpIAqXN1Nt1hUGYDLAphW8VPD3hWSYjSjTSIOO+Qa9sV9Yzp06Q3hx4Se1+bZZ7Pda/YYIzyij2uKA==" />
+                      <div class="login">
+                        <div class="login_error"></div>
+                        <div class="form-group email required login_email">
+                          <label class="email required" for="login_email"><abbr title="required">*</abbr> E-mail</label>
+                          <div>
+                            <div><input class="string email required form-control form-control" required="required" aria-required="true" placeholder="E-mail" type="email" name="login[email]" id="login_email" /></div>
+                          </div>
+                        </div>
+                        <div style="margin-bottom:0px" class="form-group password required login_password">
+                          <label class="password required" for="login_password"><abbr title="required">*</abbr> Password</label>
+                          <div>
+                            <div><input class="password required form-control" required="required" aria-required="true" placeholder="Password" type="password" name="login[password]" id="login_password" /></div>
+                          </div>
+                        </div>
+                        <a class="small" href="/account/reset/new">Forgot your password?</a>
+                        <div class="buttons has-spinner"><input type="submit" name="commit" value="Log in" class="btn btn-primary btn js-submit btn btn-primary full-width has-spinner" id="login" data-inactive-text="Loading ..." /></div>
+                      </div>
+                    </form>
+                  </div>
+                  <hr class="divider" />
+                  <h4>New here?</h4>
+                  <a class="js-register btn btn-default full-width" href="/account/new">Create new account</a>
+                </div>
+              </div>
+            </ul>
+          </li>
+          <li class="visible-to-md"><a href="/sessions/new">Log in</a></li>
+        </ul>
       </div>
-      <div class="col-md-12 startpage-teaser en">
+    </div>
+  </nav>
+  <div class="wrapper">
+    <div class="container">
+      <noscript>
+        <div class="alert alert-warning-border mt10"><span class="xikolo-icon icon-warning mr10"></span><span class="ml5 kill-underline-force"><a target="_blank" href="http://www.enable-javascript.com/">Please enable Javascript in your browser!!</a></span></div>
+      </noscript>
+    </div>
+    <div class="col-md-12 startpage-teaser en">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 padding-top-140-large">
+            <div class="row" data-equal=".teaser-box">
+              <div class="col-md-4 col-sm-12">
+                <img src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/startpage_icon_learning-2f21fb783d6a431fd0f8bf457f877ed00d2508c3bf8eb91146bc4d975802f2cd.png" alt="Startpage icon learning" />
+                <div class="teaser-box tertiary-color-bg mr45">
+                  <p class="headline">Be curious,</p>
+                  <p class="white">Access our learnings online &ndash; anytime and anywhere.</p>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <img src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/startpage_icon_social-b985782b266f986b3eff2b36d3250b9250744186a1d4d0a679b4a0eaac8bcd55.png" alt="Startpage icon social" />
+                <div class="teaser-box primary-color-bg mr45">
+                  <p class="headline">be social,</p>
+                  <p class="white">Become part of a vibrant social learning community</p>
+                </div>
+              </div>
+              <div class="col-md-4 col-sm-12">
+                <img src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/startpage_icon_badge-99760ded7ca6aa02cb889bcc181f3650b29f524ff814c5065002279fed4ff5db.png" alt="Startpage icon badge" />
+                <div class="teaser-box secondary-color-bg">
+                  <p class="headline">be successful.</p>
+                  <p class="white">Receive a record of achievement on course completion.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 startpage-visual hidden-xs text-right"><img src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/startpage_visual-52b04daa9e8ca96454d1f1a0f387cdc499055180c4f688c7f66c8c32b3d4287d.png" alt="Startpage visual" /></div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row-fluid about-box mb50 no-bottom-border">
+            <div class="col-md-5 info">
+              <div class="row">
+                <div class="col-md-12 info-title">
+                  <h3><span class="primary-color"> Welcome to openHPI</span></h3>
+                </div>
+                <div class="col-md-12 info-text"><span>Sign up now for openHPI, the educational Internet platform of the German Hasso Plattner Institute, Potsdam. You take part in our worldwide social learning network based on interactive online courses covering different subjects in Information and Communications Technology (ICT). Enter a fascinating world of knowledge with our free open online courses. Meet other participants from around the world and familiarize yourself with fundamental and current topics in ICT, computer science and IT systems engineering.</span></div>
+                <div class="col-md-12 info-actions"><a class="button btn btn-default" href="/pages/about">More information</a></div>
+              </div>
+            </div>
+            <div class="col-md-7 mt20">
+              <div class="flex-video video-wrapper iframe video-wrapper"><iframe frameborder="0" src="https://player.vimeo.com/video/98128929?title=0&byline=0&portrait=0" width="100%">webkitallowfullscreen mozallowfullscreen allowfullscreen</iframe></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row-fluid about-box mb50">
+            <div class="col-md-5 info">
+              <div class="row">
+                <div class="col-md-12 info-title">
+                  <h3><span class="primary-color"> openHPI Staging.&nbsp;</span>open online education</h3>
+                </div>
+                <div class="col-md-12 info-text"><span>It is difficult to imagine life without the Internet or our smartphones, which rarely leave our hands. Sometimes we wonder how all this technology actually works. You will find the answers here in our free online courses for everybody. <br><br>How does it work?<br> <br> Watch the video to find out.</span></div>
+              </div>
+            </div>
+            <div class="col-md-7 mt20">
+              <div class="flex-video video-wrapper iframe video-wrapper"><iframe frameborder="0" src="https://player.vimeo.com/video/122303836?title=0&byline=0&portrait=0" width="100%">webkitallowfullscreen mozallowfullscreen allowfullscreen</iframe></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ember-app-container"></div>
+    <div aria-labelledby="enrollmentPolicyLabel" class="modal fade" id="enrollmentPolicyModal" role="dialog" tabindex="-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="enrollmentPolicyModalLabel">Enroll for<span class="ml5 primary-color" id="courseTitle"></span></h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <p>Before you can be enrolled to the course, you need to agree with the course provider's data protection policy.</p>
+                <p><a id="policyUrl" target="_blank" href="#">Show policy</a></p>
+              </div>
+            </div>
+            <form id="enrollmentPolicyForm" class="simple_form form-horizontal" action="/enrollments" accept-charset="UTF-8" method="get">
+              <input name="utf8" type="hidden" value="&#x2713;" /><input id="courseId" name="course_id" type="hidden" />
+              <div class="row">
+                <div class="col-md-8"><label><input id="policyAccepted" type="checkbox"><span class="ml10">I agree with the data protection policy.</span></input></label></div>
+                <div class="col-md-4"><input class="btn btn-primary btn-sm pull-right disabled" id="acceptPolicyBtn" type="submit" value="Enroll me for this course" /></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>News</h2>
+        </div>
+      </div>
+      <div class="row mb20" data-equal=".course-item-small-wrapper" data-equal-minwidth="992">
+        <div class="col-md-3 col-lg-3 news-item-small">
+          <div class="course-item-small-wrapper">
+            <a href="/news#post_9748ad4b-3e5e-48dc-8e22-1099b8baa345">
+              <div class="preview-image" style="background-image: url(https://images-openhpi.azureedge.net/image?url=31a489f4-59c3-4944-a391-d4a3151c1f1a&width=307)"></div>
+            </a>
+            <a class="preview-title" href="/news#post_9748ad4b-3e5e-48dc-8e22-1099b8baa345">From Search Engines to Mainframes</a>
+            <div class="preview-text mt10 js-target-blank" id="#news-preview-text-9748ad4b-3e5e-48dc-8e22-1099b8baa345">
+              <p>We are delighted to announce our brand-new courses: &quot;[How does a search engine work?][1]&quot; and &quot;[Mainframes][2]&quot;, which will start shortly <strong>(both courses are in German).</strong></p>
+              <p>...</p>
+            </div>
+          </div>
+          <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_9748ad4b-3e5e-48dc-8e22-1099b8baa345">Read more</a></div>
+        </div>
+        <div class="col-md-3 col-lg-3 news-item-small">
+          <div class="course-item-small-wrapper">
+            <a href="/news#post_07a28e25-0d66-4b8f-b014-c9c5e6972d33">
+              <div class="preview-image" style="background-image: url(https://images-openhpi.azureedge.net/image?url=84f29729-e1fa-483f-b011-39669ec7b147&width=307)"></div>
+            </a>
+            <a class="preview-title" href="/news#post_07a28e25-0d66-4b8f-b014-c9c5e6972d33">MOOC BOOK</a>
+            <div class="preview-text mt10 js-target-blank" id="#news-preview-text-07a28e25-0d66-4b8f-b014-c9c5e6972d33">
+              <p>Study guidelines, good practice and recommendations on how to apply MOOCs, learn about opportunities for the use of MOOCs and discuss hot topics such as quality, business models or certification. For more visit <strong><a href="http://www.mooc-book.eu">www.mooc-book.eu</a>.</strong></p>
+              <p>...</p>
+            </div>
+          </div>
+          <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_07a28e25-0d66-4b8f-b014-c9c5e6972d33">Read more</a></div>
+        </div>
+        <div class="col-md-3 col-lg-3 news-item-small">
+          <div class="course-item-small-wrapper">
+            <a href="/news#post_8a6194dd-d057-49a6-92bc-5a03223d6e95">
+              <div class="preview-image" style="background-image: url(https://images-openhpi.azureedge.net/image?url=fbe0ca5b-8a2d-440e-bfdd-ab5ada9a091a&width=307)"></div>
+            </a>
+            <a class="preview-title" href="/news#post_8a6194dd-d057-49a6-92bc-5a03223d6e95">Happy Easter!</a>
+            <div class="preview-text mt10 js-target-blank" id="#news-preview-text-8a6194dd-d057-49a6-92bc-5a03223d6e95">
+              <p>Days are getting longer, and the time is coming when we can sit outside in the sun - the Easter holidays will be here before you know it!</p>
+              <p>...</p>
+            </div>
+          </div>
+          <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_8a6194dd-d057-49a6-92bc-5a03223d6e95">Read more</a></div>
+        </div>
+        <div class="col-md-3 col-lg-3 news-item-small">
+          <div class="course-item-small-wrapper">
+            <a href="/news#post_7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">
+              <div class="preview-image" style="background-image: url(https://images-openhpi.azureedge.net/image?url=cb936e31-aa85-4761-abf9-157851aae8c2&width=307)"></div>
+            </a>
+            <a class="preview-title" href="/news#post_7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">nanou-App: Mini-Videos individuell zusammengestellt</a>
+            <div class="preview-text mt10 js-target-blank" id="#news-preview-text-7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">
+              <p>Wir suchen stetig nach neuen Features und Funktionen, die euch beim Lernen unterstützen. Aus diesem Grund möchten wir gerne einen neuen Prototypen zum Thema Micro-Learning testen.</p>
+              <p>...</p>
+            </div>
+          </div>
+          <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">Read more</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="push"></div>
+  </div>
+  <div class="footer">
+    <div class="footer-outer">
+      <div class="footer-inner">
         <div class="container">
           <div class="row">
-            <div class="col-md-8 padding-top-140-large">
-              <div class="row" data-equal=".teaser-box">
-                <div class="col-md-4 col-sm-12">
-                  <img src="https://openhpi-staging.azureedge.net/assets/startpage_icon_learning-2f21fb783d6a431fd0f8bf457f877ed00d2508c3bf8eb91146bc4d975802f2cd.png" alt="Startpage icon learning" />
-                  <div class="teaser-box tertiary-color-bg mr45">
-                    <p class="headline">Be curious,</p>
-                    <p class="white">Access our learnings online &ndash; anytime and anywhere.</p>
+            <div class="menu">
+              <div class="row-fluid">
+                <div class="col-md-2 hidden-print">
+                  <h4 class="pt20">More information</h4>
+                  <div class="footer-nav">
+                    <ul>
+                      <li><a href="/pages/about">About Us</a></li>
+                      <li><a href="/feeds">Feeds</a></li>
+                      <li><a target="_blank" href="https://blog.openhpi.de">Blog</a></li>
+                    </ul>
                   </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
-                  <img src="https://openhpi-staging.azureedge.net/assets/startpage_icon_social-b985782b266f986b3eff2b36d3250b9250744186a1d4d0a679b4a0eaac8bcd55.png" alt="Startpage icon social" />
-                  <div class="teaser-box primary-color-bg mr45">
-                    <p class="headline">be social,</p>
-                    <p class="white">Become part of a vibrant social learning community</p>
+                <div class="col-md-2 hidden-print">
+                  <h4 class="pt20">Help</h4>
+                  <div class="footer-nav">
+                    <ul>
+                      <li><a href="/pages/faq">FAQ</a></li>
+                      <li><a href="/pages/roa_guidelines">Certificate Guidelines</a></li>
+                      <li><a href="/pages/honor_code">Code of Honor</a></li>
+                      <li><a href="/pages/forum_rules">Forum Rules</a></li>
+                    </ul>
                   </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
-                  <img src="https://openhpi-staging.azureedge.net/assets/startpage_icon_badge-99760ded7ca6aa02cb889bcc181f3650b29f524ff814c5065002279fed4ff5db.png" alt="Startpage icon badge" />
-                  <div class="teaser-box secondary-color-bg">
-                    <p class="headline">be successful.</p>
-                    <p class="white">Receive a record of achievement on course completion.</p>
+                <div class="col-md-2 hidden-print">
+                  <h4 class="pt20">Follow us</h4>
+                  <div class="footer-nav">
+                    <ul class="socialmedia-links">
+                      <li><a target="_blank" class="socialmedia-icon " href="https://twitter.com/openHPI">Twitter</a></li>
+                    </ul>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-12 startpage-visual hidden-xs text-right"><img src="https://openhpi-staging.azureedge.net/assets/startpage_visual-52b04daa9e8ca96454d1f1a0f387cdc499055180c4f688c7f66c8c32b3d4287d.png" alt="Startpage visual" /></div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="row-fluid about-box mb50 no-bottom-border">
-              <div class="col-md-5 info">
-                <div class="row">
-                  <div class="col-md-12 info-title">
-                    <h3><span class="primary-color"> Welcome to openHPI</span></h3>
-                  </div>
-                  <div class="col-md-12 info-text"><span>Sign up now for openHPI, the educational Internet platform of the German Hasso Plattner Institute, Potsdam. You take part in our worldwide social learning network based on interactive online courses covering different subjects in Information and Communications Technology (ICT). Enter a fascinating world of knowledge with our free open online courses. Meet other participants from around the world and familiarize yourself with fundamental and current topics in ICT, computer science and IT systems engineering.</span></div>
-                  <div class="col-md-12 info-actions"><a class="button btn btn-default" href="/pages/about">More information</a></div>
+                <div class="col-md-6">
+                  <h4 class="pt20">About openHPI Staging</h4>
+                  <p>openHPI is the educational Internet platform of the German Hasso Plattner Institute, Potsdam. On openHPI you take part in a worldwide social learning network based on interactive online courses covering different subjects in Information and Communications Technology (ICT).</p>
+                  <a class="app-badge" target="_blank" href="https://play.google.com/store/apps/details?id=de.xikolo.openhpi"><img alt="Get it on Google Play" src="https://images-openhpi.azureedge.net/image?url=https://staging.openhpi.de/assets/native_apps/google_play_badge-4db47198ca423f2791f74ce11fed32fd6be6b506fa8ec5fd425108a0a36205c3.png&width=168&height=50" /></a>
                 </div>
-              </div>
-              <div class="col-md-7 mt20">
-                <div class="flex-video video-wrapper iframe video-wrapper"><iframe frameborder="0" src="https://player.vimeo.com/video/98128929?title=0&byline=0&portrait=0" width="100%">webkitallowfullscreen mozallowfullscreen allowfullscreen</iframe></div>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="row-fluid about-box mb50">
-              <div class="col-md-5 info">
-                <div class="row">
-                  <div class="col-md-12 info-title">
-                    <h3><span class="primary-color"> openHPI Staging.&nbsp;</span>open online education</h3>
-                  </div>
-                  <div class="col-md-12 info-text"><span>It is difficult to imagine life without the Internet or our smartphones, which rarely leave our hands. Sometimes we wonder how all this technology actually works. You will find the answers here in our free online courses for everybody. <br><br>How does it work?<br> <br> Watch the video to find out.</span></div>
-                </div>
-              </div>
-              <div class="col-md-7 mt20">
-                <div class="flex-video video-wrapper iframe video-wrapper"><iframe frameborder="0" src="https://player.vimeo.com/video/122303836?title=0&byline=0&portrait=0" width="100%">webkitallowfullscreen mozallowfullscreen allowfullscreen</iframe></div>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="ember-app-container"></div>
-      <div aria-labelledby="enrollmentPolicyLabel" class="modal fade" id="enrollmentPolicyModal" role="dialog" tabindex="-1">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="enrollmentPolicyModalLabel">Enroll for<span class="ml5 primary-color" id="courseTitle"></span></h4>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <p>Before you can be enrolled to the course, you need to agree with the course provider's data protection policy.</p>
-                  <p><a id="policyUrl" target="_blank" href="#">Show policy</a></p>
-                </div>
-              </div>
-              <form id="enrollmentPolicyForm" class="simple_form form-horizontal" action="/enrollments" accept-charset="UTF-8" method="get">
-                <input name="utf8" type="hidden" value="&#x2713;" /><input id="courseId" name="course_id" type="hidden" />
-                <div class="row">
-                  <div class="col-md-8"><label><input id="policyAccepted" type="checkbox"><span class="ml10">I agree with the data protection policy.</span></input></label></div>
-                  <div class="col-md-4"><input class="btn btn-primary btn-sm pull-right disabled" id="acceptPolicyBtn" type="submit" value="Enroll me for this course" /></div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h2>News</h2>
-          </div>
-        </div>
-        <div class="row mb20" data-equal=".course-item-small-wrapper" data-equal-minwidth="992">
-          <div class="col-md-3 col-lg-3 news-item-small">
-            <div class="course-item-small-wrapper">
-              <a href="/news#post_9748ad4b-3e5e-48dc-8e22-1099b8baa345">
-                <div class="preview-image" style="background-image: url(https://openhpi-staging.azureedge.net/files/31a489f4-59c3-4944-a391-d4a3151c1f1a?size=large)"></div>
-              </a>
-              <a class="preview-title" href="/news#post_9748ad4b-3e5e-48dc-8e22-1099b8baa345">From Search Engines to Mainframes</a>
-              <div class="preview-text mt10 js-target-blank" id="#news-preview-text-9748ad4b-3e5e-48dc-8e22-1099b8baa345">
-                <p>We are delighted to announce our brand-new courses: &quot;[How does a search engine work?][1]&quot; and &quot;[Mainframes][2]&quot;, which will start shortly <strong>(both courses are in German).</strong></p>
-                <p>...</p>
-              </div>
-            </div>
-            <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_9748ad4b-3e5e-48dc-8e22-1099b8baa345">Read more</a></div>
-          </div>
-          <div class="col-md-3 col-lg-3 news-item-small">
-            <div class="course-item-small-wrapper">
-              <a href="/news#post_07a28e25-0d66-4b8f-b014-c9c5e6972d33">
-                <div class="preview-image" style="background-image: url(https://openhpi-staging.azureedge.net/files/84f29729-e1fa-483f-b011-39669ec7b147?size=large)"></div>
-              </a>
-              <a class="preview-title" href="/news#post_07a28e25-0d66-4b8f-b014-c9c5e6972d33">MOOC BOOK</a>
-              <div class="preview-text mt10 js-target-blank" id="#news-preview-text-07a28e25-0d66-4b8f-b014-c9c5e6972d33">
-                <p>Study guidelines, good practice and recommendations on how to apply MOOCs, learn about opportunities for the use of MOOCs and discuss hot topics such as quality, business models or certification. For more visit <strong><a href="http://www.mooc-book.eu">www.mooc-book.eu</a>.</strong></p>
-                <p>...</p>
-              </div>
-            </div>
-            <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_07a28e25-0d66-4b8f-b014-c9c5e6972d33">Read more</a></div>
-          </div>
-          <div class="col-md-3 col-lg-3 news-item-small">
-            <div class="course-item-small-wrapper">
-              <a href="/news#post_8a6194dd-d057-49a6-92bc-5a03223d6e95">
-                <div class="preview-image" style="background-image: url(https://openhpi-staging.azureedge.net/files/fbe0ca5b-8a2d-440e-bfdd-ab5ada9a091a?size=large)"></div>
-              </a>
-              <a class="preview-title" href="/news#post_8a6194dd-d057-49a6-92bc-5a03223d6e95">Happy Easter!</a>
-              <div class="preview-text mt10 js-target-blank" id="#news-preview-text-8a6194dd-d057-49a6-92bc-5a03223d6e95">
-                <p>Days are getting longer, and the time is coming when we can sit outside in the sun - the Easter holidays will be here before you know it!</p>
-                <p>...</p>
-              </div>
-            </div>
-            <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_8a6194dd-d057-49a6-92bc-5a03223d6e95">Read more</a></div>
-          </div>
-          <div class="col-md-3 col-lg-3 news-item-small">
-            <div class="course-item-small-wrapper">
-              <a href="/news#post_7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">
-                <div class="preview-image" style="background-image: url(https://openhpi-staging.azureedge.net/files/cb936e31-aa85-4761-abf9-157851aae8c2?size=large)"></div>
-              </a>
-              <a class="preview-title" href="/news#post_7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">nanou-App: Mini-Videos individuell zusammengestellt</a>
-              <div class="preview-text mt10 js-target-blank" id="#news-preview-text-7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">
-                <p>Wir suchen stetig nach neuen Features und Funktionen, die euch beim Lernen unterstützen. Aus diesem Grund möchten wir gerne einen neuen Prototypen zum Thema Micro-Learning testen.</p>
-                <p>...</p>
-              </div>
-            </div>
-            <div class="preview-actions"><a class="mb20 btn full-width btn-default" href="/news#post_7220f9b9-ac18-4ab3-981c-ba2d3d6746f9">Read more</a></div>
-          </div>
-        </div>
-      </div>
-      <div class="push"></div>
-    </div>
-    <div class="footer">
-      <div class="footer-outer">
-        <div class="footer-inner">
-          <div class="container">
-            <div class="row">
-              <div class="menu">
-                <div class="row-fluid">
-                  <div class="col-md-2 hidden-print">
-                    <h4 class="pt20">More information</h4>
-                    <div class="footer-nav">
-                      <ul>
-                        <li><a href="/pages/about">About Us</a></li>
-                        <li><a href="/feeds">Feeds</a></li>
-                        <li><a target="_blank" href="https://blog.openhpi.de">Blog</a></li>
+                <div class="col-md-12 pt10 pb10">
+                  <hr class="divider" />
+                  <div class="copyright">
+                    <div class="pull-left">
+                      &copy; 2012 - 2017
+                      <ul class="horizontal slash">
+                        <li><a target="_blank" href="https://hpi.de/en.html">Hasso Plattner Institute</a></li>
+                      </ul>
+                      &nbsp;&ndash;
+                      <ul class="horizontal dash">
+                        <li><a target="_blank" href="/pages/imprint">Imprint</a></li>
+                        <li><a target="_blank" href="/pages/privacy">Data Protection</a></li>
                       </ul>
                     </div>
-                  </div>
-                  <div class="col-md-2 hidden-print">
-                    <h4 class="pt20">Help</h4>
-                    <div class="footer-nav">
-                      <ul>
-                        <li><a href="/pages/faq">FAQ</a></li>
-                        <li><a href="/pages/roa_guidelines">Certificate Guidelines</a></li>
-                        <li><a href="/pages/honor_code">Code of Honor</a></li>
-                        <li><a href="/pages/forum_rules">Forum Rules</a></li>
+                    <div class="pull-right">
+                      Powered by
+                      <ul class="horizontal slash">
+                        <li><a target="_blank" href="https://www.hpi.de">HPI</a></li>
+                        <li>Xikolo</li>
                       </ul>
+                      (r4575)
                     </div>
-                  </div>
-                  <div class="col-md-2 hidden-print">
-                    <h4 class="pt20">Follow us</h4>
-                    <div class="footer-nav">
-                      <ul class="socialmedia-links">
-                        <li><a target="_blank" class="socialmedia-icon " href="https://twitter.com/openHPI">Twitter</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <h4 class="pt20">About openHPI Staging</h4>
-                    <p>openHPI is the educational Internet platform of the German Hasso Plattner Institute, Potsdam. On openHPI you take part in a worldwide social learning network based on interactive online courses covering different subjects in Information and Communications Technology (ICT).</p>
-                    <a class="app-badge" target="_blank" href="https://play.google.com/store/apps/details?id=de.xikolo.openhpi"><img alt="Get it on Google Play" src="https://openhpi-staging.azureedge.net/assets/native_apps/google_play_badge-4db47198ca423f2791f74ce11fed32fd6be6b506fa8ec5fd425108a0a36205c3.png" /></a>
-                  </div>
-                  <div class="col-md-12 pt10 pb10">
-                    <hr class="divider" />
-                    <div class="copyright">
-                      <div class="pull-left">
-                        &copy; 2012 - 2017 
-                        <ul class="horizontal slash">
-                          <li><a target="_blank" href="https://hpi.de/en.html">Hasso Plattner Institute</a></li>
-                        </ul>
-                        &nbsp;&ndash; 
-                        <ul class="horizontal dash">
-                          <li><a target="_blank" href="/pages/imprint">Imprint</a></li>
-                          <li><a target="_blank" href="/pages/privacy">Data Protection</a></li>
-                        </ul>
-                      </div>
-                      <div class="pull-right">
-                        Powered by 
-                        <ul class="horizontal slash">
-                          <li><a target="_blank" href="https://www.hpi.de">HPI</a></li>
-                          <li>Xikolo</li>
-                        </ul>
-                        (r4575)
-                      </div>
-                      <div class="clearfix"></div>
-                    </div>
+                    <div class="clearfix"></div>
                   </div>
                 </div>
               </div>
@@ -377,34 +381,34 @@
         </div>
       </div>
     </div>
-
-    <div class="dimmer"></div>
-    <div class="helpdesk-container hidden-print">
-      <div class="js-helpdesk-button helpdesk-button" id="helpdesk-button" style="right: -1px;">
-        <div class="button-label">Helpdesk</div>
+  </div>
+  <div class="dimmer"></div>
+  <div class="helpdesk-container hidden-print">
+    <div class="js-helpdesk-button helpdesk-button" id="helpdesk-button" style="right: -1px;">
+      <div class="button-label">Helpdesk</div>
+    </div>
+    <div class="helpdesk-panel" id="helpdesk-panel">
+      <div class="helpdesk-box1" id="helpdesk-ajax-container"></div>
+      <div class="helpdesk-box2">
+        <p class="helpdesk-success-message">Your request has been sent to our support team, and will be answered as soon as possible.<br /><br />Thank You!</p>
       </div>
-      <div class="helpdesk-panel" id="helpdesk-panel">
-        <div class="helpdesk-box1" id="helpdesk-ajax-container"></div>
-        <div class="helpdesk-box2">
-          <p class="helpdesk-success-message">Your request has been sent to our support team, and will be answered as soon as possible.<br /><br />Thank You!</p>
-        </div>
-        <div class="helpdesk-box3">
-          <p class="helpdesk-fail-message">Oops something went wrong.</p>
-          <div class="issue-back-button helpdesk-btn" id="issue-back-button" style="float: none; width: 50px;">Back</div>
+      <div class="helpdesk-box3">
+        <p class="helpdesk-fail-message">Oops something went wrong.</p>
+        <div class="issue-back-button helpdesk-btn" id="issue-back-button" style="float: none; width: 50px;">Back</div>
+      </div>
+    </div>
+  </div>
+  <div class="has-spinner loading" id="loading-dimmer">
+    <div id="loading-dimmer-innerwrapper">
+      <div class="loading-animation">
+        <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
         </div>
       </div>
     </div>
-    <div class="has-spinner loading" id="loading-dimmer">
-      <div id="loading-dimmer-innerwrapper">
-        <div class="loading-animation">
-          <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
 
     <!-- TODO: 
       load the files after the rest of the page is ready
@@ -413,13 +417,13 @@
     <script type="text/javascript">
       function downloadJSAtOnload() {
         var element1 = document.createElement("script");
-        element1.src = "https://openhpi-staging.azureedge.net/assets/application-7a0b7d3f7fac0fb602cec3ece439222992f9321c3a86dcfc98f787890d4dfcbf.js";
+        element1.src = "https://openhpi-staging.azureedge.net/assets/application-ff2f6f88cd5990d0d2497c3f9ec8a9fb6559c51a3421af71e8d5ab245e6130b0.js";
         var element2 = document.createElement("script");
         element2.src = "https://openhpi-staging.azureedge.net/assets/languages/jquery.validationEngine-en-7f2b239cf7b92e7d51b6b3d5895317faf66c6cd28c0758717c6f33ed19c2743e.js";
         var element3 = document.createElement("script");
-        element3.src = "https://openhpi-staging.azureedge.net/assets/vendor-46e2a6f3ca9ff0f81a1da4f53351a70ce710a5e78cdc70276807494eac8a19b9.js";
+        element3.src = "https://openhpi-staging.azureedge.net/assets/vendor-fb639d070348206ee6658fa7d0a41301d36b4c0db93ba4a43b8617c83671f75d.js";
         var element4 = document.createElement("script");
-        element4.src = "https://openhpi-staging.azureedge.net/assets/xikolo-frontend-f3c6e28e80b5b613b46a52dcd9565cdd9ea8cddd9a20ace150720e1499474074.js";
+        element4.src = "https://openhpi-staging.azureedge.net/assets/xikolo-frontend-1650c16b5da33fa47d0af73b5c7557faf5f11f47a72c8fa5d4eef28443acf654.js";
 
         document.head.appendChild(element1);
         document.head.appendChild(element2);

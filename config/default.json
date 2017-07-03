@@ -10,7 +10,9 @@
                 "https",
                 "http"
             ],
-            "WhitelistRegex": []
+            "WhitelistRegex": [
+                "/*/"
+            ]
         },
         "MaxFileSize": 51200
     },
