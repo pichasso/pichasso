@@ -1,5 +1,14 @@
 # pichasso [![Build Status](https://travis-ci.org/pichasso/pichasso.svg?branch=master)](https://travis-ci.org/pichasso/pichasso)[![Code Coverage](https://codecov.io/github/pichasso/pichasso/coverage.svg?branch=master)](https://codecov.io/github/pichasso/pichasso)![Github All Releases](https://img.shields.io/github/downloads/pichasso/pichasso/total.svg)
 
+
+### Introduction
+pichasso is an image service which helps to deliver optimal performance and to reduce the data transmitted. 
+By adjusting the delivered images to given parameters it allows developers to focus only on the creation of their webpage while pichasso is handling the images. 
+Since not every time the sizes are fitting to the image pichasso offers intelligent ways to crop the image fitting to the needs with features like a face detection
+to avoid cutting people in half. 
+
+### Setup
+
 Smart image cropping and compression service
 
 1. `docker-compose build`
@@ -30,6 +39,9 @@ Open route `/image/test`, page will show all options available on this service.
 `npm test`
 or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
+
+## Production
+To adjust the configuration to own wishes replace `/config/default.json` with own parameters. 
 
 ## API
 
