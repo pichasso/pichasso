@@ -29,6 +29,6 @@
         "Imagepath": "/tmp/imagecache/"
     },
     "Logging": {
-        "Directory": "/logs/"
+        "Directory": "/var/log/pichasso/"
     }
 }
