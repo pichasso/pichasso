@@ -22,8 +22,10 @@
         "MaxEdgeLength": 3840,
         "Progressive": true
     },
-    "Caching":{
+    "Caching": {
         "Expires": 2629000000,
+        "CleanupCronInterval": "00 30 3 * * 7",
+        "RemoveFilesAfterExpiration": true,
         "Imagepath": "/tmp/imagecache/"
     }
 }
