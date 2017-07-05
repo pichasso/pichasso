@@ -1,6 +1,7 @@
 const fs = require('fs');
 const config = require('config');
 const cron = require('cron');
+const logger = require('../controllers/logger');
 
 class FileCache {
   constructor() {
@@ -17,22 +18,22 @@ class FileCache {
         this.cleanupJob = new cron.CronJob(
           cleanupCronInterval,
           function () {
-            console.log('cache cleanup starts... with current cache size', fileCache.cache.size);
+            logger.info('cache cleanup starts... with current cache size', fileCache.cache.size);
             fileCache.cleanup(expirationTimeSeconds);
           },
           function () {
-            console.log('cache cleanup finished... with current cache size', fileCache.cache.size);
+            logger.info('cache cleanup finished... with current cache size', fileCache.cache.size);
           },
           true
         );
         fileCache.cleanupJob.start();
-        console.log('enabled removal of cached files on expiration after', expirationTimeSeconds,
+        logger.info('enabled removal of cached files on expiration after', expirationTimeSeconds,
           'seconds using cron filter ’', cleanupCronInterval, '’');
       } catch (ex) {
-        console.log('cleanup cron pattern ’', cleanupCronInterval, '’ not valid');
+        logger.error('cleanup cron pattern ’', cleanupCronInterval, '’ not valid');
       }
     } else {
-      console.log('cache cleanup disabled, add Caching.CleanupCronInterval and Caching.Expires to configuration.');
+      logger.info('cache cleanup disabled, add Caching.CleanupCronInterval and Caching.Expires to configuration.');
     }
   }
 
@@ -41,7 +42,7 @@ class FileCache {
     fs.readdirSync(this.filePath).forEach((file) => {
       cache.add(file);
     });
-    console.log('cache contains currently', cache.size, 'elements');
+    logger.verbose('cache contains currently', cache.size, 'elements');
     return cache;
   }
 
@@ -49,16 +50,16 @@ class FileCache {
     let cache = this.cache;
     fs.writeFile(this.filePath + filename, data, function (err) {
       if (err) {
-        console.log('cache add error', filename, err);
+        logger.error('cache add error', filename, err);
       } else {
         cache.add(filename);
-        console.log('cache successfully added file', filename);
+        logger.verbose('cache successfully added file', filename);
       }
     });
   }
 
   load(hash) {
-    console.log('cache send cached file', hash);
+    logger.verbose('cache send cached file', hash);
     return fs.readFileSync(this.filePath + hash);
   }
 
@@ -70,16 +71,16 @@ class FileCache {
     let cache = this.cache;
     fs.exists(this.filePath + hash, (exists) => {
       if (!exists) {
-        console.log('cache could not delete file from filesystem, does not exist:', hash);
+        logger.warn('cache could not delete file from filesystem, does not exist:', hash);
         return;
       }
       fs.unlink(this.filePath + hash, (err) => {
         if (err) {
-          console.log('cache could not delete file from filesystem:', err);
+          logger.error('cache could not delete file from filesystem:', err);
           return;
         }
         cache.delete(hash);
-        console.log('cache successfully removed file', hash);
+        logger.verbose('cache successfully removed file', hash);
       });
     });
   }
@@ -93,11 +94,11 @@ class FileCache {
   cleanup(expirationTimeSeconds) {
     let expirationDate = new Date();
     expirationDate = expirationDate - expirationTimeSeconds;
-    console.log('remove files from cache, older than', new Date(expirationDate));
+    logger.verbose('remove files from cache, older than', new Date(expirationDate));
     this.cache.forEach((file) => {
       fs.stat(this.filePath + file, (err, stats) => {
         if (err) {
-          console.log('error reading file cache for cleanup', err);
+          logger.error('error reading file cache for cleanup', err);
         }
         if (stats.birthtime < expirationDate) {
           this.remove(file);

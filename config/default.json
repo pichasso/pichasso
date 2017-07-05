@@ -27,5 +27,8 @@
         "CleanupCronInterval": "00 30 3 * * 7",
         "RemoveFilesAfterExpiration": true,
         "Imagepath": "/tmp/imagecache/"
+    },
+    "Logging": {
+        "Directory": "/logs/"
     }
 }
