@@ -29,6 +29,6 @@
         "Directory": "/tmp/pichasso/"
     },
     "Logging": {
-        "Directory": "/var/log/pichasso/"
+        "Directory": "./log/"
     }
 }
