@@ -6,13 +6,15 @@ pichasso is an image service which helps to deliver optimal performance and to r
 By adjusting the delivered images to given parameters it allows developers to focus only on the creation of their webpage while pichasso is handling the images. 
 Since not every time the sizes are fitting to the image pichasso offers intelligent ways to crop the image fitting to the needs with features like a face detection
 to avoid cutting people in half. 
+
 Often websites are facing difficulties at providing the right images for the user, one the one hand those images are 
 often not compressed which is a waste of bandwidth and performance. On the other hand since there are many different
 devices on the market the image needs to available in different resolutions to be fitting on each of them. 
-On mobile devices a higher compression rate increases the performance drastically while on the desktop if the resolution is 
+On mobile devices a lower resolution increases the performance drastically while on the desktop if the resolution is 
 too low it does not look professional at all. pichasso also handles all of these problems and provides the image with the ideal compression for every use case
 while also using modern image formats like WebP. Depending on the given size pichasso automatically adjust the picture and
 returns the perfect compressed image. 
+
 This can be also easily combined with a CDN to allow faster response times around the globe. 
 This feature can be easily integrated by using image source sets: 
 
