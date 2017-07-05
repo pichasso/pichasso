@@ -7,8 +7,9 @@ function fileLoader(req, res, next) {
   if (req.completed) {
     return next();
   }
-  let quality = 'screen';
-  // todo move to parameter test
+  if (!req.params || !req.params.file) {
+    return next(new error.NotFound('Missing file parameter.'));
+  }
   if (req.params.file.indexOf('://') === -1) {
     // assume id in url, create url with given id
     if (config.get('ImageSource.LoadById.Enabled') !== true) {
@@ -45,13 +46,16 @@ function fileLoader(req, res, next) {
         return next(new error.BadRequest('Domain source not allowed.'));
       }
     }
-    // check quality
-    let qualities = ['printer', 'screen'];
-    if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
-      quality = req.params.quality;
-    }
-    quality = '-dPDFSETTINGS=/' + quality;
   }
+
+  // check quality
+  let quality = 'screen';
+  let qualities = ['printer', 'screen'];
+  if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
+    quality = req.params.quality;
+  }
+  quality = '-dPDFSETTINGS=/' + quality;
+
   request(
     {
       method: 'GET',
@@ -61,7 +65,7 @@ function fileLoader(req, res, next) {
     function (error, resp, body) {
       if (error) {
         console.log(error);
-        return next(new error.NotFound());
+        return next(new error.NotFound('Could not load given file.'));
       }
       gs()
         .batch()
@@ -70,11 +74,15 @@ function fileLoader(req, res, next) {
         .option(quality)
         .option('-q') // quite mode to write only file to stdout
         .exec(body, function (error, stdout /* ,stderr*/) {
-          console.log('compressed', req.params.file, 'length', stdout ? stdout.length : 0, 'quality', quality);
-          if (error) {
-            console.log(' - failed:', error);
-            return next(new error.NotFound());
+          let sizeBefore = body ? body.length : 0;
+          let sizeCompressed = stdout ? stdout.length : 0;
+          if (error || sizeBefore === 0 || sizeCompressed === 0) {
+            console.log('pdf compression failed:', error);
+            return next(new error.InternalServerError('Compression failed.'));
           }
+          let compressionRatio = sizeCompressed / sizeBefore;
+          console.log('compressed', req.params.file, 'from size', sizeBefore, 'to', sizeCompressed,
+            'with setting', quality, 'ratio', compressionRatio, '%');
           req.compressedFile = stdout;
           return next();
         });
