@@ -10,17 +10,16 @@
                 "https",
                 "http"
             ],
-            "WhitelistRegex": [
-                "/*/"
-            ]
+            "WhitelistRegex": []
         },
         "MaxFileSize": 51200
     },
     "ImageConversion": {
-        "DefaultFormat": "accepted",
-        "DefaultQuality": 80,
         "DefaultCropping": "fill",
+        "DefaultFormat": "accepted",
         "DefaultGravity": "entropy",
+        "DefaultQuality": 80,
+        "MaxEdgeLength": 3840,
         "Progressive": true
     },
     "Caching": {
