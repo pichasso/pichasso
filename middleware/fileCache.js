@@ -5,9 +5,9 @@ const logger = require('../controllers/logger');
 
 class FileCache {
   constructor() {
-    this.filePath = config.get('Caching.Imagepath');
+    this.filePath = config.get('Caching.Directory');
     if (!fs.existsSync(this.filePath)) {
-      fs.mkdir(this.filePath);
+      fs.mkdirSync(this.filePath);
     }
     this.cache = this.loadCache();
     let cleanupCronInterval = config.get('Caching.CleanupCronInterval');
