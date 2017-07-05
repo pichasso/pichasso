@@ -13,14 +13,20 @@ router.get('/', loadParamsFromQuery, fileLoader, (req, res) => {
   } else {
     res.setHeader('Content-Type', 'application/pdf');
   }
-  if (req.get('Content-Disposition')) {
-    res.setHeader('Content-Disposition', req.get('Content-Disposition'));
+  let attachment = 'inline';
+  if (req.params.download) {
+    attachment = 'attachment';
+  }
+  let filename = '';
+  let regExp = /filename.?=.?\"(.*)\"/ig;
+  if (req.get('Content-Disposition') && req.get('Content-Disposition').match(regExp)) {
+    filename = regExp.exec(req.get('Content-Disposition'))[0];
   } else {
     let filepath = req.params.file.split('/');
     if (filepath.length) {
-      let filename = filepath[filepath.length - 1];
-      res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
+      filename = filepath[filepath.length - 1];
     }
+    res.setHeader('Content-Disposition', `${attachment}; filename="${filename}"`);
   }
   res.end(req.compressedFile, 'binary');
 });
