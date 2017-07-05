@@ -33,6 +33,7 @@ services:
 ## Service Test
 
 Open route `/image/test`, page will show all options available on this service.
+Start pichassso with `npm start`.
 
 ## Test
 
@@ -42,6 +43,8 @@ or `npm run lint` (will only lint)
 
 ## Production
 To adjust the configuration to own wishes replace `/config/default.json` with own parameters. 
+To start pichasso for production use `npm production` which not only starts the service but as well sets the 
+`NODE_ENV=production`. 
 
 ## API
 
