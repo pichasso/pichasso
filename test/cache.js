@@ -6,12 +6,18 @@ const fs = require('fs');
 const server = require('../app');
 const sinon = require('sinon');
 
+const sandbox = sinon.sandbox.create();
+
 chai.should();
 chai.use(chaiHttp);
 
 describe('Cache', () => {
   beforeEach(() => {
     fileCache.clear();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   it('should cache the requested image', (done) => {
@@ -59,7 +65,7 @@ describe('Cache', () => {
   });
 
   it('should serve files from cache', (done) => {
-    sinon.spy(fileCache, 'load');
+    sandbox.spy(fileCache, 'load');
     chai.request(server)
       .get('/image?url=https://http.cat/400')
       .end((err, res) => {
@@ -69,14 +75,13 @@ describe('Cache', () => {
           .end((err, res) => {
             res.should.be.ok;
             fileCache.load.calledOnce.should.be.true;
-            fileCache.load.restore();
             done();
           });
       });
   });
 
   it('should download the file again, if cache fails', (done) => {
-    sinon.spy(fileCache, 'remove');
+    sandbox.spy(fileCache, 'remove');
     chai.request(server)
       .get('/image?url=https://http.cat/400')
       .end((err, res) => {
@@ -89,7 +94,6 @@ describe('Cache', () => {
           .end((err, res) => {
             res.should.be.ok;
             fileCache.remove.calledWith(etag);
-            fileCache.remove.restore();
             done();
           });
       });
@@ -100,7 +104,7 @@ describe('Cache', () => {
     done();
   });
 
-  it('should fail save when file creation is not possible', (done) => {
+  it('should fail safely when file creation is not possible', (done) => {
     fileCache.add('', '', null);
     done();
   });
