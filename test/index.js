@@ -1,18 +1,26 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
-var server = require('../app.js');
-var should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../app.js');
 
+chai.should();
 chai.use(chaiHttp);
 
 it('should render the home page', () => {
-  return chai.request(server)
+  chai.request(server)
     .get('/')
-    .then(res => {
+    .then((res) => {
       res.should.have.status(200);
       res.text.should.have.string('Pichasso is running');
     })
-    .catch(err => {
+    .catch((err) => {
       throw err;
+    });
+});
+
+it('should not find this page', () => {
+  chai.request(server)
+    .get('/notExisting')
+    .end((res) => {
+      res.should.have.status(404);
     });
 });

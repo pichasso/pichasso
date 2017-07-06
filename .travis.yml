@@ -1,16 +1,13 @@
 language: node_js
 node_js:
-  - "7"
-env:
-  - CXX=g++-4.8
+  - "8"
+dist: trusty
+addons:
+  apt:
+    packages:
+      - libopencv-dev
 script:
   - npm test
   - codecov
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
 notifications:
   slack: hpi:ndJzCSHEaofBnyHTHURo0DFO

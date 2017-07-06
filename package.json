@@ -4,18 +4,28 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "production": "NODE_ENV=production node ./bin/www",
     "serve": "nodemon ./bin/www",
+    "development": "nodemon --legacy-watch --inspect=0.0.0.0:9229 ./bin/www",
     "lint": "eslint ./**/*.js",
     "mocha": "node ./node_modules/mocha/bin/mocha",
-    "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
-    "test": "npm run lint && npm run istanbul"
+    "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
+    "test": "npm run lint && npm run istanbul",
+    "beautify": "eslint --fix . --ignore-path .gitignore"
   },
   "dependencies": {
+    "cron": "~1.2.1",
+    "config": "~1.26.1",
     "express": "~4.15.2",
-    "jade": "~1.11.0",
+    "faced": "~1.2.0",
+    "http-errors": "~1.6.1",
     "morgan": "~1.8.1",
-    "probe-image-size": "~3.0.0",
-    "sharp": "~0.17.3"
+    "object-hash": "1.1.8",
+    "pug": "~2.0.0-rc.1",
+    "sharp": "~0.17.3",
+    "request": "~2.81.0",
+    "node-gs": "^0.1.1",
+    "smartcrop-sharp": "~1.0.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -23,8 +33,10 @@
     "codecov": "^2.2.0",
     "debug": "~2.6.3",
     "eslint": "^3.19.0",
+    "eslint-plugin-es-beautifier": "^1.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.1",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "sinon": "~2.3.4"
   }
 }

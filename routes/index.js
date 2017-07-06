@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = new express.Router();
+const onlyDevelopment = require('../middleware/onlyDevelopment');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', onlyDevelopment, function (req, res) {
   res.render('index', {title: 'Pichasso'});
 });
 
