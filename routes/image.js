@@ -8,7 +8,7 @@ const persist = require('../middleware/imagePersistence');
 const imageLoader = require('../middleware/imageLoader');
 const resize = require('../controllers/resize');
 const convert = require('../controllers/convert');
-const error = require('http-errors');
+const onlyDevelopment = require('../middleware/onlyDevelopment');
 
 /* GET image. */
 router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
@@ -17,12 +17,8 @@ router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, co
   res.end(req.image, 'binary');
 });
 
-router.get('/test', function (req, res, next) {
-  if (req.app.get('env') === 'development') {
-    res.render('test');
-  } else {
-    return next(new error.Forbidden());
-  }
+router.get('/test', onlyDevelopment, function (req, res) {
+  res.render('test');
 });
 
 
