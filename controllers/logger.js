@@ -16,14 +16,15 @@ const logger = new (winston.Logger)({
     new (winston.transports.Console)({
       timestamp: tsFormat,
       colorize: true,
-      level: env === 'development' ? 'verbose' : 'none',
+      silent: env !== 'development',
+      level: env === 'development' ? 'debug' : 'none',
     }),
     new (DailyRotateFile)({
       filename: `${dir}-pichasso.log`,
       timestamp: tsFormat,
       datePattern: 'yyyy-MM-dd',
       prepend: true,
-      level: env === 'development' ? 'verbose' : 'info',
+      level: env === 'development' ? 'info' : 'error',
       json: false,
     }),
   ],

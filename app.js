@@ -20,7 +20,7 @@ app.set('view engine', 'pug');
 logger.stream = {
   // eslint-disable-next-line no-unused-vars
   write: function (message, encoding) {
-    logger.info(message.trim());
+    logger.info('[HTTP]', message.trim());
   },
 };
 app.use(morgan('tiny', {'stream': logger.stream}));
@@ -45,10 +45,6 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  if (err.status >= 500) {
-    logger.error(err.message);
-  }
 
   // render the error page
   res.status(err.status || 500);

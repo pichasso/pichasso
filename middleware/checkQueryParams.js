@@ -1,6 +1,8 @@
 const config = require('config');
 const constants = require('../constants.json');
 const error = require('http-errors');
+const logger = require('../controllers/logger');
+const logTag = '[CheckQueryParams]';
 
 function checkQueryParams(req, res, next) {
   if (!req.query.url) {
@@ -19,11 +21,12 @@ function checkQueryParams(req, res, next) {
 
     const allowedProtocols = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
     if (!allowedProtocols.some(each => req.query.url.match(`^${each}:\/\/`))) {
-      return next(new error.BadRequest('Protocol not allowed.'));
+      return next(new error.BadRequest(`Protocol not allowed. Expected one of ${allowedProtocols.join(', ')}`));
     }
 
     const whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
     if (whitelistRegex.length > 0) {
+      logger.debug(logTag, 'Match url', req.query.url, 'with whitelist', whitelistRegex);
       const whitelisted = whitelistRegex.some(regex => req.query.url.match(regex));
       if (!whitelisted) {
         return next(new error.BadRequest('Domain source not allowed.'));
@@ -37,6 +40,7 @@ function checkQueryParams(req, res, next) {
 
     const sourcePath = config.get('ImageSource.LoadById.SourcePath');
     req.query.url = sourcePath.replace(/{id}/gi, req.query.url);
+    logger.debug(logTag, 'URL', req.query.url);
   }
 
   /**
@@ -53,6 +57,7 @@ function checkQueryParams(req, res, next) {
         `but received ${req.query.width}.`));
     }
     req.query.width = width;
+    logger.debug(logTag, 'Width', req.query.width);
   }
 
   if (req.query.height) {
@@ -62,6 +67,7 @@ function checkQueryParams(req, res, next) {
         `but received ${req.query.height}.`));
     }
     req.query.height = height;
+    logger.debug(logTag, 'Height', req.query.height);
   }
 
   /**
@@ -87,6 +93,7 @@ function checkQueryParams(req, res, next) {
         `but received ${req.query.quality}.`));
     } else {
       req.query.quality = quality;
+      logger.debug(logTag, 'Quality', req.query.quality);
     }
   }
 

@@ -3,6 +3,8 @@ const error = require('http-errors');
 const http = require('http');
 const https = require('https');
 const sharp = require('sharp');
+const logger = require('../controllers/logger');
+const logTag = '[ImageLoader]';
 
 function imageLoader(req, res, next) {
   if (req.completed) {
@@ -12,6 +14,7 @@ function imageLoader(req, res, next) {
   let protocol = http;
   if (/^https/.test(req.query.url)) {
     protocol = https;
+    logger.verbose(logTag, 'Use https');
   }
   protocol.get(req.query.url, (response) => {
     const statusCode = response.statusCode;
@@ -20,10 +23,13 @@ function imageLoader(req, res, next) {
     const sizeLimit = config.get('ImageSource.MaxFileSize');
 
     if (statusCode !== 200) {
+      logger.warn(logTag, 'Server responded with', statusCode);
       return next(new error.NotFound('Request failed.'));
     } else if (contentType && !/^image\//.test(contentType)) {
+      logger.info(logTag, 'Invalid content-type', contentType);
       return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
     } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
+      logger.info(logTag, 'Size limit exceeded', contentLength);
       return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
     }
 
@@ -33,6 +39,7 @@ function imageLoader(req, res, next) {
       if (!contentLength) {
         const extendedLength = bufPosition + chunk.length;
         if (sizeLimit && extendedLength / 1024 >= sizeLimit) {
+          logger.info(logTag, 'Size limit exceeded', contentLength);
           return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
         }
         let extendedBuffer = Buffer.alloc(extendedLength);
@@ -43,6 +50,7 @@ function imageLoader(req, res, next) {
       bufPosition += chunk.length;
     });
     response.on('end', () => {
+      logger.info(logTag, 'Downloaded file successfully', req.query.url);
       req.image = imageBuffer;
       sharp(imageBuffer)
         .metadata()
@@ -51,10 +59,19 @@ function imageLoader(req, res, next) {
           req.imageProperties.aspectRatio = metadata.width / metadata.height;
           next();
         })
-        .catch(err => next(new error.BadRequest(`Request failed: ${err.message}`)));
+        .catch((err) => {
+          logger.error(logTag, 'Unable to read file', err.message);
+          next(new error.BadRequest(`Request failed: ${err.message}`));
+        });
     });
-    response.on('error', error => next(error));
-  }).on('error', e => next(new error.NotFound(`Request failed: ${e.message}`)));
+    response.on('error', (error) => {
+      logger.error(logTag, 'Error while downloading file', error.message);
+      next(error);
+    });
+  }).on('error', (err) => {
+    logger.error(logTag, 'Request failed', req.query.url, err.message);
+    next(new error.NotFound(`Request failed: ${err.message}`));
+  });
 }
 
 module.exports = imageLoader;

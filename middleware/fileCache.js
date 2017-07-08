@@ -2,6 +2,7 @@ const fs = require('fs');
 const config = require('config');
 const cron = require('cron');
 const logger = require('../controllers/logger');
+const logTag = '[FileCache]';
 
 class FileCache {
   constructor() {
@@ -18,22 +19,22 @@ class FileCache {
         this.cleanupJob = new cron.CronJob(
           cleanupCronInterval,
           function () {
-            logger.info('cache cleanup starts... with current cache size', fileCache.cache.size);
+            logger.info(logTag, 'Cleanup started. Current size', fileCache.cache.size);
             fileCache.cleanup(expirationTimeSeconds);
           },
           function () {
-            logger.info('cache cleanup finished... with current cache size', fileCache.cache.size);
+            logger.info(logTag, 'Cleanup finished. Current size', fileCache.cache.size);
           },
           true
         );
         fileCache.cleanupJob.start();
-        logger.info('enabled removal of cached files on expiration after', expirationTimeSeconds,
-          'seconds using cron filter ’', cleanupCronInterval, '’');
+        logger.info(logTag, 'Files will be deleted after', expirationTimeSeconds,
+          'seconds using cron pattern ’', cleanupCronInterval, '’');
       } catch (ex) {
-        logger.error('cleanup cron pattern ’', cleanupCronInterval, '’ not valid');
+        logger.error(logTag, 'Cleanup cron pattern ’', cleanupCronInterval, '’ invalid');
       }
     } else {
-      logger.info('cache cleanup disabled, add Caching.CleanupCronInterval and Caching.Expires to configuration.');
+      logger.info(logTag, 'Cleanup disabled, set Caching.CleanupCronInterval and Caching.Expires in configuration to enable it.');
     }
   }
 
@@ -42,7 +43,7 @@ class FileCache {
     fs.readdirSync(this.filePath).forEach((file) => {
       cache.add(file);
     });
-    logger.verbose('cache contains currently', cache.size, 'elements');
+    logger.verbose(logTag, 'Loaded cached files. Current size', cache.size);
     return cache;
   }
 
@@ -50,16 +51,16 @@ class FileCache {
     let cache = this.cache;
     fs.writeFile(this.filePath + filename, data, function (err) {
       if (err) {
-        logger.error('cache add error', filename, err);
+        logger.error(logTag, 'Unable to write file', filename, err);
       } else {
         cache.add(filename);
-        logger.verbose('cache successfully added file', filename);
+        logger.verbose(logTag, 'Successfully added file', filename);
       }
     });
   }
 
   load(hash) {
-    logger.verbose('cache send cached file', hash);
+    logger.verbose(logTag, 'Load file', hash);
     return fs.readFileSync(this.filePath + hash);
   }
 
@@ -71,16 +72,16 @@ class FileCache {
     let cache = this.cache;
     fs.exists(this.filePath + hash, (exists) => {
       if (!exists) {
-        logger.warn('cache could not delete file from filesystem, does not exist:', hash);
+        logger.warn(logTag, 'Could not delete file. Unable to find', hash);
         return;
       }
       fs.unlink(this.filePath + hash, (err) => {
         if (err) {
-          logger.error('cache could not delete file from filesystem:', err);
+          logger.error(logTag, 'Unable to delete file.', err);
           return;
         }
         cache.delete(hash);
-        logger.verbose('cache successfully removed file', hash);
+        logger.verbose(logTag, 'Removed file', hash);
       });
     });
   }
@@ -94,11 +95,11 @@ class FileCache {
   cleanup(expirationTimeSeconds) {
     let expirationDate = new Date();
     expirationDate = expirationDate - expirationTimeSeconds;
-    logger.verbose('remove files from cache, older than', new Date(expirationDate));
+    logger.verbose(logTag, 'Removing files older than', new Date(expirationDate));
     this.cache.forEach((file) => {
       fs.stat(this.filePath + file, (err, stats) => {
         if (err) {
-          logger.error('error reading file cache for cleanup', err);
+          logger.error(logTag, 'Error reading file during cleanup', err);
         }
         if (stats.birthtime < expirationDate) {
           this.remove(file);
