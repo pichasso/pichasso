@@ -1,14 +1,10 @@
 const express = require('express');
 const router = new express.Router();
-const error = require('http-errors');
+const onlyDevelopment = require('../middleware/onlyDevelopment');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  if (req.app.get('env') === 'development') {
-    res.render('index', {title: 'Pichasso'});
-  } else {
-    return next(new error.Forbidden());
-  }
+router.get('/', onlyDevelopment, function (req, res) {
+  res.render('index', {title: 'Pichasso'});
 });
 
 module.exports = router;
