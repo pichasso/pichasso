@@ -57,6 +57,7 @@ function imageLoader(req, res, next) {
         .then((metadata) => {
           req.imageProperties = metadata;
           req.imageProperties.aspectRatio = metadata.width / metadata.height;
+          if (req.imageProperties.hasAlpha) logger.debug(logTag, 'Image has alpha channel');
           next();
         })
         .catch((err) => {

@@ -2,6 +2,8 @@ const config = require('config');
 const error = require('http-errors');
 const faceDetection = require('./faceDetection');
 const sharp = require('sharp');
+const logger = require('../controllers/logger');
+const logTag = '[Resize]';
 
 function resize(req, res, next) {
   if (req.completed) {
@@ -37,6 +39,10 @@ function resize(req, res, next) {
   } else {
     gravity = req.query.gravity;
   }
+
+  logger.debug(logTag, 'Resize dimensions', width, height);
+  logger.debug(logTag, 'Gravity', gravity);
+  logger.debug(logTag, 'Cropping method', crop);
 
   return cropImage(req, width, height, aspectRatio, crop, gravity)
     .then(sharpInstance =>
@@ -77,6 +83,7 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
         }
       default:
         {
+          logger.error(logTag, 'Invalid cropping method', gravity);
           reject(new error.BadRequest(`Invalid cropping method ${crop}`));
         }
     }
