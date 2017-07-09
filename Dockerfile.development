@@ -2,7 +2,7 @@ FROM siomiz/node-opencv:2.4.x
 
 RUN apt-get clean
 RUN apt-get update -y
-RUN apt-get install -fyqq ghostscript
+RUN apt-get install -fyqq ghostscript libgs-dev g++ cmake
 
 EXPOSE 3000 9229
 
