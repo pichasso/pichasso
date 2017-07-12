@@ -56,6 +56,7 @@ function fileLoader(req, res, next) {
   }
   quality = '-dPDFSETTINGS=/' + quality;
 
+  console.log('downloading...', req.params.file);
   request(
     {
       method: 'GET',
@@ -64,18 +65,25 @@ function fileLoader(req, res, next) {
     },
     function (err, resp, body) {
       if (err) {
-        console.log(err);
+        console.log('error downloding pdf file', req.params.file, err);
         return next(new error.NotFound('Could not load given file.'));
+      } else {
+        console.log('downloaded file... ok');
       }
       gs()
         .batch()
+        //.nopause()
         .output('-') // do only write to stdout
         .device('pdfwrite') // target writer / format
         .option(quality)
-        .option('-q') // quite mode to write only file to stdout
-        .exec(body, function (err, stdout /* ,stderr*/) {
+        .option('-dCompatibilityLevel=1.4')
+        .option('-q') // quite mode to write file only to stdout without log data
+        .exec(body, function (err, data, stderr) {
+          if (stderr) {
+            console.log(stderr);
+          }
           let sizeBefore = body ? body.length : 0;
-          let sizeCompressed = stdout ? stdout.length : 0;
+          let sizeCompressed = data ? data.length : 0;
           if (err || sizeBefore === 0 || sizeCompressed === 0) {
             console.log('pdf compression failed:', err);
             return next(new error.InternalServerError('Compression failed.'));
@@ -83,7 +91,7 @@ function fileLoader(req, res, next) {
           let compressionRatio = sizeCompressed / sizeBefore;
           console.log('compressed', req.params.file, 'from size', sizeBefore, 'to', sizeCompressed,
             'with setting', quality, 'ratio', compressionRatio, '%');
-          req.compressedFile = stdout;
+          req.compressedFile = data;
           return next();
         });
     });
