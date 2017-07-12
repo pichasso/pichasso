@@ -22,31 +22,31 @@ describe('Image Controller', () => {
     sandbox.restore();
   });
 
-  it('should return undefined resource', (done) => {
+  it('should return undefined file', (done) => {
     chai.request(server)
       .get('/image')
       .end((err, res) => {
         res.status.should.equal(400);
-        res.text.should.have.string('Undefined resource location');
+        res.text.should.have.string('Undefined file');
         done();
       });
   });
 
-  it('should return not found', (done) => {
+  it('should return bad request', (done) => {
     chai.request(server)
       .get('/image?file=https://http.cat/900')
       .end((err, res) => {
-        res.status.should.equal(404);
+        res.status.should.equal(400);
         res.text.should.have.string('Request failed');
         done();
       });
   });
 
-  it('should return not found', (done) => {
+  it('should return bad request', (done) => {
     chai.request(server)
       .get('/image?file=https://httpx.cat/')
       .end((err, res) => {
-        res.status.should.equal(404);
+        res.status.should.equal(400);
         res.text.should.have.string('Request failed');
         done();
       });
