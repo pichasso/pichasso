@@ -9,6 +9,7 @@ function pdfLoader(req, res, next) {
   }
 
   const quality = req.query.quality ? req.query.quality : config.get('PDFConversion.DefaultQuality');
+  const dpi = quality === 'screen' ? 72 : 300;
 
   let r = request({
     url: req.query.file,
@@ -40,13 +41,22 @@ function pdfLoader(req, res, next) {
     }
 
     let pdfData;
+    // https://stackoverflow.com/questions/10450120/optimize-pdf-files-with-ghostscript-or-other#10453202
     const args = [
-      '-q',
+      '-dQUIET',
       '-dBATCH',
       '-dNOPAUSE',
       '-sDEVICE=pdfwrite',
-      `-dPDFSETTINGS=/${quality}`,
       '-dCompabilityLevel=1.4',
+      '-dCompressFonts=true',
+      '-dConvertCMYKImagesToRGB=true',
+      '-dDetectDuplicateImages=true',
+      '-dDownsampleColorImages=true',
+      '-dDownsampleGrayImages=true',
+      '-dDownsampleMonoImages=true',
+      `-dColorImageResolution=${dpi}`,
+      `-dGrayImageResolution=${dpi}`,
+      `-dMonoImageResolution=${dpi}`,
       '-sOutputFile=-',
       '-',
     ];
