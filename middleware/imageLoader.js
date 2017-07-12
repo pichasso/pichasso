@@ -1,7 +1,6 @@
 const config = require('config');
 const error = require('http-errors');
-const http = require('http');
-const https = require('https');
+const request = require('request');
 const sharp = require('sharp');
 
 function imageLoader(req, res, next) {
@@ -9,11 +8,11 @@ function imageLoader(req, res, next) {
     return next();
   }
 
-  let protocol = http;
-  if (/^https/.test(req.query.url)) {
-    protocol = https;
-  }
-  protocol.get(req.query.url, (response) => {
+  request(req.query.file, (err, response) => {
+    if (err) {
+      return next(new error.BadRequest(`Request failed: ${err.message}`));
+    }
+
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
     const contentType = response.headers['content-type'];
@@ -53,8 +52,8 @@ function imageLoader(req, res, next) {
         })
         .catch(err => next(new error.BadRequest(`Request failed: ${err.message}`)));
     });
-    response.on('error', error => next(error));
-  }).on('error', e => next(new error.NotFound(`Request failed: ${e.message}`)));
+    response.on('error', err => next(err));
+  }).on('error', err => next(new error.NotFound(`Request failed: ${err.message}`)));
 }
 
 module.exports = imageLoader;

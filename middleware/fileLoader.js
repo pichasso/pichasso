@@ -7,67 +7,22 @@ function fileLoader(req, res, next) {
   if (req.completed) {
     return next();
   }
-  if (!req.params || !req.params.file) {
-    return next(new error.NotFound('Missing file parameter.'));
-  }
-  if (req.params.file.indexOf('://') === -1) {
-    // assume id in url, create url with given id
-    if (config.get('ImageSource.LoadById.Enabled') !== true) {
-      return next(new error.BadRequest('Loading external data has been disabled.'));
-    }
-    let sourcePath = config.get('ImageSource.LoadById.SourcePath');
-    if (!sourcePath) {
-      return next(new error.InternalServerError('ImageSource.LoadById.SourcePath not defined.'));
-    }
-    req.query.url = sourcePath.replace(/{id}/gi, req.params.file);
-  } else {
-    // assume we got an url, check for validity
-    if (config.get('ImageSource.LoadExternalData.Enabled') !== true) {
-      return next(new error.BadRequest('Loading external data has been disabled.'));
-    }
-    // check protocol filter
-    let allowedProtocols = config.get('ImageSource.LoadExternalData.ProtocolsAllowed');
-    if (!allowedProtocols) {
-      return next(new error.InternalServerError('ImageSource.LoadExternalData.ProtocolsAllowed not defined.'));
-    }
-    let protocolAllowed = allowedProtocols.filter(function (protocol) {
-      return req.params.file.indexOf(protocol) === 0;
-    });
-    if (!protocolAllowed) {
-      return next(new error.BadRequest('Protocol not allowed.'));
-    }
-    // check url whitelist
-    let whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
-    if (whitelistRegex.length) {
-      let whitelisted = whitelistRegex.some(function (regex) {
-        return req.params.file.match(regex);
-      });
-      if (!whitelisted) {
-        return next(new error.BadRequest('Domain source not allowed.'));
-      }
-    }
-  }
 
-  // check quality
-  let quality = config.get('PDFConversion.DefaultQuality') || 'screen';
-  let qualities = ['printer', 'screen'];
-  if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
-    quality = req.params.quality;
-  } 
+  const quality = req.query.quality ? req.query.quality : config.get('PDFConversion.DefaultQuality');
 
   request({
-    url: req.params.file,
+    url: req.query.file,
     encoding: 'binary',
   }, (err, response, body) => {
     if (!body) {
-      return next(new error.InternalServerError('Request failed.'));
+      return next(new error.InternalServerError('Request failed. Received empty response.'));
     }
     let filename = '';
     let regExp = /filename.?=.?\"(.*)\"/ig;
     if (response.headers['content-disposition'] && response.headers['content-disposition'].match(regExp)) {
       filename = regExp.exec(response.headers['content-disposition'])[0];
     } else {
-      let filepath = req.params.file.split('/');
+      let filepath = req.query.file.split('/');
       if (filepath.length) {
         filename = filepath[filepath.length - 1];
       }
@@ -76,7 +31,7 @@ function fileLoader(req, res, next) {
       filename += '.pdf';
     }
     if (filename) {
-      req.params.filename = filename;
+      req.query.filename = filename;
     }
     let pdfData;
     const args = [
@@ -89,10 +44,11 @@ function fileLoader(req, res, next) {
       '-sOutputFile=-',
       '-',
     ];
-    const gs = spawn('gs', args, { stdio: ['pipe'] });
+    const gs = spawn('gs', args, {stdio: ['pipe']});
 
     gs.on('error', err => next(err));
-    gs.on('close', () => {
+    gs.on('close', (code) => {
+      console.log('Close', code);
       req.compressedFile = pdfData;
       next();
     });
@@ -106,6 +62,7 @@ function fileLoader(req, res, next) {
         newData.fill(data, pdfData.length);
         pdfData = newData;
       }
+      console.log('Data', pdfData.length);
     });
     gs.stdout.on('error', err => next(err));
     gs.stderr.on('error', err => next(err));
