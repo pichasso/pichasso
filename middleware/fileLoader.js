@@ -72,7 +72,7 @@ function fileLoader(req, res, next) {
       }
       gs()
         .batch()
-        //.nopause()
+        // .nopause()
         .output('-') // do only write to stdout
         .device('pdfwrite') // target writer / format
         .option(quality)
