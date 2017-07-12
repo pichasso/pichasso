@@ -13,7 +13,7 @@ router.get('/', loadParamsFromQuery, fileLoader, (req, res) => {
   } else {
     res.setHeader('Content-Type', 'application/pdf');
   }
-  let attachment = 'inline';
+  let attachment = config.get('PDFConversion.Attachment') || 'inline';
   if (req.params.download) {
     attachment = 'attachment';
   }

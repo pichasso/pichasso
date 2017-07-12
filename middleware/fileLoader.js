@@ -49,7 +49,7 @@ function fileLoader(req, res, next) {
   }
 
   // check quality
-  let quality = 'screen';
+  let quality = config.get('ImageSource.LoadExternalData.WhitelistRegex') || 'screen';
   let qualities = ['printer', 'screen'];
   if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
     quality = req.params.quality;
