@@ -6,7 +6,7 @@ class FileCache {
   constructor() {
     this.filePath = config.get('Caching.Imagepath');
     if (!fs.existsSync(this.filePath)) {
-      fs.mkdir(this.filePath);
+      fs.mkdirSync(this.filePath);
     }
     this.cache = this.loadCache();
     let cleanupCronInterval = config.get('Caching.CleanupCronInterval');

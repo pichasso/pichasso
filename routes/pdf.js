@@ -1,11 +1,11 @@
 const express = require('express');
 const router = new express.Router();
 const config = require('config');
-const fileLoader = require('../middleware/fileLoader');
+const pdfLoader = require('../middleware/pdfLoader');
 const checkQueryParams = require('../middleware/checkQueryParams');
 
 /* GET pdf. */
-router.get('/', checkQueryParams, fileLoader, (req, res) => {
+router.get('/', checkQueryParams, pdfLoader, (req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
   if (req.get('Content-Type')) {

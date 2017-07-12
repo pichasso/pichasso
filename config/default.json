@@ -24,7 +24,8 @@
     },
     "PDFConversion": {
         "DefaultQuality": "printer",
-        "Attachment": "inline"
+        "Attachment": "inline",
+        "MaxFileSize": 51200
     },
     "Caching": {
         "Expires": 2629000000,

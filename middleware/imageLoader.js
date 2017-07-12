@@ -38,7 +38,7 @@ function imageLoader(req, res, next) {
     if (statusCode !== 200) {
       r.abort();
       return next(new error.NotFound('Request failed.'));
-    } else if (contentType && !/^image\//.test(contentType)) {
+    } else if (contentType && !/^image\//i.test(contentType)) {
       r.abort();
       return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
     } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
