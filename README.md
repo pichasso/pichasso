@@ -23,7 +23,7 @@ This feature can be easily integrated by using image source sets:
       <source
       media="(min-width: 80em)" 
       srcset="imageservice.url.jpg, imageservice.url2x.jpg, 2x">
-      <!--- Fallback ---> 
+      <!---Fallback--->
       <img src="imageservice.url.jpg" alt="Description">
     </picture>
    ```
