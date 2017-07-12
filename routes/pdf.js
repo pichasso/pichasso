@@ -31,7 +31,7 @@ router.get('/', loadParamsFromQuery, fileLoader, (req, res) => {
     filename += '.pdf';
   }
   res.setHeader('Content-Disposition', `${attachment}; filename="${filename}"`);
-  res.end(req.compressedFile, 'binary');
+  res.end(req.compressedFile);
 });
 
 module.exports = router;

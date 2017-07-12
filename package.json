@@ -20,7 +20,6 @@
     "faced": "~1.2.0",
     "http-errors": "~1.6.1",
     "morgan": "~1.8.1",
-    "node-gs": "^0.1.1",
     "object-hash": "1.1.8",
     "pug": "~2.0.0-rc.1",
     "request": "~2.81.0",

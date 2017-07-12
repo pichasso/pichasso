@@ -1,7 +1,7 @@
 const config = require('config');
 const error = require('http-errors');
-var request = require('request');
-var gs = require('node-gs');
+const request = require('request');
+const spawn = require('child_process').spawn;
 
 function fileLoader(req, res, next) {
   if (req.completed) {
@@ -54,47 +54,67 @@ function fileLoader(req, res, next) {
   if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
     quality = req.params.quality;
   }
-  quality = '-dPDFSETTINGS=/' + quality;
 
-  console.log('downloading...', req.params.file);
-  request(
-    {
-      method: 'GET',
-      encoding: null,
-      url: req.params.file,
-    },
-    function (err, resp, body) {
-      if (err) {
-        console.log('error downloding pdf file', req.params.file, err);
-        return next(new error.NotFound('Could not load given file.'));
-      } else {
-        console.log('downloaded file... ok');
-      }
-      gs()
-        .batch()
-        // .nopause()
-        .output('-') // do only write to stdout
-        .device('pdfwrite') // target writer / format
-        .option(quality)
-        .option('-dCompatibilityLevel=1.4')
-        .option('-q') // quite mode to write file only to stdout without log data
-        .exec(body, function (err, data, stderr) {
-          if (stderr) {
-            console.log(stderr);
-          }
-          let sizeBefore = body ? body.length : 0;
-          let sizeCompressed = data ? data.length : 0;
-          if (err || sizeBefore === 0 || sizeCompressed === 0) {
-            console.log('pdf compression failed:', err);
-            return next(new error.InternalServerError('Compression failed.'));
-          }
-          let compressionRatio = sizeCompressed / sizeBefore;
-          console.log('compressed', req.params.file, 'from size', sizeBefore, 'to', sizeCompressed,
-            'with setting', quality, 'ratio', compressionRatio, '%');
-          req.compressedFile = data;
-          return next();
-        });
+  request({
+    url: req.params.file,
+    encoding: 'binary',
+  }, (err, response, body) => {
+    if (!body) {
+      return next(new error.InternalServerError('Request failed.'));
+    }
+    console.log('Download success.', body.length);
+    let pdfData;
+    const args = [
+      '-q',
+      '-dBATCH',
+      '-dNOPAUSE',
+      '-sDEVICE=pdfwrite',
+      `-dPDFSETTINGS=/${quality}`,
+      '-dCompabilityLevel=1.4',
+      '-sOutputFile=-',
+      '-',
+    ];
+    const gs = spawn('gs', args, {stdio: ['pipe']});
+
+    gs.on('error', err => next(err));
+    gs.on('close', () => {
+      console.log('Close', pdfData.length);
+      req.compressedFile = pdfData;
+      next();
     });
+
+    gs.stdout.on('data', (data) => {
+      if (!pdfData) {
+        console.log('Init buffer');
+        pdfData = data;
+      } else {
+        console.log('Copy buffer');
+        const newData = Buffer.alloc(pdfData.length + data.length);
+        newData.fill(pdfData);
+        newData.fill(data, pdfData.length);
+        pdfData = newData;
+      }
+      console.log(pdfData.length);
+    });
+    gs.stdout.on('error', (err) => {
+      console.log('stdout error');
+      next(err);
+    });
+
+    gs.stderr.on('data', (data) => {
+      console.log(data.toString());
+    });
+    gs.stderr.on('error', (err) => {
+      console.log('stderr error');
+      next(err);
+    });
+
+    gs.stdin.end(body, 'binary');
+    gs.stdin.on('error', (err) => {
+      console.log('stdin error');
+      next(err);
+    });
+  });
 }
 
 module.exports = fileLoader;
