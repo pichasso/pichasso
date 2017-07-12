@@ -53,7 +53,7 @@ function fileLoader(req, res, next) {
   let qualities = ['printer', 'screen'];
   if (req.params.quality && qualities.indexOf(req.params.quality) !== -1) {
     quality = req.params.quality;
-  }
+  } 
 
   request({
     url: req.params.file,
@@ -61,6 +61,22 @@ function fileLoader(req, res, next) {
   }, (err, response, body) => {
     if (!body) {
       return next(new error.InternalServerError('Request failed.'));
+    }
+    let filename = '';
+    let regExp = /filename.?=.?\"(.*)\"/ig;
+    if (response.headers['content-disposition'] && response.headers['content-disposition'].match(regExp)) {
+      filename = regExp.exec(response.headers['content-disposition'])[0];
+    } else {
+      let filepath = req.params.file.split('/');
+      if (filepath.length) {
+        filename = filepath[filepath.length - 1];
+      }
+    }
+    if (!filename.match(/\.pdf/ig)) {
+      filename += '.pdf';
+    }
+    if (filename) {
+      req.params.filename = filename;
     }
     let pdfData;
     const args = [
@@ -73,7 +89,7 @@ function fileLoader(req, res, next) {
       '-sOutputFile=-',
       '-',
     ];
-    const gs = spawn('gs', args, {stdio: ['pipe']});
+    const gs = spawn('gs', args, { stdio: ['pipe'] });
 
     gs.on('error', err => next(err));
     gs.on('close', () => {

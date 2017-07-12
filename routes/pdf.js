@@ -13,25 +13,14 @@ router.get('/', loadParamsFromQuery, fileLoader, (req, res) => {
   } else {
     res.setHeader('Content-Type', 'application/pdf');
   }
-  let attachment = config.get('PDFConversion.Attachment') || 'inline';
+  let attachment = config.get('PDFConversion.Attachment');
   if (req.params.download) {
     attachment = 'attachment';
   }
-  let filename = '';
-  let regExp = /filename.?=.?\"(.*)\"/ig;
-  if (req.get('Content-Disposition') && req.get('Content-Disposition').match(regExp)) {
-    filename = regExp.exec(req.get('Content-Disposition'))[0];
-  } else {
-    let filepath = req.params.file.split('/');
-    if (filepath.length) {
-      filename = filepath[filepath.length - 1];
-    }
+  if (req.params.filename) {
+    res.setHeader('Content-Disposition', `${attachment}; filename="${req.parms.filename}"`);
   }
-  if (!filename.match(/\.pdf/ig)) {
-    filename += '.pdf';
-  }
-  res.setHeader('Content-Disposition', `${attachment}; filename="${filename}"`);
-  res.end(req.compressedFile);
+  res.end(req.compressedFile, 'binary');
 });
 
 module.exports = router;
