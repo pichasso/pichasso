@@ -10,7 +10,7 @@ function pdfLoader(req, res, next) {
 
   const quality = req.query.quality ? req.query.quality : config.get('PDFConversion.DefaultQuality');
 
-  request({
+  let r = request({
     url: req.query.file,
     encoding: 'binary',
   }, (err, response, body) => {
