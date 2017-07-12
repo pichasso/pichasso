@@ -32,11 +32,11 @@ describe('Image Controller', () => {
       });
   });
 
-  it('should return bad request', (done) => {
+  it('should return not found', (done) => {
     chai.request(server)
       .get('/image?file=https://http.cat/900')
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(404);
         res.text.should.have.string('Request failed');
         done();
       });
@@ -46,7 +46,7 @@ describe('Image Controller', () => {
     chai.request(server)
       .get('/image?file=https://httpx.cat/')
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(404);
         res.text.should.have.string('Request failed');
         done();
       });
