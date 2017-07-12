@@ -18,7 +18,7 @@ returns the perfect compressed image.
 This can be also easily combined with a CDN to allow faster response times around the globe. 
 This feature can be easily integrated by using image source sets: 
 
-```
+```html
     <picture>
       <source
       media="(min-width: 80em)" 
