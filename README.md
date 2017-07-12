@@ -88,4 +88,17 @@ To start pichasso for production use `npm production` which not only starts the 
 | **quality** | quality | Adjust the quality between 0 and 100. Higher means better quality |
 
 
+## PDF Compression Service
+Instead of entering an image URL it is also possible to add a PDF url which then will be adjusted according to the following 
+parameter. 
+| Parameter | Values | Description |
+| --- | --- | --- |
+| **pdf** | url | PDF which will be processed and returned |
+| **quality** | printer, screen | Defines the quality whether it is for screen or for printing |
+| **download** | 1 or 0 | If 1 is selected the files will be downloaded when the process is finished |
+
+
+
+
+
 
