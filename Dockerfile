@@ -4,7 +4,7 @@ ENV NODE_ENV production
 
 RUN apt-get clean
 RUN apt-get update -y
-RUN apt-get install -fyqq ghostscript libgs-dev g++ cmake
+RUN apt-get install -fyqq ghostscript
 
 EXPOSE 3000
 
