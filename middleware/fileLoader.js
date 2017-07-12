@@ -62,7 +62,6 @@ function fileLoader(req, res, next) {
     if (!body) {
       return next(new error.InternalServerError('Request failed.'));
     }
-    console.log('Download success.', body.length);
     let pdfData;
     const args = [
       '-q',
@@ -78,42 +77,25 @@ function fileLoader(req, res, next) {
 
     gs.on('error', err => next(err));
     gs.on('close', () => {
-      console.log('Close', pdfData.length);
       req.compressedFile = pdfData;
       next();
     });
 
     gs.stdout.on('data', (data) => {
       if (!pdfData) {
-        console.log('Init buffer');
         pdfData = data;
       } else {
-        console.log('Copy buffer');
         const newData = Buffer.alloc(pdfData.length + data.length);
         newData.fill(pdfData);
         newData.fill(data, pdfData.length);
         pdfData = newData;
       }
-      console.log(pdfData.length);
     });
-    gs.stdout.on('error', (err) => {
-      console.log('stdout error');
-      next(err);
-    });
-
-    gs.stderr.on('data', (data) => {
-      console.log(data.toString());
-    });
-    gs.stderr.on('error', (err) => {
-      console.log('stderr error');
-      next(err);
-    });
+    gs.stdout.on('error', err => next(err));
+    gs.stderr.on('error', err => next(err));
+    gs.stdin.on('error', err => next(err));
 
     gs.stdin.end(body, 'binary');
-    gs.stdin.on('error', (err) => {
-      console.log('stdin error');
-      next(err);
-    });
   });
 }
 
