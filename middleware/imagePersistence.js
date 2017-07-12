@@ -8,7 +8,7 @@ function imagePersistence(req, res, next) {
 
   let queryHash = hash(req.query);
 
-  fileCache.add(queryHash, req.query.format, req.image);
+  fileCache.add(queryHash, req.image, req.query);
 
   res.set('Etag', queryHash);
 

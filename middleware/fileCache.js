@@ -37,22 +37,42 @@ class FileCache {
   }
 
   loadCache() {
-    let cache = new Set();
+    let cache = new Map();
+    let filePath = this.filePath;
     fs.readdirSync(this.filePath).forEach((file) => {
-      cache.add(file);
+      if (file.indexOf('.') === -1) {
+        fs.readFile(filePath + file + '.json', {
+          encoding: 'utf8',
+        }, (err, data) => {
+          if (err) {
+            console.log('cache error loading file', file, err);
+          } else {
+            cache.set(file, JSON.parse(data));
+          }
+        });
+      }
     });
-    console.log('cache contains currently', cache.size, 'elements');
     return cache;
   }
 
-  add(filename, format, data) {
+  add(hash, data, query) {
     let cache = this.cache;
-    fs.writeFile(this.filePath + filename, data, function (err) {
+    let file = this.filePath + hash;
+    fs.writeFile(file, data, function (err) {
       if (err) {
-        console.log('cache add error', filename, err);
+        console.log('cache add data error', hash, err);
       } else {
-        cache.add(filename);
-        console.log('cache successfully added file', filename);
+        query.createdAt = Date.now();
+        fs.writeFile(file + '.json', JSON.stringify(query), {
+          encoding: 'utf8',
+        }, function (err) {
+          if (err) {
+            console.log('cache add metadata error', hash, err);
+          } else {
+            cache.set(hash, query);
+            console.log('cache successfully added file data and metadata', hash);
+          }
+        });
       }
     });
   }
@@ -68,18 +88,30 @@ class FileCache {
 
   remove(hash) {
     let cache = this.cache;
+    cache.delete(hash);
     fs.exists(this.filePath + hash, (exists) => {
       if (!exists) {
-        console.log('cache could not delete file from filesystem, does not exist:', hash);
+        console.log('cache could not delete data from filesystem, does not exist:', hash);
         return;
       }
       fs.unlink(this.filePath + hash, (err) => {
         if (err) {
-          console.log('cache could not delete file from filesystem:', err);
+          console.log('cache could not delete data from filesystem:', err);
           return;
         }
-        cache.delete(hash);
-        console.log('cache successfully removed file', hash);
+        fs.exists(this.filePath + hash + '.json', (exists) => {
+          if (!exists) {
+            console.log('cache could not delete metadata from filesystem, does not exist:', hash);
+            return;
+          }
+          fs.unlink(this.filePath + hash + '.json', (err) => {
+            if (err) {
+              console.log('cache could not delete metadata from filesystem:', err);
+              return;
+            }
+            console.log('cache successfully removed file', hash);
+          });
+        });
       });
     });
   }
@@ -94,15 +126,10 @@ class FileCache {
     let expirationDate = new Date();
     expirationDate = expirationDate - expirationTimeSeconds;
     console.log('remove files from cache, older than', new Date(expirationDate));
-    this.cache.forEach((file) => {
-      fs.stat(this.filePath + file, (err, stats) => {
-        if (err) {
-          console.log('error reading file cache for cleanup', err);
-        }
-        if (stats.birthtime < expirationDate) {
-          this.remove(file);
-        }
-      });
+    this.cache.forEach((query, file) => {
+      if (query.createdAt < expirationDate) {
+        this.remove(file);
+      }
     });
   }
 }
