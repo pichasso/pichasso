@@ -27,7 +27,7 @@ router.get('/', loadParamsFromQuery, fileLoader, (req, res) => {
       filename = filepath[filepath.length - 1];
     }
   }
-  if(!filename.match(/\.pdf/ig)){
+  if (!filename.match(/\.pdf/ig)) {
     filename += '.pdf';
   }
   res.setHeader('Content-Disposition', `${attachment}; filename="${filename}"`);
