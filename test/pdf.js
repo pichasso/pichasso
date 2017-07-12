@@ -85,7 +85,7 @@ describe('PDF Controller', function () {
       });
   });
 
-  it.skip('should return the compressed file in screen quality.', (done) => {
+  it('should return the compressed file in screen quality.', (done) => {
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrl + '&quality=screen')
       .end((err, res) => {
