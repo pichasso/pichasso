@@ -62,9 +62,9 @@ function fileLoader(req, res, next) {
       encoding: null,
       url: req.params.file,
     },
-    function (error, resp, body) {
-      if (error) {
-        console.log(error);
+    function (err, resp, body) {
+      if (err) {
+        console.log(err);
         return next(new error.NotFound('Could not load given file.'));
       }
       gs()
@@ -73,11 +73,11 @@ function fileLoader(req, res, next) {
         .device('pdfwrite') // target writer / format
         .option(quality)
         .option('-q') // quite mode to write only file to stdout
-        .exec(body, function (error, stdout /* ,stderr*/) {
+        .exec(body, function (err, stdout /* ,stderr*/) {
           let sizeBefore = body ? body.length : 0;
           let sizeCompressed = stdout ? stdout.length : 0;
-          if (error || sizeBefore === 0 || sizeCompressed === 0) {
-            console.log('pdf compression failed:', error);
+          if (err || sizeBefore === 0 || sizeCompressed === 0) {
+            console.log('pdf compression failed:', err);
             return next(new error.InternalServerError('Compression failed.'));
           }
           let compressionRatio = sizeCompressed / sizeBefore;
