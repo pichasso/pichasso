@@ -1,7 +1,7 @@
 const config = require('config');
 const error = require('http-errors');
 const request = require('request');
-const spawn = require('child_process').spawn;
+const PDFCompressor = require('./pdfCompressor');
 
 function pdfLoader(req, res, next) {
   if (req.completed) {
@@ -23,68 +23,20 @@ function pdfLoader(req, res, next) {
       }
     }
 
-    let filename = '';
-    let regExp = /filename.?=.?\"(.*)\"/ig;
-    if (response.headers['content-disposition'] && response.headers['content-disposition'].match(regExp)) {
-      filename = regExp.exec(response.headers['content-disposition'])[0];
-    } else {
-      let filepath = req.query.file.split('/');
-      if (filepath.length) {
-        filename = filepath[filepath.length - 1];
-      }
-    }
-    if (!filename.match(/\.pdf/ig)) {
-      filename += '.pdf';
-    }
-    if (filename) {
-      req.query.filename = filename;
+    if (!req.query.filename) {
+      req.query.filename = extractFilename(response, req.query.file);
     }
 
-    let pdfData;
-    // https://stackoverflow.com/questions/10450120/optimize-pdf-files-with-ghostscript-or-other#10453202
-    const args = [
-      '-dQUIET',
-      '-dBATCH',
-      '-dNOPAUSE',
-      '-sDEVICE=pdfwrite',
-      '-dCompabilityLevel=1.4',
-      '-dCompressFonts=true',
-      '-dConvertCMYKImagesToRGB=true',
-      '-dDetectDuplicateImages=true',
-      '-dDownsampleColorImages=true',
-      '-dDownsampleGrayImages=true',
-      '-dDownsampleMonoImages=true',
-      `-dColorImageResolution=${dpi}`,
-      `-dGrayImageResolution=${dpi}`,
-      `-dMonoImageResolution=${dpi}`,
-      '-sOutputFile=-',
-      '-',
-    ];
-    const gs = spawn('gs', args, {stdio: ['pipe']});
-
-    gs.on('error', err => next(err));
-    gs.on('close', (code) => {
-      console.log('Close', code);
-      req.compressedFile = pdfData;
-      next();
-    });
-
-    gs.stdout.on('data', (data) => {
-      if (!pdfData) {
-        pdfData = data;
-      } else {
-        const newData = Buffer.alloc(pdfData.length + data.length);
-        newData.fill(pdfData);
-        newData.fill(data, pdfData.length);
-        pdfData = newData;
-      }
-      console.log('Data', pdfData.length);
-    });
-    gs.stdout.on('error', err => next(new error.InternalServerError(`Compression failed: ${err.message}`)));
-    gs.stderr.on('error', err => next(new error.InternalServerError(`Compression failed: ${err.message}`)));
-    gs.stdin.on('error', err => next(new error.InternalServerError(`Compression failed: ${err.message}`)));
-
-    gs.stdin.end(body, 'binary');
+    const compressor = new PDFCompressor();
+    compressor
+      .dpi(dpi)
+      .exec(body, (err, data) => {
+        if (err) {
+          return next(`Compression failed: ${err.message}`);
+        }
+        req.compressedFile = data;
+        next();
+      });
   }).on('response', (response) => {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
@@ -102,6 +54,25 @@ function pdfLoader(req, res, next) {
       return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
     }
   });
+}
+
+function extractFilename(response, fileParam) {
+  const filenameRegExp = /filename=\"(\S+)\"/ig;
+  const contentDisposition = response.headers['content-disposition'];
+  if (contentDisposition && contentDisposition.search(filenameRegExp)) {
+    return filenameRegExp.exec(contentDisposition)[1];
+  }
+
+  let filename = '';
+  const delimiterIndex = fileParam.lastIndexOf('/');
+  if (delimiterIndex !== -1) {
+    filename = fileParam.substr(delimiterIndex + 1);
+  }
+  if (!filename.endsWith('.pdf')) {
+    filename += '.pdf';
+  }
+
+  return filename;
 }
 
 module.exports = pdfLoader;

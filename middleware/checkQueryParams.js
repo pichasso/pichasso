@@ -43,7 +43,7 @@ function checkQueryParams(req, res, next) {
    * Check image specific params
    */
 
-  if (/^\/image/.test(req.baseUrl)) {
+  if (req.baseUrl.startsWith('/image')) {
     const maxEdgeLength = config.get('ImageConversion.MaxEdgeLength') > 0 ?
     config.get('ImageConversion.MaxEdgeLength') : Number.MAX_SAFE_INTEGER;
 
@@ -92,7 +92,7 @@ function checkQueryParams(req, res, next) {
    * Check PDF specific params
    */
 
-  if (/^\/pdf/.test(req.baseUrl)) {
+  if (req.baseUrl.startsWith('/pdf')) {
     if (req.query.quality) {
       const acceptedQualities = ['printer', 'screen'];
       if (!acceptedQualities.includes(req.query.quality)) {
