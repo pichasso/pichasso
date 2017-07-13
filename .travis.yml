@@ -11,8 +11,11 @@ script:
   - codecov
 notifications:
   slack:
-    on_pull_requests: false
     rooms:
       - hpi:ndJzCSHEaofBnyHTHURo0DFO
     on_success: change
+    on_pull_requests: false
+    template:
+          - "Build <%{build_url}|#%{build_number}> of *%{branch}* by %{author} %{result}."
+          - "(<%{compare_url}|%{commit}>) _%{commit_message}_"
   email: false
