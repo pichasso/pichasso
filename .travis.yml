@@ -10,4 +10,9 @@ script:
   - npm test
   - codecov
 notifications:
-  slack: hpi:ndJzCSHEaofBnyHTHURo0DFO
+  slack:
+    on_pull_requests: false
+    rooms:
+      - hpi:ndJzCSHEaofBnyHTHURo0DFO
+    on_success: change
+  email: false
