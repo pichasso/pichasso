@@ -48,6 +48,7 @@ class FileCache {
             console.log('cache error loading file', file, err);
           } else {
             cache.set(file, JSON.parse(data));
+            console.log('cache added file from disk', file, 'currently', cache.size, 'cached files');
           }
         });
       }
@@ -58,11 +59,11 @@ class FileCache {
   add(hash, data, query) {
     let cache = this.cache;
     let file = this.filePath + hash;
+    query.createdAt = Date.now();
     fs.writeFile(file, data, function (err) {
       if (err) {
         console.log('cache add data error', hash, err);
       } else {
-        query.createdAt = Date.now();
         fs.writeFile(file + '.json', JSON.stringify(query), {
           encoding: 'utf8',
         }, function (err) {

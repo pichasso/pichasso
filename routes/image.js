@@ -13,7 +13,7 @@ const onlyDevelopment = require('../middleware/onlyDevelopment');
 /* GET image. */
 router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
-  res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
+  res.setHeader('Expires', new Date(req.query.createdAt + config.get('Caching.Expires')).toUTCString());
   res.end(req.image, 'binary');
 });
 
