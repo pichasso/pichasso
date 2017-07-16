@@ -83,6 +83,11 @@ class FileCache {
     return fs.readFileSync(this.filePath + hash);
   }
 
+  metadata(hash) {
+    console.log('cache send metadata', hash);
+    return this.cache.get(hash);
+  }
+
   exists(hash) {
     return this.cache.has(hash);
   }

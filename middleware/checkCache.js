@@ -13,20 +13,11 @@ function checkCache(req, res, next) {
 
   if (cache.exists(queryHash)) {
     req.image = cache.load(queryHash);
-    return sharp(req.image)
-      .metadata()
-      .then((metadata) => {
-        req.imageProperties = metadata;
-        res.type(metadata.format);
-        res.set('Etag', queryHash);
-        req.completed = true;
-        return next();
-      })
-      .catch((error) => {
-        console.error('error loading file from cache', queryHash, error);
-        cache.remove(queryHash);
-        return next();
-      });
+    req.query = cache.metadata(queryHash);
+    res.type(req.query.format);
+    res.set('Etag', queryHash);
+    req.completed = true;
+    return next();
   }
 
   return next();
