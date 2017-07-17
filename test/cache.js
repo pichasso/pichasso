@@ -66,17 +66,22 @@ describe('Cache', () => {
 
   it('should serve files from cache', (done) => {
     sandbox.spy(fileCache, 'load');
+    let path = '/image?url=https://http.cat/400';
+    fileCache.clear();
     chai.request(server)
-      .get('/image?url=https://http.cat/400')
+      .get(path)
       .end((err, res) => {
         res.status.should.equal(200);
-        chai.request(server)
-          .get('/image?url=https://http.cat/400')
+        setTimeout(function () {
+          // wait until file persisted
+          chai.request(server)
+          .get(path)
           .end((err, res) => {
             res.should.be.ok;
             fileCache.load.calledOnce.should.be.true;
             done();
           });
+        }, 500);
       });
   });
 
@@ -88,7 +93,7 @@ describe('Cache', () => {
         res.status.should.equal(200);
         const etag = res.headers.etag;
         const cachedFilePath = config.get('Caching.Imagepath') + etag;
-        fs.writeFileSync(cachedFilePath, 'invalid data');
+        fs.unlink(cachedFilePath);
         chai.request(server)
           .get('/image?url=https://http.cat/400')
           .end((err, res) => {

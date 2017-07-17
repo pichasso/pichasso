@@ -11,14 +11,18 @@ function checkCache(req, res, next) {
   const queryHash = hash(req.query);
   req.fileHash = queryHash;
 
-  if (cache.exists(queryHash)) {
-    req.image = cache.load(queryHash);
-    req.query = cache.metadata(queryHash);
-    res.type(req.query.format);
-    res.set('Etag', queryHash);
-    req.completed = true;
-    return next();
+  try {
+    if (cache.exists(queryHash)) {
+      req.image = cache.load(queryHash);
+      req.query = cache.metadata(queryHash);
+      res.type(req.query.format);
+      res.set('Etag', queryHash);
+      req.completed = true;
+    }
+  } catch (error) {
+    console.log('error loading cached file', error);
   }
+
 
   return next();
 }

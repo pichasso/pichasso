@@ -57,6 +57,10 @@ class FileCache {
   }
 
   add(hash, data, query) {
+    if (!hash || !data || !query) {
+      console.log('invalid data was not added to cache.');
+      return;
+    }
     let cache = this.cache;
     let file = this.filePath + hash;
     query.createdAt = Date.now();

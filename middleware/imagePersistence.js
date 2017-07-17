@@ -1,4 +1,3 @@
-const hash = require('object-hash');
 const fileCache = require('../middleware/fileCache');
 
 function imagePersistence(req, res, next) {
