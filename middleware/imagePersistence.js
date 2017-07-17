@@ -6,7 +6,7 @@ function imagePersistence(req, res, next) {
     return next();
   }
 
-  let queryHash = hash(req.query);
+  let queryHash = req.fileHash;
 
   fileCache.add(queryHash, req.image, req.query);
 
