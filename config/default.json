@@ -31,6 +31,9 @@
         "Expires": 2629000000,
         "CleanupCronInterval": "00 30 3 * * 7",
         "RemoveFilesAfterExpiration": true,
-        "Imagepath": "/tmp/imagecache/"
+        "Directory": "/tmp/pichasso/"
+    },
+    "Logging": {
+        "Directory": "./log/"
     }
 }

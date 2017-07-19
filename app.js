@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const logger = require('morgan');
+const morgan = require('morgan');
+const logger = require('./controllers/logger');
 
 const index = require('./routes/index');
 const image = require('./routes/image');
@@ -17,9 +18,17 @@ checkConfig();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// setup request logging
+logger.stream = {
+  // eslint-disable-next-line no-unused-vars
+  write: function (message, encoding) {
+    logger.info('[HTTP]', message.trim());
+  },
+};
+app.use(morgan('tiny', {'stream': logger.stream}));
+
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);

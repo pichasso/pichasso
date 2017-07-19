@@ -1,5 +1,7 @@
 const config = require('config');
 const sharp = require('sharp');
+const logger = require('../controllers/logger');
+const logTag = '[Convert]';
 
 function convert(req, res, next) {
   if (req.completed) {
@@ -22,10 +24,12 @@ function convert(req, res, next) {
     } else {
       format = sharp.format['jpeg'];
     }
+    logger.info(logTag, 'Set format to', format.id);
   }
 
   // format conversion & set response type
   if (format.id !== req.imageProperties.format) {
+    logger.info(logTag, 'Convert image from', req.imageProperties.format, 'to', format.id);
     sharpInstance
       .toFormat(format, options);
   }

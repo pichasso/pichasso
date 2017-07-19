@@ -25,7 +25,7 @@ describe('Cache', () => {
       .get('/image?file=https://http.cat/400')
       .end((err, res) => {
         res.status.should.equal(200);
-        const filePath = config.get('Caching.Imagepath') + res.headers.etag;
+        const filePath = config.get('Caching.Directory') + res.headers.etag;
         fs.exists(filePath, (exists) => {
           exists.should.be.true;
           done();
@@ -95,7 +95,7 @@ describe('Cache', () => {
       .end((err, res) => {
         res.status.should.equal(200);
         const etag = res.headers.etag;
-        const cachedFilePath = config.get('Caching.Imagepath') + etag;
+        const cachedFilePath = config.get('Caching.Directory') + etag;
         fs.unlink(cachedFilePath);
         chai.request(server)
           .get('/image?file=https://http.cat/400')
