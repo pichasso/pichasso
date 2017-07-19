@@ -8,6 +8,13 @@ class FileCache {
     if (!fs.existsSync(this.filePath)) {
       fs.mkdirSync(this.filePath);
     }
+    let filePath = this.filePath;
+    fs.accessSync(filePath, fs.W_OK, function (err) {
+      if (err) {
+        console.error('Require write access for cache folder', filePath);
+        process.exit(1);
+      }
+    });
     this.cache = this.loadCache();
     let cleanupCronInterval = config.get('Caching.CleanupCronInterval');
     let expirationTimeSeconds = config.get('Caching.Expires');
