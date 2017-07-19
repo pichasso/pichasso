@@ -96,6 +96,16 @@ class FileCache {
     return this.cache.has(hash);
   }
 
+  valid(hash) {
+    let validFrom = Date.now() - config.get('Caching.Expires');
+    if (this.exists(hash)
+      && this.metadata(hash).createdAt > validFrom) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   remove(hash) {
     let cache = this.cache;
     cache.delete(hash);
