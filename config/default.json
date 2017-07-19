@@ -34,6 +34,7 @@
         "Directory": "/tmp/pichasso/"
     },
     "Logging": {
+        "EnableErrorImages": true,
         "Directory": "./log/"
     }
 }

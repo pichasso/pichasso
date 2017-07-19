@@ -22,6 +22,19 @@ describe('Image Controller', () => {
     sandbox.restore();
   });
 
+  it('should return error image', (done) => {
+    const stub = sandbox.stub(server, 'get');
+    stub.withArgs('env').returns('production');
+    stub.callThrough();
+    chai.request(server)
+      .get('/image')
+      .end((err, res) => {
+        res.status.should.equal(400);
+        res.headers['content-type'].should.equal('image/png');
+        done();
+      });
+  });
+
   it('should return undefined file', (done) => {
     chai.request(server)
       .get('/image')
