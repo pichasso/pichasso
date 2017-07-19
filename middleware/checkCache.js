@@ -1,6 +1,5 @@
 const cache = require('../middleware/fileCache');
 const hash = require('object-hash');
-const sharp = require('sharp');
 const logger = require('../controllers/logger');
 const logTag = '[CheckCache]';
 
@@ -13,25 +12,20 @@ function checkCache(req, res, next) {
   }
 
   const queryHash = hash(req.query);
+  req.fileHash = queryHash;
 
-  if (cache.exists(queryHash)) {
-    req.image = cache.load(queryHash);
-    return sharp(req.image)
-      .metadata()
-      .then((metadata) => {
-        logger.info(logTag, 'Use file from cache', queryHash);
-        req.imageProperties = metadata;
-        res.type(metadata.format);
-        res.set('Etag', queryHash);
-        req.completed = true;
-        return next();
-      })
-      .catch((error) => {
-        logger.error(logTag, 'Unable to load file', queryHash, error);
-        cache.remove(queryHash);
-        return next();
-      });
+  try {
+    if (cache.exists(queryHash)) {
+      req.image = cache.load(queryHash);
+      req.query = cache.metadata(queryHash);
+      res.type(req.query.format);
+      res.set('Etag', queryHash);
+      req.completed = true;
+    }
+  } catch (error) {
+    logger.error(logTag, 'error loading cached file', error);
   }
+
 
   return next();
 }

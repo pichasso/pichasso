@@ -22,6 +22,11 @@
         "MaxEdgeLength": 3840,
         "Progressive": true
     },
+    "PDFConversion": {
+        "DefaultQuality": "printer",
+        "Attachment": "inline",
+        "MaxFileSize": 51200
+    },
     "Caching": {
         "Expires": 2629000000,
         "CleanupCronInterval": "00 30 3 * * 7",

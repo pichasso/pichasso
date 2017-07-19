@@ -66,3 +66,4 @@ docker-compose.override.yml
 
 # Mac
 .DS_Store
+package-lock.json
