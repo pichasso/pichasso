@@ -1,4 +1,3 @@
-const hash = require('object-hash');
 const fileCache = require('../middleware/fileCache');
 
 function imagePersistence(req, res, next) {
@@ -6,9 +5,9 @@ function imagePersistence(req, res, next) {
     return next();
   }
 
-  let queryHash = hash(req.query);
+  let queryHash = req.fileHash;
 
-  fileCache.add(queryHash, req.query.format, req.image);
+  fileCache.add(queryHash, req.image, req.query);
 
   res.set('Etag', queryHash);
 
