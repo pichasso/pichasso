@@ -144,9 +144,7 @@ class FileCache {
   }
 
   clear() {
-    fs.readdir(this.filePath, (err, files) => {
-      files.forEach(file => this.remove(file));
-    });
+    this.cache.forEach((metadata, hash) => this.remove(hash));
   }
 
   cleanup(expirationTimeSeconds) {

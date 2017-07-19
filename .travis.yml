@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
       - libopencv-dev
+      - ghostscript
 script:
   - npm test
   - codecov

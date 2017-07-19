@@ -1,14 +1,18 @@
 const config = require('config');
 const error = require('http-errors');
 const request = require('request');
-const sharp = require('sharp');
+const PDFCompressor = require('./pdfCompressor');
+const extractFilename = require('./extractFilename');
 
-function imageLoader(req, res, next) {
+function pdfLoader(req, res, next) {
   if (req.completed) {
     return next();
   }
 
-  const r = request({
+  const quality = req.query.quality ? req.query.quality : config.get('PDFConversion.DefaultQuality');
+  const dpi = quality === 'screen' ? 72 : 300;
+
+  let r = request({
     url: req.query.file,
     encoding: 'binary',
   }, (err, response, body) => {
@@ -20,27 +24,32 @@ function imageLoader(req, res, next) {
       }
     }
 
-    req.image = Buffer.alloc(body.length, body, 'binary');
-    sharp(req.image)
-      .metadata()
-      .then((metadata) => {
-        req.imageProperties = metadata;
-        req.imageProperties.aspectRatio = metadata.width / metadata.height;
+    if (!req.query.filename) {
+      req.query.filename = extractFilename(response, req.query.file);
+    }
+
+    const compressor = new PDFCompressor();
+    compressor
+      .dpi(dpi)
+      .exec(body, (err, data) => {
+        if (err) {
+          return next(`Compression failed: ${err.message}`);
+        }
+        req.compressedFile = data;
         next();
-      })
-      .catch(err => next(new error.BadRequest(`Request failed: ${err.message}`)));
+      });
   }).on('response', (response) => {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
     const contentType = response.headers['content-type'];
-    const sizeLimit = config.get('ImageSource.MaxFileSize');
+    const sizeLimit = config.get('PDFConversion.MaxFileSize');
 
     if (statusCode !== 200) {
       r.abort();
       return next(new error.NotFound('Request failed.'));
-    } else if (contentType && !/^image\//i.test(contentType)) {
+    } else if (contentType && !/^application\/pdf/i.test(contentType)) {
       r.abort();
-      return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
+      return next(new error.BadRequest(`Invalid content-type. Expected pdf, but received ${contentType}.`));
     } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
       r.abort();
       return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
@@ -48,4 +57,4 @@ function imageLoader(req, res, next) {
   });
 }
 
-module.exports = imageLoader;
+module.exports = pdfLoader;
