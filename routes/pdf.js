@@ -3,6 +3,7 @@ const router = new express.Router();
 const config = require('config');
 const pdfLoader = require('../middleware/pdfLoader');
 const checkQueryParams = require('../middleware/checkQueryParams');
+const onlyDevelopment = require('../middleware/onlyDevelopment');
 
 /* GET pdf. */
 router.get('/', checkQueryParams, pdfLoader, (req, res) => {
@@ -21,6 +22,10 @@ router.get('/', checkQueryParams, pdfLoader, (req, res) => {
     res.setHeader('Content-Disposition', `${attachment}; filename="${req.query.filename}"`);
   }
   res.end(req.compressedFile, 'binary');
+});
+
+router.get('/test', onlyDevelopment, function (req, res) {
+  res.render('pdf');
 });
 
 module.exports = router;
