@@ -66,7 +66,7 @@ describe('Cache', () => {
 
   it('should serve files from cache', (done) => {
     sandbox.spy(fileCache, 'load');
-    let path = '/image?url=https://http.cat/400';
+    let path = '/image?file=https://http.cat/400';
     fileCache.clear();
     chai.request(server)
       .get(path)

@@ -48,8 +48,10 @@ class PDFCompressor {
 
     gs.on('error', callback);
     gs.on('close', (code) => {
-      console.log('Close', code);
-      callback(null, pdfBuffer);
+      if (code === 0) {
+        return callback(null, pdfBuffer);
+      }
+      callback(new Error('Closed with code ' + code));
     });
 
     gs.stdout.on('error', callback);
@@ -62,7 +64,6 @@ class PDFCompressor {
         extendedBuffer.fill(data, pdfBuffer.length);
         pdfBuffer = extendedBuffer;
       }
-      console.log('Data', pdfBuffer.length);
     });
 
     gs.stderr.on('error', callback);
