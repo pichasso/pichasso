@@ -26,7 +26,7 @@ function detect(image, width, height) {
 
       smartcrop.crop(image, options).then((result) => {
         const crop = result.topCrop;
-        resolve({
+        resolve(faces.length > 0, {
           width: crop.width,
           height: crop.height,
           left: crop.x,

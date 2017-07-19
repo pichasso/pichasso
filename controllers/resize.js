@@ -93,13 +93,23 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
 function cropFill(sharpInstance, req, width, height, aspectRatio, gravity) {
   if (gravity === 'faces') {
     return faceDetection(req.image, width, height)
-      .then(region =>
-        sharpInstance
-          .extract(region)
-          .resize(width, height)
-      );
+      .then((detectedFaces, region) => {
+        if (detectedFaces) {
+          return sharpInstance
+            .extract(region)
+            .resize(width, height);
+        }
+
+        // fallback to shannon entropy
+        gravity = sharp.gravity['entropy'];
+        return fillImage(sharpInstance, req, width, height, aspectRatio, gravity);
+      });
   }
 
+  return fillImage(sharpInstance, req, width, height, aspectRatio, gravity);
+}
+
+function fillImage(sharpInstance, req, width, heigth, aspectRatio, gravity) {
   let fillWidth,
     fillHeight;
   if (req.imageProperties.aspectRatio >= aspectRatio) {
