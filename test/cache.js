@@ -71,6 +71,9 @@ describe('Cache', () => {
     chai.request(server)
       .get(path)
       .end((err, res) => {
+        if (err) {
+          console.log(err);
+        }
         res.status.should.equal(200);
         setTimeout(function () {
           // wait until file persisted
