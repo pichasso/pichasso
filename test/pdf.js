@@ -93,13 +93,4 @@ describe('PDF Controller', function () {
         done();
       });
   });
-
-  it.skip('should return the compressed file in ebook quality.', (done) => {
-    chai.request(server)
-      .get('/pdf?file=' + samplePdfUrl + '&quality=ebook')
-      .end((err, res) => {
-        res.status.should.equal(200);
-        done();
-      });
-  });
 });

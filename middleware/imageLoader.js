@@ -1,5 +1,7 @@
 const config = require('config');
 const error = require('http-errors');
+const logger = require('../controllers/logger');
+const logTag = '[ImageLoader]';
 const request = require('request');
 const sharp = require('sharp');
 
@@ -16,6 +18,7 @@ function imageLoader(req, res, next) {
       if (err.code === 'ENOTFOUND') {
         return next(new error.NotFound('Request failed.'));
       } else {
+        logger.error(logTag, 'Request failed', err);
         return next(new error.BadRequest(`Request failed: ${err.message}`));
       }
     }
@@ -28,7 +31,10 @@ function imageLoader(req, res, next) {
         req.imageProperties.aspectRatio = metadata.width / metadata.height;
         next();
       })
-      .catch(err => next(new error.BadRequest(`Request failed: ${err.message}`)));
+      .catch((err) => {
+        logger.error(logTag, 'Sharp is unable to load image', err);
+        return next(new error.BadRequest(`Request failed: ${err.message}`));
+      });
   }).on('response', (response) => {
     const statusCode = response.statusCode;
     const contentLength = Number(response.headers['content-length']);
