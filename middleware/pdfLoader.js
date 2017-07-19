@@ -57,10 +57,14 @@ function pdfLoader(req, res, next) {
 }
 
 function extractFilename(response, fileParam) {
-  const filenameRegExp = /filename=\"(\S+)\"/ig;
+  const filenameRegExp = /filename=\"(.+)\"/ig;
   const contentDisposition = response.headers['content-disposition'];
   if (contentDisposition && contentDisposition.search(filenameRegExp)) {
     return filenameRegExp.exec(contentDisposition)[1];
+  }
+
+  while (fileParam.endsWith('/')) {
+    fileParam = fileParam.substr(0, fileParam.length - 1);
   }
 
   let filename = '';
