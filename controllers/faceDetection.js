@@ -22,12 +22,12 @@ function detect(image, width, height) {
         }));
       }
 
-      logger.debug(logTag, 'Detected', faces ? faces.length : 'no', 'face(s)');
+      logger.debug(logTag, 'Detected', faces.length, 'face(s)');
 
       smartcrop.crop(image, options).then((result) => {
         const crop = result.topCrop;
         resolve({
-          detectedFaces: !!faces,
+          detectedFaces: faces.length,
           region: {
             width: crop.width,
             height: crop.height,
