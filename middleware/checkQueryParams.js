@@ -8,6 +8,9 @@ function checkQueryParams(req, res, next) {
   if (!req.query.file) {
     return next(new error.BadRequest('Undefined file.'));
   }
+  if (typeof (req.query.file) !== 'string') {
+    return next(new error.BadRequest('Format of file must be string.'));
+  }
 
   /**
    * Check resource parameter
