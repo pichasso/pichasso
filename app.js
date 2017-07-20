@@ -1,13 +1,16 @@
+const config = require('config');
 const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
 const logger = require('./controllers/logger');
+const logTag = '[App]';
+const morgan = require('morgan');
+const path = require('path');
 
 const index = require('./routes/index');
 const image = require('./routes/image');
 const pdf = require('./routes/pdf');
 
 const checkConfig = require('./controllers/checkConfig');
+const errorImage = require('./middleware/errorImage');
 
 const app = express();
 
@@ -49,9 +52,20 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  if (!config.get('Logging.EnableErrorImages') || req.app.get('env') === 'development') {
+    res.render('error');
+    return;
+  }
+
+  errorImage(err)
+    .then((imageBuffer) => {
+      res.setHeader('content-type', 'image/png');
+      res.end(imageBuffer);
+    }).catch((imageError) => {
+      logger.error(logTag, 'Unable to generate error image:', imageError);
+      res.render('error');
+    });
 });
 
 module.exports = app;

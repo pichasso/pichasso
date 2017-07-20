@@ -32,6 +32,7 @@ function resize(req, res, next) {
   let gravity;
   if (!req.query.gravity) {
     gravity = config.get('ImageConversion.DefaultGravity');
+    logger.debug(logTag, 'Use default gravity', gravity);
   } else if (sharp.gravity[req.query.gravity]) {
     gravity = sharp.gravity[req.query.gravity];
   } else if (sharp.strategy[req.query.gravity]) {
@@ -93,13 +94,24 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
 function cropFill(sharpInstance, req, width, height, aspectRatio, gravity) {
   if (gravity === 'faces') {
     return faceDetection(req.image, width, height)
-      .then(region =>
-        sharpInstance
-          .extract(region)
-          .resize(width, height)
-      );
+      .then((result) => {
+        if (result.detectedFaces) {
+          return sharpInstance
+            .extract(result.region)
+            .resize(width, height);
+        } else {
+          // fallback to shannon entropy
+          gravity = sharp.strategy['entropy'];
+          logger.verbose(logTag, 'Fallback to Gravity', gravity);
+          return fillImage(sharpInstance, req, width, height, aspectRatio, gravity);
+        }
+      });
+  } else {
+    return fillImage(sharpInstance, req, width, height, aspectRatio, gravity);
   }
+}
 
+function fillImage(sharpInstance, req, width, height, aspectRatio, gravity) {
   let fillWidth,
     fillHeight;
   if (req.imageProperties.aspectRatio >= aspectRatio) {
