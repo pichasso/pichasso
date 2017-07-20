@@ -103,13 +103,22 @@ function checkQueryParams(req, res, next) {
     if (req.query.crop && !constants.crop.includes(req.query.crop)) {
       return next(new error.BadRequest(`Invalid cropping method, received ${req.query.crop}.`));
     }
+    if (req.query.crop) {
+      logger.debug(logTag, 'Crop', req.query.crop);
+    }
 
     if (req.query.gravity && !constants.gravity.includes(req.query.gravity)) {
       return next(new error.BadRequest(`Invalid gravity, received ${req.query.gravity}.`));
     }
+    if (req.query.gravity) {
+      logger.debug(logTag, 'Gravity', req.query.gravity);
+    }
 
     if (req.query.format && !constants.format.includes(req.query.format)) {
       return next(new error.BadRequest(`Invalid format, received ${req.query.format}.`));
+    }
+    if (req.query.format) {
+      logger.debug(logTag, 'Format', req.query.format);
     }
   }
 

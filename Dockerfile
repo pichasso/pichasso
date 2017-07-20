@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 ADD ./package.json /usr/src/app/
 RUN npm install 
 
-RUN mkdir -p /tmp/imagecache
+RUN mkdir -p /tmp/pichasso
 
 ADD ./ /usr/src/app
 

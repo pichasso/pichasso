@@ -22,15 +22,18 @@ function detect(image, width, height) {
         }));
       }
 
-      logger.debug(logTag, 'Detected', faces.length, 'faces');
+      logger.debug(logTag, 'Detected', faces.length, 'face(s)');
 
       smartcrop.crop(image, options).then((result) => {
         const crop = result.topCrop;
         resolve({
-          width: crop.width,
-          height: crop.height,
-          left: crop.x,
-          top: crop.y,
+          detectedFaces: faces.length,
+          region: {
+            width: crop.width,
+            height: crop.height,
+            left: crop.x,
+            top: crop.y,
+          },
         });
       });
     });
