@@ -1,5 +1,34 @@
 {
-    "crop": ["fill", "fit", "scale"],
-    "gravity": ["entropy", "faces", "center", "north", "east", "south", "west"],
-    "format": ["webp", "jpeg", "png"]
+    "crop": [
+        "fill",
+        "fit",
+        "scale"
+    ],
+    "format": [
+        "webp",
+        "jpeg",
+        "png"
+    ],
+    "gravity": [
+        "entropy",
+        "faces",
+        "center",
+        "north",
+        "east",
+        "south",
+        "west"
+    ],
+    "imageQuery": [
+        "file",
+        "width",
+        "height",
+        "quality",
+        "crop",
+        "format",
+        "gravity"
+    ],
+    "pdfQuery": [
+        "file",
+        "quality"
+    ]
 }
