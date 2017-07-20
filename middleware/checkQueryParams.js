@@ -119,6 +119,9 @@ function checkQueryParams(req, res, next) {
 
   if (req.baseUrl.startsWith('/pdf')) {
     removeIllegalParameters(constants.pdfQuery, req.query);
+    if (req.query.download) {
+      req.query.download = true;
+    }
     if (req.query.quality) {
       const acceptedQualities = ['printer', 'screen'];
       if (!acceptedQualities.includes(req.query.quality)) {

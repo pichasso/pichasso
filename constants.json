@@ -28,6 +28,7 @@
         "gravity"
     ],
     "pdfQuery": [
+        "download",
         "file",
         "quality"
     ]
