@@ -139,7 +139,8 @@ describe('Cache', () => {
         });
     });
 
-    it('should return same etag for same pdf', (done) => {
+    it('should return same etag for same pdf', function (done) {
+      this.timeout(5000);
       chai.request(server)
         .get(`/pdf?file=${samplePdfUrl}`)
         .end((err, res) => {
