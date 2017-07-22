@@ -16,9 +16,8 @@ function checkCache(req, res, next) {
 
   try {
     if (cache.exists(queryHash)) {
-      req.image = cache.load(queryHash);
+      req.file = cache.load(queryHash);
       req.query = cache.metadata(queryHash);
-      res.type(req.query.format);
       res.set('Etag', queryHash);
       req.completed = true;
     }

@@ -27,7 +27,7 @@ describe('PDF Controller', function () {
   });
 
   // file
-  it('should fail save on not pdf resources.', (done) => {
+  it('should fail safely on non-pdf resources', (done) => {
     chai.request(server)
       .get('/pdf?file=' + 'https://openwho.org/files')
       .end((err, res) => {
@@ -36,7 +36,7 @@ describe('PDF Controller', function () {
       });
   });
 
-  it('should return the compressed file.', (done) => {
+  it('should return the compressed file', (done) => {
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrl)
       .end((err, res) => {
@@ -45,7 +45,8 @@ describe('PDF Controller', function () {
       });
   });
 
-  it('should return the compressed file (even without extension).', (done) => {
+  it('should return the compressed file (even without extension)', function (done) {
+    this.timeout(30000);
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrlNoExtension)
       .end((err, res) => {
@@ -55,7 +56,7 @@ describe('PDF Controller', function () {
   });
 
   // download
-  it('should download the compressed file.', (done) => {
+  it('should download the compressed file', (done) => {
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrl + '&download=1')
       .end((err, res) => {
@@ -65,7 +66,7 @@ describe('PDF Controller', function () {
       });
   });
 
-  it('should not download the compressed file.', (done) => {
+  it('should not download the compressed file', (done) => {
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrl)
       .end((err, res) => {
@@ -76,7 +77,7 @@ describe('PDF Controller', function () {
   });
 
   // quality
-  it('should return the compressed file in printer quality.', (done) => {
+  it('should return the compressed file in printer quality', (done) => {
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrl + '&quality=printer')
       .end((err, res) => {
@@ -85,7 +86,7 @@ describe('PDF Controller', function () {
       });
   });
 
-  it('should return the compressed file in screen quality.', (done) => {
+  it('should return the compressed file in screen quality', (done) => {
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrl + '&quality=screen')
       .end((err, res) => {

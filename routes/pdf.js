@@ -3,9 +3,12 @@ const router = new express.Router();
 const config = require('config');
 const pdfLoader = require('../middleware/pdfLoader');
 const checkQueryParams = require('../middleware/checkQueryParams');
+const checkEtag = require('../middleware/checkEtag');
+const checkCache = require('../middleware/checkCache');
+const persist = require('../middleware/filePersistence');
 
 /* GET pdf. */
-router.get('/', checkQueryParams, pdfLoader, (req, res) => {
+router.get('/', checkQueryParams, checkEtag, checkCache, pdfLoader, persist, (req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
   if (req.get('Content-Type')) {

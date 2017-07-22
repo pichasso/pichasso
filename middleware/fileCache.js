@@ -56,9 +56,9 @@ class FileCache {
         }, (err, data) => {
           if (err) {
             logger.error(logTag, 'Cache error loading metadata file', file, err);
-          } else {
+          } else if (data) {
             cache.set(file, JSON.parse(data));
-            logger.info(logTag, 'Cache added file from disk', file, 'currently', cache.size, 'cached files');
+            logger.verbose(logTag, 'Cache added file from disk', file, 'currently', cache.size, 'cached files');
           }
         });
       }
@@ -98,7 +98,7 @@ class FileCache {
   }
 
   metadata(hash) {
-    logger.verbose(logTag, 'Cache send metadata', hash);
+    logger.verbose(logTag, 'Return metadata', hash);
     return this.cache.get(hash);
   }
 

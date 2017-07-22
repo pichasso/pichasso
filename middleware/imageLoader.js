@@ -23,8 +23,8 @@ function imageLoader(req, res, next) {
       }
     }
 
-    req.image = Buffer.alloc(body.length, body, 'binary');
-    sharp(req.image)
+    req.file = Buffer.alloc(body.length, body, 'binary');
+    sharp(req.file)
       .metadata()
       .then((metadata) => {
         req.imageProperties = metadata;

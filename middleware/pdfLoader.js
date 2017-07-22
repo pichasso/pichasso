@@ -35,7 +35,7 @@ function pdfLoader(req, res, next) {
         if (err) {
           return next(`Compression failed: ${err.message}`);
         }
-        req.compressedFile = data;
+        req.file = data;
         next();
       });
   }).on('response', (response) => {

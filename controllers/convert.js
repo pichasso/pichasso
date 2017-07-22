@@ -7,7 +7,7 @@ function convert(req, res, next) {
   if (req.completed) {
     return next();
   }
-  let sharpInstance = sharp(req.image);
+  let sharpInstance = sharp(req.file);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = req.query.quality;
 
@@ -37,7 +37,7 @@ function convert(req, res, next) {
 
   sharpInstance.toBuffer()
     .then((buffer) => {
-      req.image = buffer;
+      req.file = buffer;
       return next();
     })
     .catch(error => next(error));
