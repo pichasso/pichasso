@@ -99,6 +99,13 @@ function checkQueryParams(req, res, next) {
 
     if (req.query.format && !constants.format.includes(req.query.format)) {
       return next(new error.BadRequest(`Invalid format, received ${req.query.format}.`));
+    } else if (!req.query.format) {
+      const acceptHeader = req.get('accept');
+      logger.debug(logTag, 'Format undefined.', acceptHeader ? `Client accepts: ${acceptHeader}` : 'No accept header set.');
+      if (acceptHeader && acceptHeader.match(/image\/webp/gi)) {
+        logger.verbose(logTag, 'Format set to webp');
+        req.query.format = 'webp';
+      }
     }
     if (req.query.format) {
       logger.debug(logTag, 'Format', req.query.format);

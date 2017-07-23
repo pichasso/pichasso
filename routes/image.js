@@ -1,5 +1,7 @@
 const express = require('express');
 const router = new express.Router();
+const logger = require('../controllers/logger');
+const logTag = '[ImageRoute]';
 const config = require('config');
 const checkQueryParams = require('../middleware/checkQueryParams');
 const checkEtag = require('../middleware/checkEtag');
@@ -14,7 +16,9 @@ const onlyDevelopment = require('../middleware/onlyDevelopment');
 router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
+  res.type(req.query.format);
   res.end(req.file, 'binary');
+  logger.debug(logTag, 'Response headers:', res.getHeaders());
 });
 
 router.get('/test', onlyDevelopment, function (req, res) {

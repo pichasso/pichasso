@@ -20,7 +20,7 @@ const samplePdfUrlNoExtension = 'https://openwho.org/files/d78ff47e-7475-48eb-bb
 // download
 // quality: printer, screen or ebook (default: printer)
 describe('PDF Controller', function () {
-  this.timeout(20000);
+  this.timeout(30000);
 
   afterEach(function () {
     sandbox.restore();
@@ -46,7 +46,6 @@ describe('PDF Controller', function () {
   });
 
   it('should return the compressed file (even without extension)', function (done) {
-    this.timeout(30000);
     chai.request(server)
       .get('/pdf?file=' + samplePdfUrlNoExtension)
       .end((err, res) => {

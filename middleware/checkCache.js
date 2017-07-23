@@ -5,12 +5,6 @@ const logTag = '[CheckCache]';
 
 function checkCache(req, res, next) {
   // generate hash and check if image exists in cache
-  let accept = req.get('accept');
-  if (!req.query.format && /image\/webp/.test(accept)) {
-    logger.verbose(logTag, 'Client accepts webp');
-    req.query.format = 'webp';
-  }
-
   const queryHash = hash(req.query);
   req.fileHash = queryHash;
 
@@ -18,6 +12,7 @@ function checkCache(req, res, next) {
     if (cache.exists(queryHash)) {
       req.file = cache.load(queryHash);
       req.query = cache.metadata(queryHash);
+      logger.debug(logTag, 'Metadata', req.query);
       res.set('Etag', queryHash);
       req.completed = true;
     }

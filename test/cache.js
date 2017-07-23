@@ -117,7 +117,9 @@ describe('Cache', () => {
     });
   });
 
-  describe('PDFs', () => {
+  describe('PDFs', function () {
+    this.timeout(30000);
+
     beforeEach(() => {
       fileCache.clear();
     });
@@ -140,7 +142,6 @@ describe('Cache', () => {
     });
 
     it('should return same etag for same pdf', function (done) {
-      this.timeout(5000);
       chai.request(server)
         .get(`/pdf?file=${samplePdfUrl}`)
         .end((err, res) => {
@@ -172,7 +173,6 @@ describe('Cache', () => {
     });
 
     it('should serve files from cache', function (done) {
-      this.timeout(5000);
       sandbox.spy(fileCache, 'load');
       let path = `/pdf?file=${samplePdfUrl}`;
       fileCache.clear();
@@ -194,7 +194,6 @@ describe('Cache', () => {
     });
 
     it('should download the file again, if cache fails', function (done) {
-      this.timeout(5000);
       sandbox.spy(fileCache, 'remove');
       chai.request(server)
         .get(`/pdf?file=${samplePdfUrl}`)
