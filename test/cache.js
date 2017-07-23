@@ -165,8 +165,8 @@ describe('Cache', () => {
           chai.request(server)
             .get(`/pdf?file=${samplePdfUrl}`)
             .set('If-None-Match', res.headers.etag)
-            .end((err, res) => {
-              res.status.should.equal(304);
+            .end((sndErr, sndRes) => {
+              sndRes.status.should.equal(304);
               done();
             });
         });
