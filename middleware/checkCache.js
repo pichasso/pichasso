@@ -17,7 +17,7 @@ function checkCache(req, res, next) {
       req.completed = true;
     }
   } catch (error) {
-    logger.error(logTag, 'error loading cached file', error);
+    logger.error(logTag, 'Unable to load cached file:', error);
   }
 
 

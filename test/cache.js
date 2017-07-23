@@ -17,8 +17,9 @@ const sampleImageUrl = 'https://http.cat/400';
 
 describe('Cache', () => {
   describe('Images', () => {
-    beforeEach(() => {
+    beforeEach((done) => {
       fileCache.clear();
+      setTimeout(done, 1000);
     });
 
     afterEach(() => {
@@ -120,8 +121,9 @@ describe('Cache', () => {
   describe('PDFs', function () {
     this.timeout(30000);
 
-    beforeEach(() => {
+    beforeEach((done) => {
       fileCache.clear();
+      setTimeout(done, 1000);
     });
 
     afterEach(() => {
@@ -162,13 +164,15 @@ describe('Cache', () => {
         .get(`/pdf?file=${samplePdfUrl}`)
         .end((err, res) => {
           res.status.should.equal(200);
-          chai.request(server)
-            .get(`/pdf?file=${samplePdfUrl}`)
-            .set('If-None-Match', res.headers.etag)
-            .end((sndErr, sndRes) => {
-              sndRes.status.should.equal(304);
-              done();
-            });
+          setTimeout(() => {
+            chai.request(server)
+              .get(`/pdf?file=${samplePdfUrl}`)
+              .set('If-None-Match', res.headers.etag)
+              .end((sndErr, sndRes) => {
+                sndRes.status.should.equal(304);
+                done();
+              });
+          }, 500);
         });
     });
 
