@@ -6,7 +6,7 @@ $('#compress').slider({
 
 function updateImageUrl() {
   var values = $('#configure-form').serialize();
-  if ($('#configure-form').attr('action') == '/pdf') {
+  if ($('#configure-form').attr('action') === '/pdf') {
     $('#result-pdf-frame').attr('src', '/pdf?' + values);
   } else {
     $('#result-image').attr('src', '/image?' + values);
@@ -20,6 +20,9 @@ $(document).ready(function () {
     e.preventDefault();
     updateImageUrl();
   });
+
+  var width = $('#result-pdf-frame').width();
+  $('#result-pdf-frame').height(width);
 
   var handle = $('#custom-quality-slider-handle');
   if (handle) {

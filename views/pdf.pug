@@ -14,7 +14,7 @@ block scripts
 
 
 block content
-    h1= 'pdf test inteface'
+    h1= 'pdf test interface'
     p= 'give me an pdf url and let me compress it quickly for you'
 
     div.container-fluid
@@ -23,7 +23,7 @@ block content
                 form#configure-form.form-horizontal(method="get" action="/pdf")
 
                     div.form-group
-                        label.control-label.col-sm-4(for='file')= 'image'
+                        label.control-label.col-sm-4(for='file')= 'file'
                         div.col-sm-8
                             input#file.form-control(type='text', name='file', placeholder='give me any url to an image', required)
 
@@ -33,7 +33,6 @@ block content
                             select#quality.form-control(name='quality')
                                 option(value='')= 'printer (default)'
                                 option(value='screen')= 'screen'
-                                option(value='printer')= 'printer'
 
                     div.form-group
                         div.col-sm-offset-4.col-sm-8
