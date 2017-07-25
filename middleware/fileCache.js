@@ -147,6 +147,7 @@ class FileCache {
   }
 
   clear() {
+    logger.verbose(logTag, 'Clear cache completely.');
     this.cache.forEach((metadata, hash) => this.remove(hash));
   }
 

@@ -5,6 +5,7 @@ const logger = require('../controllers/logger');
 const logTag = '[PdfRoute]';
 const pdfLoader = require('../middleware/pdfLoader');
 const checkQueryParams = require('../middleware/checkQueryParams');
+const onlyDevelopment = require('../middleware/onlyDevelopment');
 const checkEtag = require('../middleware/checkEtag');
 const checkCache = require('../middleware/checkCache');
 const persist = require('../middleware/filePersistence');
@@ -27,6 +28,10 @@ router.get('/', checkQueryParams, checkEtag, checkCache, pdfLoader, persist, (re
   }
   res.end(req.compressedFile, 'binary');
   logger.debug(logTag, 'Response headers:', res.getHeaders());
+});
+
+router.get('/test', onlyDevelopment, function (req, res) {
+  res.render('pdf');
 });
 
 module.exports = router;
