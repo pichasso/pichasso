@@ -130,7 +130,7 @@ describe('Image Controller', () => {
   it('should return file too large', (done) => {
     chai.request(server)
       .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/2/2c/' +
-        'A_new_map_of_Great_Britain_according_to_the_newest_and_most_exact_observations_%288342715024%29.jpg')
+      'A_new_map_of_Great_Britain_according_to_the_newest_and_most_exact_observations_%288342715024%29.jpg')
       .end((err, res) => {
         res.status.should.equal(400);
         res.text.should.have.string('File exceeds size limit');
@@ -139,16 +139,16 @@ describe('Image Controller', () => {
   });
 
   it('should return the same image', () => chai.request(server)
-      .get('/image?file=https://http.cat/100')
-      .then((res) => {
-        res.should.be.ok;
-      }));
+    .get('/image?file=https://http.cat/100')
+    .then((res) => {
+      res.should.be.ok;
+    }));
 
   it('should handle response header without content-length', () => chai.request(server)
-      .get('/image?file=https://i1.sndcdn.com/avatars-000049805703-zgm5k2-t500x500.jpg')
-      .then((res) => {
-        res.should.be.ok;
-      }));
+    .get('/image?file=https://i1.sndcdn.com/avatars-000049805703-zgm5k2-t500x500.jpg')
+    .then((res) => {
+      res.should.be.ok;
+    }));
 
   describe('(width and height)', () => {
     it('should return an invalid width error', (done) => {
@@ -161,18 +161,18 @@ describe('Image Controller', () => {
     });
 
     it('should return the width scaled image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&width=100')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check width
-        }));
+      .get('/image?file=https://http.cat/100&width=100')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check width
+      }));
 
     it('should return the width upscaled image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&width=1000')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check width
-        }));
+      .get('/image?file=https://http.cat/100&width=1000')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check width
+      }));
 
     it('should return an invalid height error', (done) => {
       chai.request(server)
@@ -184,18 +184,18 @@ describe('Image Controller', () => {
     });
 
     it('should return the height scaled image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&height=100')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check height
-        }));
+      .get('/image?file=https://http.cat/100&height=100')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check height
+      }));
 
     it('should return the height upscaled image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&height=1000')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check height
-        }));
+      .get('/image?file=https://http.cat/100&height=1000')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check height
+      }));
 
 
     it('should return the height and width scaled (square) image', () => chai.request(server)
@@ -225,32 +225,32 @@ describe('Image Controller', () => {
     });
 
     it('should return the uncropped image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&crop=fill')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check width
-        }));
+      .get('/image?file=https://http.cat/100&crop=fill')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check width
+      }));
 
     it('should return the cropped(fill) image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&width=100&crop=fill')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check width
-        }));
+      .get('/image?file=https://http.cat/100&width=100&crop=fill')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check width
+      }));
 
     it('should return the cropped(fit) image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&width=100&crop=fit')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check width
-        }));
+      .get('/image?file=https://http.cat/100&width=100&crop=fit')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check width
+      }));
 
     it('should return the cropped(scale) image', () => chai.request(server)
-        .get('/image?file=https://http.cat/100&width=100&crop=scale')
-        .then((res) => {
-          res.should.be.ok;
-          // TODO: check width
-        }));
+      .get('/image?file=https://http.cat/100&width=100&crop=scale')
+      .then((res) => {
+        res.should.be.ok;
+        // TODO: check width
+      }));
   });
 
   describe('(gravity)', () => {
@@ -285,7 +285,7 @@ describe('Image Controller', () => {
       this.timeout(10000);
       chai.request(server)
         .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/8/8c/Telefunken_FuBK.jpg' +
-          '&width=100&height=150&crop=fill&gravity=faces')
+        '&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
@@ -296,7 +296,7 @@ describe('Image Controller', () => {
       this.timeout(10000);
       chai.request(server)
         .get('/image?file=http://www.loupiote.com/photos_l/15703433919-tristan-savatier-mountain-hiking' +
-          '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=faces')
+        '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
@@ -384,7 +384,22 @@ describe('Image Controller', () => {
         });
     });
 
+    it('should not return the image as webp automatically, if accepted', (done) => {
+      chai.request(server)
+        .get('/image?file=https://http.cat/100')
+        .set('Accept', 'image/webp')
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.headers['content-type'].should.equal('image/jpeg');
+          done();
+        });
+    });
+
     it('should return the image as webp automatically, if accepted', (done) => {
+      const stub = sandbox.stub(config, 'get');
+      stub.withArgs('ImageConversion.DefaultFormatDetection')
+        .returns(true);
+      stub.callThrough();
       chai.request(server)
         .get('/image?file=https://http.cat/100')
         .set('Accept', 'image/webp')
