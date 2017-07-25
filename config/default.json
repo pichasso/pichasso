@@ -16,7 +16,7 @@
     },
     "ImageConversion": {
         "DefaultCropping": "fill",
-        "DefaultFormat": "accepted",
+        "DefaultFormatDetection": false,
         "DefaultGravity": "entropy",
         "DefaultQuality": 80,
         "MaxEdgeLength": 3840,
