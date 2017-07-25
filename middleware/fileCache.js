@@ -56,9 +56,9 @@ class FileCache {
         }, (err, data) => {
           if (err) {
             logger.error(logTag, 'Cache error loading metadata file', file, err);
-          } else {
+          } else if (data) {
             cache.set(file, JSON.parse(data));
-            logger.info(logTag, 'Cache added file from disk', file, 'currently', cache.size, 'cached files');
+            logger.verbose(logTag, 'Cache added file from disk', file, 'currently', cache.size, 'cached files');
           }
         });
       }
@@ -68,7 +68,7 @@ class FileCache {
 
   add(hash, data, query) {
     if (!hash || !data || !query) {
-      logger.error(logTag, 'Invalid data was not added to cache.');
+      logger.warn(logTag, 'Invalid data was not added to cache.');
       return;
     }
     let cache = this.cache;
@@ -98,7 +98,7 @@ class FileCache {
   }
 
   metadata(hash) {
-    logger.verbose(logTag, 'Cache send metadata', hash);
+    logger.verbose(logTag, 'Return metadata', hash);
     return this.cache.get(hash);
   }
 
@@ -126,20 +126,20 @@ class FileCache {
       }
       fs.unlink(this.filePath + hash, (err) => {
         if (err) {
-          logger.error(logTag, 'cache could not delete data from filesystem:', err);
+          logger.error(logTag, 'Could not delete data from filesystem:', err);
           return;
         }
         fs.exists(this.filePath + hash + '.json', (exists) => {
           if (!exists) {
-            logger.error(logTag, 'cache could not delete metadata from filesystem, does not exist:', hash);
+            logger.error(logTag, 'Could not delete metadata from filesystem, does not exist:', hash);
             return;
           }
           fs.unlink(this.filePath + hash + '.json', (err) => {
             if (err) {
-              logger.error(logTag, 'cache could not delete metadata from filesystem:', err);
+              logger.error(logTag, 'Could not delete metadata from filesystem:', err);
               return;
             }
-            logger.info(logTag, 'cache successfully removed file', hash);
+            logger.info(logTag, 'Successfully removed file', hash);
           });
         });
       });
@@ -147,6 +147,7 @@ class FileCache {
   }
 
   clear() {
+    logger.verbose(logTag, 'Clear cache completely.');
     this.cache.forEach((metadata, hash) => this.remove(hash));
   }
 

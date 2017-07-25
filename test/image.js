@@ -282,7 +282,7 @@ describe('Image Controller', () => {
     });
 
     it('should return the cropped (faces) image without faces', function (done) {
-      this.timeout(5000);
+      this.timeout(10000);
       chai.request(server)
         .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/8/8c/Telefunken_FuBK.jpg' +
           '&width=100&height=150&crop=fill&gravity=faces')
@@ -293,7 +293,7 @@ describe('Image Controller', () => {
     });
 
     it('should return the cropped (faces) image with face', function (done) {
-      this.timeout(5000);
+      this.timeout(10000);
       chai.request(server)
         .get('/image?file=http://www.loupiote.com/photos_l/15703433919-tristan-savatier-mountain-hiking' +
           '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=faces')

@@ -1,7 +1,7 @@
 function extractFilename(response, fileParam) {
   const filenameRegExp = /filename=\"(.+)\"/ig;
   const contentDisposition = response.headers['content-disposition'];
-  if (contentDisposition && contentDisposition.search(filenameRegExp)) {
+  if (contentDisposition && contentDisposition.match(filenameRegExp)) {
     return filenameRegExp.exec(contentDisposition)[1];
   }
 

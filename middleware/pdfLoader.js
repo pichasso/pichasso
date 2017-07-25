@@ -35,7 +35,7 @@ function pdfLoader(req, res, next) {
         if (err) {
           return next(`Compression failed: ${err.message}`);
         }
-        req.compressedFile = data;
+        req.file = data;
         next();
       });
   }).on('response', (response) => {
@@ -47,7 +47,7 @@ function pdfLoader(req, res, next) {
     if (statusCode !== 200) {
       r.abort();
       return next(new error.NotFound('Request failed.'));
-    } else if (contentType && !/^application\/pdf/i.test(contentType)) {
+    } else if (contentType && !contentType.startsWith('application/pdf')) {
       r.abort();
       return next(new error.BadRequest(`Invalid content-type. Expected pdf, but received ${contentType}.`));
     } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
