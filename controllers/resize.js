@@ -49,7 +49,7 @@ function resize(req, res, next) {
     .then(sharpInstance =>
       sharpInstance.toBuffer()
         .then((buffer) => {
-          req.image = buffer;
+          req.file = buffer;
           return next();
         })
     )
@@ -58,7 +58,7 @@ function resize(req, res, next) {
 
 function cropImage(req, width, height, aspectRatio, crop, gravity) {
   return new Promise((resolve, reject) => {
-    const sharpInstance = sharp(req.image);
+    const sharpInstance = sharp(req.file);
 
     switch (crop) {
       case 'fill':
@@ -93,7 +93,7 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
 
 function cropFill(sharpInstance, req, width, height, aspectRatio, gravity) {
   if (gravity === 'faces') {
-    return faceDetection(req.image, width, height)
+    return faceDetection(req.file, width, height)
       .then((result) => {
         if (result.detectedFaces) {
           return sharpInstance
