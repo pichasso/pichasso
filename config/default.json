@@ -30,6 +30,7 @@
     "Caching": {
         "Expires": 2629000000,
         "CleanupCronInterval": "00 30 3 * * 7",
+        "ClearHash": "0a6305a03d0610942046c64acb0c7579",
         "RemoveFilesAfterExpiration": true,
         "Directory": "/tmp/pichasso/"
     },
