@@ -7,7 +7,7 @@ function convert(req, res, next) {
   if (req.completed) {
     return next();
   }
-  let sharpInstance = sharp(req.image);
+  let sharpInstance = sharp(req.file);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = req.query.quality;
 
@@ -18,10 +18,12 @@ function convert(req, res, next) {
 
   // auto best format detection
   if (format === undefined) {
-    // if webp is accepted, it is set before checking the cache
+    // if webp is accepted, it is set during the parameter check
     if (req.imageProperties.hasAlpha) {
+      req.query.format = 'png';
       format = sharp.format['png'];
     } else {
+      req.query.format = 'jpeg';
       format = sharp.format['jpeg'];
     }
     logger.info(logTag, 'Set format to', format.id);
@@ -33,11 +35,10 @@ function convert(req, res, next) {
     sharpInstance
       .toFormat(format, options);
   }
-  res.type(format.id);
 
   sharpInstance.toBuffer()
     .then((buffer) => {
-      req.image = buffer;
+      req.file = buffer;
       return next();
     })
     .catch(error => next(error));
