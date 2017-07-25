@@ -93,4 +93,14 @@ describe('PDF Controller', function () {
         done();
       });
   });
+
+  it('should render the pdf test interface', (done) => {
+    chai.request(server)
+      .get('/pdf/test')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.text.should.have.string('test interface');
+        done();
+      });
+  });
 });

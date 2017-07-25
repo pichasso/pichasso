@@ -22,7 +22,7 @@ router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, co
 });
 
 router.get('/test', onlyDevelopment, function (req, res) {
-  res.render('test');
+  res.render('image');
 });
 
 
