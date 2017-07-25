@@ -23,8 +23,8 @@ function imageLoader(req, res, next) {
       }
     }
 
-    req.image = Buffer.alloc(body.length, body, 'binary');
-    sharp(req.image)
+    req.file = Buffer.alloc(body.length, body, 'binary');
+    sharp(req.file)
       .metadata()
       .then((metadata) => {
         req.imageProperties = metadata;
@@ -44,7 +44,7 @@ function imageLoader(req, res, next) {
     if (statusCode !== 200) {
       r.abort();
       return next(new error.NotFound('Request failed.'));
-    } else if (contentType && !/^image\//i.test(contentType)) {
+    } else if (contentType && !contentType.startsWith('image/')) {
       r.abort();
       return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
     } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
