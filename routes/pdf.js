@@ -1,34 +1,35 @@
 const express = require('express');
 const router = new express.Router();
 const config = require('config');
-const fileLoader = require('../middleware/fileLoader');
-const loadParamsFromQuery = require('../middleware/loadParamsFromQuery');
+const logger = require('../controllers/logger');
+const logTag = '[PdfRoute]';
+
+const pdfLoader = require('../middleware/pdfLoader');
+const checkQueryParams = require('../middleware/checkQueryParams');
+const onlyDevelopment = require('../middleware/onlyDevelopment');
+const checkEtag = require('../middleware/checkEtag');
+const checkCache = require('../middleware/checkCache');
+const persist = require('../middleware/filePersistence');
 
 /* GET pdf. */
-router.get('/', loadParamsFromQuery, fileLoader, (req, res) => {
+router.get('/', checkQueryParams, checkEtag, checkCache, pdfLoader, persist, (req, res) => {
+  const attachment = req.query.download ? 'attachment' : config.get('PDFConversion.Attachment');
+
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
-  if (req.get('Content-Type')) {
-    res.setHeader('Content-Type', req.get('Content-Type') || 'application/pdf');
-  } else {
-    res.setHeader('Content-Type', 'application/pdf');
-  }
-  let attachment = 'inline';
-  if (req.params.download) {
-    attachment = 'attachment';
-  }
-  let filename = '';
-  let regExp = /filename.?=.?\"(.*)\"/ig;
-  if (req.get('Content-Disposition') && req.get('Content-Disposition').match(regExp)) {
-    filename = regExp.exec(req.get('Content-Disposition'))[0];
-  } else {
-    let filepath = req.params.file.split('/');
-    if (filepath.length) {
-      filename = filepath[filepath.length - 1];
+  res.setHeader('Content-Type', 'application/pdf');
+  if (req.query.filename) {
+    if (!req.query.filename.endsWith('.pdf')) {
+      req.query.filename += '.pdf';
     }
-    res.setHeader('Content-Disposition', `${attachment}; filename="${filename}"`);
+    res.setHeader('Content-Disposition', `${attachment}; filename="${req.query.filename}"`);
   }
-  res.end(req.compressedFile, 'binary');
+  res.end(req.file, 'binary');
+  logger.debug(logTag, 'Response headers:', res.getHeaders());
+});
+
+router.get('/test', onlyDevelopment, function (req, res) {
+  res.render('pdf');
 });
 
 module.exports = router;

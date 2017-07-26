@@ -14,18 +14,20 @@
     "beautify": "eslint --fix . --ignore-path .gitignore"
   },
   "dependencies": {
-    "cron": "~1.2.1",
     "config": "~1.26.1",
+    "cron": "^1.2.1",
     "express": "~4.15.2",
     "faced": "~1.2.0",
     "http-errors": "~1.6.1",
     "morgan": "~1.8.1",
+    "node-gs": "^0.1.1",
     "object-hash": "1.1.8",
     "pug": "~2.0.0-rc.1",
-    "sharp": "~0.17.3",
     "request": "~2.81.0",
-    "node-gs": "^0.1.1",
-    "smartcrop-sharp": "~1.0.5"
+    "sharp": "~0.17.3",
+    "smartcrop-sharp": "~1.0.5",
+    "winston": "~2.3.1",
+    "winston-daily-rotate-file": "~1.4.6"
   },
   "devDependencies": {
     "chai": "^3.5.0",

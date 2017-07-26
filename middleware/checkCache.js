@@ -1,33 +1,25 @@
 const cache = require('../middleware/fileCache');
 const hash = require('object-hash');
-const sharp = require('sharp');
+const logger = require('../controllers/logger');
+const logTag = '[CheckCache]';
 
 function checkCache(req, res, next) {
   // generate hash and check if image exists in cache
-  let accept = req.get('accept');
-  if (!req.query.format && /image\/webp/.test(accept)) {
-    req.query.format = 'webp';
-  }
-
   const queryHash = hash(req.query);
+  req.fileHash = queryHash;
 
-  if (cache.exists(queryHash)) {
-    req.image = cache.load(queryHash);
-    return sharp(req.image)
-      .metadata()
-      .then((metadata) => {
-        req.imageProperties = metadata;
-        res.type(metadata.format);
-        res.set('Etag', queryHash);
-        req.completed = true;
-        return next();
-      })
-      .catch((error) => {
-        console.error('error loading file from cache', queryHash, error);
-        cache.remove(queryHash);
-        return next();
-      });
+  try {
+    if (cache.exists(queryHash)) {
+      req.file = cache.load(queryHash);
+      req.query = cache.metadata(queryHash);
+      logger.debug(logTag, 'Metadata', req.query);
+      res.set('Etag', queryHash);
+      req.completed = true;
+    }
+  } catch (error) {
+    logger.error(logTag, 'Unable to load cached file:', error);
   }
+
 
   return next();
 }

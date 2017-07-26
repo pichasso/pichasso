@@ -16,16 +16,26 @@
     },
     "ImageConversion": {
         "DefaultCropping": "fill",
-        "DefaultFormat": "accepted",
+        "DefaultFormatDetection": false,
         "DefaultGravity": "entropy",
         "DefaultQuality": 80,
         "MaxEdgeLength": 3840,
         "Progressive": true
     },
+    "PDFConversion": {
+        "DefaultQuality": "printer",
+        "Attachment": "inline",
+        "MaxFileSize": 51200
+    },
     "Caching": {
         "Expires": 2629000000,
         "CleanupCronInterval": "00 30 3 * * 7",
+        "ClearHash": "0a6305a03d0610942046c64acb0c7579",
         "RemoveFilesAfterExpiration": true,
-        "Imagepath": "/tmp/imagecache/"
+        "Directory": "/tmp/pichasso/"
+    },
+    "Logging": {
+        "EnableErrorImages": true,
+        "Directory": "./log/"
     }
 }
