@@ -3,6 +3,8 @@ const error = require('http-errors');
 const logger = require('../controllers/logger');
 const logTag = '[ImageLoader]';
 const request = require('request');
+
+const extractFilename = require('./extractFilename');
 const sharp = require('sharp');
 
 function imageLoader(req, res, next) {
@@ -21,6 +23,10 @@ function imageLoader(req, res, next) {
         logger.error(logTag, 'Request failed', err);
         return next(new error.BadRequest(`Request failed: ${err.message}`));
       }
+    }
+
+    if (!req.query.filename) {
+      req.query.filename = extractFilename(response, req.query.file);
     }
 
     req.file = Buffer.alloc(body.length, body, 'binary');

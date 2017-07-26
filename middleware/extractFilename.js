@@ -14,9 +14,6 @@ function extractFilename(response, fileParam) {
   if (delimiterIndex !== -1) {
     filename = fileParam.substr(delimiterIndex + 1);
   }
-  if (!filename.endsWith('.pdf')) {
-    filename += '.pdf';
-  }
 
   return filename;
 }

@@ -29,19 +29,20 @@ function convert(req, res, next) {
     logger.info(logTag, 'Set format to', format.id);
   }
 
-  // format conversion & set response type
+  // format conversion
   if (format.id !== req.imageProperties.format) {
     logger.info(logTag, 'Convert image from', req.imageProperties.format, 'to', format.id);
-    sharpInstance
-      .toFormat(format, options);
+    return sharpInstance
+      .toFormat(format, options)
+      .toBuffer()
+      .then((buffer) => {
+        req.file = buffer;
+        return next();
+      })
+      .catch(error => next(error));
   }
 
-  sharpInstance.toBuffer()
-    .then((buffer) => {
-      req.file = buffer;
-      return next();
-    })
-    .catch(error => next(error));
+  next();
 }
 
 module.exports = convert;
