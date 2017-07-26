@@ -31,6 +31,10 @@ Open route `/image/test`, page will show all options available on this service.
 or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
 
+## Clear Cache
+
+Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in the config file as `Caching.ClearHash`. The page should return OK and status 200 for valid hash. All cached files will get removed.
+
 ## API
 
 | Parameter | Values | Description |

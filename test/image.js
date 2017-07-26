@@ -416,7 +416,7 @@ describe('Image Controller', () => {
       .get('/image/test')
       .end((err, res) => {
         res.should.have.status(200);
-        res.text.should.have.string('test inteface');
+        res.text.should.have.string('test interface');
         done();
       });
   });

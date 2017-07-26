@@ -43,11 +43,25 @@ function checkQueryParams(req, res, next) {
     logger.debug(logTag, 'URL', req.query.file);
   }
 
+  function removeIllegalParameters(allowedKeys, obj) {
+    for (var key in obj) {
+      if (!obj.hasOwnProperty(key)) {
+        continue;
+      } else {
+        if (!allowedKeys.includes(key)) {
+          delete obj[key];
+        }
+      }
+    }
+  }
+
   /**
    * Check image specific params
    */
 
   if (req.baseUrl.startsWith('/image')) {
+    removeIllegalParameters(constants.imageQuery, req.query);
+
     const maxEdgeLength = config.get('ImageConversion.MaxEdgeLength') > 0 ?
       config.get('ImageConversion.MaxEdgeLength') : Number.MAX_SAFE_INTEGER;
 
@@ -118,6 +132,10 @@ function checkQueryParams(req, res, next) {
    */
 
   if (req.baseUrl.startsWith('/pdf')) {
+    removeIllegalParameters(constants.pdfQuery, req.query);
+    if (req.query.download) {
+      req.query.download = true;
+    }
     if (req.query.quality) {
       const acceptedQualities = ['printer', 'screen'];
       if (!acceptedQualities.includes(req.query.quality)) {
