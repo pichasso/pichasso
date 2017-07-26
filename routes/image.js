@@ -16,6 +16,13 @@ const onlyDevelopment = require('../middleware/onlyDevelopment');
 router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
+  res.setHeader('Content-Disposition', 'inline;');
+  if (req.query.filename) {
+    if (!req.query.filename.endsWith('.' + req.query.format)) {
+      req.query.filename += '.' + req.query.format;
+    }
+    res.setHeader('Content-Disposition', `inline; filename="${req.query.filename}"`);
+  }
   res.type(req.query.format);
   res.end(req.file, 'binary');
   logger.debug(logTag, 'Response headers:', res.getHeaders());

@@ -25,11 +25,13 @@
         "quality",
         "crop",
         "format",
-        "gravity"
+        "gravity",
+        "filename"
     ],
     "pdfQuery": [
         "download",
         "file",
-        "quality"
+        "quality",
+        "filename"
     ]
 }

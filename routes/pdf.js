@@ -3,6 +3,7 @@ const router = new express.Router();
 const config = require('config');
 const logger = require('../controllers/logger');
 const logTag = '[PdfRoute]';
+
 const pdfLoader = require('../middleware/pdfLoader');
 const checkQueryParams = require('../middleware/checkQueryParams');
 const onlyDevelopment = require('../middleware/onlyDevelopment');
@@ -24,9 +25,12 @@ router.get('/', checkQueryParams, checkEtag, checkCache, pdfLoader, persist, (re
     attachment = 'attachment';
   }
   if (req.query.filename) {
+    if (!req.query.filename.endsWith('.pdf')) {
+      req.query.filename += '.pdf';
+    }
     res.setHeader('Content-Disposition', `${attachment}; filename="${req.query.filename}"`);
   }
-  res.end(req.compressedFile, 'binary');
+  res.end(req.file, 'binary');
   logger.debug(logTag, 'Response headers:', res.getHeaders());
 });
 

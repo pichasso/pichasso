@@ -1,8 +1,8 @@
 const config = require('config');
 const error = require('http-errors');
-const request = require('request');
-const PDFCompressor = require('./pdfCompressor');
 const extractFilename = require('./extractFilename');
+const PDFCompressor = require('./pdfCompressor');
+const request = require('request');
 
 function pdfLoader(req, res, next) {
   if (req.completed) {
