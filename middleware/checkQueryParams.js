@@ -113,7 +113,7 @@ function checkQueryParams(req, res, next) {
 
     if (req.query.format && !constants.format.includes(req.query.format)) {
       return next(new error.BadRequest(`Invalid format, received ${req.query.format}.`));
-    } else if (!req.query.format) {
+    } else if (!req.query.format && config.get('ImageConversion.DefaultFormatDetection') === true) {
       const acceptHeader = req.get('accept');
       logger.debug(logTag, 'Format undefined.',
         acceptHeader ? `Client accepts: ${acceptHeader}` : 'No accept header set.');
