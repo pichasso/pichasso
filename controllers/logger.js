@@ -11,23 +11,29 @@ if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir);
 }
 
-const logger = new (winston.Logger)({
-  transports: [
-    new (winston.transports.Console)({
+const transports = [];
+
+if (config.get('Logging.Console.Enabled')) {
+  transports.push(new (winston.transports.Console)({
       timestamp: tsFormat,
       colorize: true,
-      silent: env !== 'development',
-      level: env === 'development' ? 'debug' : 'none',
-    }),
-    new (DailyRotateFile)({
-      filename: `${dir}-pichasso.log`,
-      timestamp: tsFormat,
-      datePattern: 'yyyy-MM-dd',
-      prepend: true,
-      level: env === 'development' ? 'info' : 'error',
-      json: false,
-    }),
-  ],
+      level: config.get('Logging.Console.Level'),
+  }));
+}
+
+if (config.get('Logging.File.Enabled')) {
+  transports.push(new (DailyRotateFile)({
+    filename: `${dir}-pichasso.log`,
+    timestamp: tsFormat,
+    datePattern: 'yyyy-MM-dd',
+    prepend: true,
+    level: config.get('Logging.File.Level'),
+    json: false,
+  }));
+}
+
+const logger = new (winston.Logger)({
+  transports: transports,
 });
 
 module.exports = logger;
