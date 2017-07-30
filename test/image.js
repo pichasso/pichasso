@@ -23,8 +23,8 @@ describe('Image Controller', () => {
   });
 
   it('should return error image', (done) => {
-    const stub = sandbox.stub(server, 'get');
-    stub.withArgs('env').returns('production');
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Logging.EnableErrorImages').returns(true);
     stub.callThrough();
     chai.request(server)
       .get('/image')
