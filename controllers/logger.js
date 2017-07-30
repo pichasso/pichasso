@@ -4,7 +4,6 @@ const fs = require('fs');
 const winston = require('winston');
 
 const dir = config.get('Logging.Directory');
-const env = process.env.NODE_ENV || 'development';
 const tsFormat = () => (new Date()).toLocaleTimeString();
 
 if (!fs.existsSync(dir)) {
@@ -15,9 +14,9 @@ const transports = [];
 
 if (config.get('Logging.Console.Enabled')) {
   transports.push(new (winston.transports.Console)({
-      timestamp: tsFormat,
-      colorize: true,
-      level: config.get('Logging.Console.Level'),
+    timestamp: tsFormat,
+    colorize: true,
+    level: config.get('Logging.Console.Level'),
   }));
 }
 
