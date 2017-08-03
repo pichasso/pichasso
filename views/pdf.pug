@@ -1,0 +1,42 @@
+extends layout
+
+block scripts
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp', crossorigin='anonymous')
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+
+    link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
+    script(src='//code.jquery.com/ui/1.12.1/jquery-ui.js')
+
+    script(src='/js/test.js')
+
+
+block content
+    h1= 'pdf test interface'
+    p= 'give me an pdf url and let me compress it quickly for you'
+
+    div.container-fluid
+        div.row
+            div.col-sm-6
+                form#configure-form.form-horizontal(method="get" action="/pdf")
+
+                    div.form-group
+                        label.control-label.col-sm-4(for='file')= 'file'
+                        div.col-sm-8
+                            input#file.form-control(type='text', name='file', placeholder='give me any url to an pdf', required)
+
+                    div.form-group
+                        label.control-label.col-sm-4(for='quality', name='quality')= 'quality'
+                        div.col-sm-8
+                            select#quality.form-control(name='quality')
+                                option(value='')= 'printer (default)'
+                                option(value='screen')= 'screen'
+
+                    div.form-group
+                        div.col-sm-offset-4.col-sm-8
+                            button#update-pdf-button.btn.btn-primary(type='submit')= 'do the magic...'
+            div.col-sm-6
+                div#result-pdf.image
+                    iframe#result-pdf-frame(src='/pdf?file=http://che.org.il/wp-content/uploads/2016/12/pdf-sample.pdf', width='100%')

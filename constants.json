@@ -1,0 +1,37 @@
+{
+    "crop": [
+        "fill",
+        "fit",
+        "scale"
+    ],
+    "format": [
+        "webp",
+        "jpeg",
+        "png"
+    ],
+    "gravity": [
+        "entropy",
+        "faces",
+        "center",
+        "north",
+        "east",
+        "south",
+        "west"
+    ],
+    "imageQuery": [
+        "file",
+        "width",
+        "height",
+        "quality",
+        "crop",
+        "format",
+        "gravity",
+        "filename"
+    ],
+    "pdfQuery": [
+        "download",
+        "file",
+        "quality",
+        "filename"
+    ]
+}

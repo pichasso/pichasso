@@ -65,10 +65,15 @@ or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
 
 ## Production
+
 To adjust the configuration to own wishes create `/config/production.json` and 
 overwrite the parameters you want to change. To start pichasso for production 
 use `npm run production` which not only starts the service without test environment 
 and debugging but as well sets the `NODE_ENV=production`.
+
+## Clear Cache
+
+Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in the config file as `Caching.ClearHash`. The page should return OK and status 200 for valid hash. All cached files will get removed.
 
 ## API
 

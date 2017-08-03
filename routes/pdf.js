@@ -1,36 +1,35 @@
 const express = require('express');
 const router = new express.Router();
-const logger = require('../controllers/logger');
-const logTag = '[ImageRoute]';
 const config = require('config');
+const logger = require('../controllers/logger');
+const logTag = '[PdfRoute]';
+
+const pdfLoader = require('../middleware/pdfLoader');
 const checkQueryParams = require('../middleware/checkQueryParams');
+const onlyDevelopment = require('../middleware/onlyDevelopment');
 const checkEtag = require('../middleware/checkEtag');
 const checkCache = require('../middleware/checkCache');
 const persist = require('../middleware/filePersistence');
-const imageLoader = require('../middleware/imageLoader');
-const resize = require('../controllers/resize');
-const convert = require('../controllers/convert');
-const onlyDevelopment = require('../middleware/onlyDevelopment');
 
-/* GET image. */
-router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, convert, persist, function (req, res) {
+/* GET pdf. */
+router.get('/', checkQueryParams, checkEtag, checkCache, pdfLoader, persist, (req, res) => {
+  const attachment = req.query.download ? 'attachment' : config.get('PDFConversion.Attachment');
+
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
-  res.setHeader('Content-Disposition', 'inline;');
+  res.setHeader('Content-Type', 'application/pdf');
   if (req.query.filename) {
-    if (!req.query.filename.endsWith('.' + req.query.format)) {
-      req.query.filename += '.' + req.query.format;
+    if (!req.query.filename.endsWith('.pdf')) {
+      req.query.filename += '.pdf';
     }
-    res.setHeader('Content-Disposition', `inline; filename="${req.query.filename}"`);
+    res.setHeader('Content-Disposition', `${attachment}; filename="${req.query.filename}"`);
   }
-  res.type(req.query.format);
   res.end(req.file, 'binary');
   logger.debug(logTag, 'Response headers:', res.getHeaders());
 });
 
 router.get('/test', onlyDevelopment, function (req, res) {
-  res.render('image');
+  res.render('pdf');
 });
-
 
 module.exports = router;
