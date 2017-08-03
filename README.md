@@ -65,10 +65,10 @@ or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
 
 ## Production
-To adjust the configuration to own wishes add next to the `/config/default.json`  a *production.json* 
-with own parameters. To start pichasso for production use `npm production` which not only 
-starts the service without test environment and debugging but as well sets the 
-`NODE_ENV=production`. 
+To adjust the configuration to own wishes create `/config/production.json` and 
+overwrite the parameters you want to change. To start pichasso for production 
+use `npm run production` which not only starts the service without test environment 
+and debugging but as well sets the `NODE_ENV=production`.
 
 ## API
 
