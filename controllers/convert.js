@@ -30,7 +30,8 @@ function convert(req, res, next) {
   }
 
   // format conversion
-  if (format.id !== req.imageProperties.format) {
+  if (format.id !== req.imageProperties.format
+    || config.get('ImageConversion.Progressive')) {
     logger.info(logTag, 'Convert image from', req.imageProperties.format, 'to', format.id);
     return sharpInstance
       .toFormat(format, options)
