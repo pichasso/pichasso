@@ -26,6 +26,17 @@ describe('index', function () {
       });
   });
 
+  it.only('should return status 200', () => {
+    chai.request(server)
+      .head('/')
+      .then((res) => {
+        res.should.have.status(200);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+
   it('should not find this page', () => {
     chai.request(server)
       .get('/notExisting')
