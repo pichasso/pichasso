@@ -8,3 +8,8 @@ coverage:
         branches: null
         flags: null
         paths: null
+  status:
+    project: off
+    patch: off
+
+comment: false
