@@ -26,7 +26,7 @@ describe('index', function () {
       });
   });
 
-  it.only('should return status 200', () => {
+  it('should return status 200', () => {
     chai.request(server)
       .head('/')
       .then((res) => {
