@@ -53,7 +53,7 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   res.status(err.status || 500);
-  if (!config.get('Logging.EnableErrorImages') || req.app.get('env') === 'development') {
+  if (!config.get('Logging.EnableErrorImages')) {
     res.render('error');
     return;
   }

@@ -1,4 +1,4 @@
-FROM node:8
+FROM siomiz/node-opencv:2.4.x
 
 ENV NODE_ENV production
 
