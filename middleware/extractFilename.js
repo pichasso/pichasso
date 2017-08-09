@@ -1,21 +1,28 @@
 function extractFilename(response, fileParam) {
   const filenameRegExp = /filename=\"(.+)\"/ig;
   const contentDisposition = response.headers['content-disposition'];
+  let fileName;
   if (contentDisposition && contentDisposition.match(filenameRegExp)) {
-    return filenameRegExp.exec(contentDisposition)[1];
+    fileName = filenameRegExp.exec(contentDisposition)[1];
+  } else {
+    fileName = fileParam;
   }
 
-  while (fileParam.endsWith('/')) {
-    fileParam = fileParam.substr(0, fileParam.length - 1);
+  while (fileName.endsWith('/')) {
+    fileName = fileName.substr(0, fileName.length - 1);
   }
 
-  let filename = '';
-  const delimiterIndex = fileParam.lastIndexOf('/');
+  let extensionMatch = /\.[A-Za-z]{2,5}$/;
+  while (fileName.match((extensionMatch))) {
+    fileName = fileName.replace(extensionMatch, '');
+  }
+
+  const delimiterIndex = fileName.lastIndexOf('/');
   if (delimiterIndex !== -1) {
-    filename = fileParam.substr(delimiterIndex + 1);
+    fileName = fileName.substr(delimiterIndex + 1);
   }
 
-  return filename;
+  return fileName;
 }
 
 module.exports = extractFilename;

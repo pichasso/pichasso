@@ -5,6 +5,11 @@ const error = require('http-errors');
 const cache = require('../middleware/fileCache');
 const onlyDevelopment = require('../middleware/onlyDevelopment');
 
+/* test */
+router.head('/', function (req, res) {
+  res.status(200).end();
+});
+
 /* GET home page. */
 router.get('/', onlyDevelopment, function (req, res) {
   res.render('index', {title: 'Pichasso'});
