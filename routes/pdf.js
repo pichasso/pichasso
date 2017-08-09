@@ -24,8 +24,8 @@ router.get('/', checkQueryParams, checkEtag, checkCache, pdfLoader, persist, (re
     }
     res.setHeader('Content-Disposition', `${attachment}; filename="${req.query.filename}"`);
   }
+  logger.debug(logTag, 'Response headers:', res._headers);
   res.end(req.file, 'binary');
-  logger.debug(logTag, 'Response headers:', res.getHeaders());
 });
 
 router.get('/test', onlyDevelopment, function (req, res) {

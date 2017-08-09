@@ -24,8 +24,8 @@ router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, co
     res.setHeader('Content-Disposition', `inline; filename="${req.query.filename}"`);
   }
   res.type(req.query.format);
+  logger.debug(logTag, 'Response headers:', res._headers);
   res.end(req.file, 'binary');
-  logger.debug(logTag, 'Response headers:', res.getHeaders());
 });
 
 router.get('/test', onlyDevelopment, function (req, res) {

@@ -5,14 +5,14 @@ const error = require('http-errors');
 const cache = require('../middleware/fileCache');
 const onlyDevelopment = require('../middleware/onlyDevelopment');
 
-/* GET home page.
+/* test */
+router.head('/', function (req, res) {
+  res.status(200).end();
+});
+
+/* GET home page. */
 router.get('/', onlyDevelopment, function (req, res) {
   res.render('index', {title: 'Pichasso'});
-});
-*/
-
-router.head('/', function(req, res){
-  res.status(200).end();
 });
 
 router.get('/clear/:hash', function (req, res, next) {
