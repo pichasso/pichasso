@@ -62,31 +62,31 @@ function cropImage(req, width, height, aspectRatio, crop, gravity) {
 
     switch (crop) {
       case 'fill':
-        {
-          resolve(cropFill(sharpInstance, req, width, height, aspectRatio, gravity));
-          break;
-        }
+      {
+        resolve(cropFill(sharpInstance, req, width, height, aspectRatio, gravity));
+        break;
+      }
       case 'fit':
-        {
-          resolve(sharpInstance
-            .resize(width, height)
-            .max()
-          );
-          break;
-        }
+      {
+        resolve(sharpInstance
+          .resize(width, height)
+          .max()
+        );
+        break;
+      }
       case 'scale':
-        {
-          resolve(sharpInstance
-            .resize(width, height)
-            .ignoreAspectRatio()
-          );
-          break;
-        }
+      {
+        resolve(sharpInstance
+          .resize(width, height)
+          .ignoreAspectRatio()
+        );
+        break;
+      }
       default:
-        {
-          logger.error(logTag, 'Invalid cropping method', gravity);
-          reject(new error.BadRequest(`Invalid cropping method ${crop}`));
-        }
+      {
+        logger.error(logTag, 'Invalid cropping method', gravity);
+        reject(new error.BadRequest(`Invalid cropping method ${crop}`));
+      }
     }
   });
 }

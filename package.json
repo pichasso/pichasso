@@ -14,31 +14,31 @@
     "beautify": "eslint --fix . --ignore-path .gitignore"
   },
   "dependencies": {
-    "config": "~1.26.1",
+    "config": "~1.26.2",
     "cron": "^1.2.1",
-    "express": "~4.15.2",
+    "express": "~4.15.4",
     "faced": "~1.2.0",
-    "http-errors": "~1.6.1",
-    "morgan": "~1.8.1",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.8.2",
     "node-gs": "^0.1.1",
     "object-hash": "1.1.8",
-    "pug": "~2.0.0-rc.1",
+    "pug": "~2.0.0-rc.3",
     "request": "~2.81.0",
-    "sharp": "~0.17.3",
+    "sharp": "~0.18.2",
     "smartcrop-sharp": "~1.0.5",
     "winston": "~2.3.1",
     "winston-daily-rotate-file": "~1.4.6"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.1.1",
     "chai-http": "^3.0.0",
-    "codecov": "^2.2.0",
-    "debug": "~2.6.3",
-    "eslint": "^3.19.0",
+    "codecov": "^2.3.0",
+    "debug": "~3.0.0",
+    "eslint": "^4.4.1",
     "eslint-plugin-es-beautifier": "^1.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.4.1",
+    "mocha": "^3.5.0",
     "nodemon": "^1.11.0",
-    "sinon": "~2.3.4"
+    "sinon": "~3.2.0"
   }
 }
