@@ -88,12 +88,12 @@ describe('Cache', () => {
           setTimeout(function () {
             // wait until file persisted
             chai.request(server)
-            .get(path)
-            .end((err, res) => {
-              res.should.be.ok;
-              fileCache.load.calledOnce.should.be.true;
-              done();
-            });
+              .get(path)
+              .end((err, res) => {
+                res.should.be.ok;
+                fileCache.load.calledOnce.should.be.true;
+                done();
+              });
           }, 500);
         });
     });
@@ -187,12 +187,12 @@ describe('Cache', () => {
           setTimeout(function () {
             // wait until file persisted
             chai.request(server)
-            .get(path)
-            .end((sndErr, sndRes) => {
-              sndRes.should.be.ok;
-              fileCache.load.calledOnce.should.be.true;
-              done();
-            });
+              .get(path)
+              .end((sndErr, sndRes) => {
+                sndRes.should.be.ok;
+                fileCache.load.calledOnce.should.be.true;
+                done();
+              });
           }, 1000);
         });
     });
