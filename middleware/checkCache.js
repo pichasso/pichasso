@@ -13,7 +13,7 @@ function checkCache(req, res, next) {
       req.file = cache.load(queryHash);
       req.query = cache.metadata(queryHash);
       logger.debug(logTag, 'Metadata', req.query);
-      res.set('Etag', queryHash);
+      res.set('Etag', `"${queryHash}"`);
       req.completed = true;
     }
   } catch (error) {
