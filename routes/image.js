@@ -17,6 +17,7 @@ router.get('/', checkQueryParams, checkEtag, checkCache, imageLoader, resize, co
   res.setHeader('Cache-Control', 'public, max-age=' + config.get('Caching.Expires'));
   res.setHeader('Expires', new Date(Date.now() + config.get('Caching.Expires')).toUTCString());
   res.setHeader('Content-Disposition', 'inline;');
+  res.setHeader('Vary', 'Accept');
   if (req.query.filename) {
     if (!req.query.filename.endsWith('.' + req.query.format)) {
       req.query.filename += '.' + req.query.format;
