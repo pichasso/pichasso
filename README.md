@@ -99,6 +99,7 @@ Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in 
 ## PDF Compression Service
 Instead of entering an image URL it is also possible to add a PDF url which then will be adjusted according to the following 
 parameter. 
+
 | Parameter | Values | Description |
 | --- | --- | --- |
 | **pdf** | url | PDF which will be processed and returned |
