@@ -3,7 +3,7 @@
 
 ### Introduction
 
-pichasso is an image service which helps to deliver optimal performance and to reduce the data transmitted. 
+Pichasso is an image service which helps to deliver optimal performance and to reduce the data transmitted. 
 By adjusting the delivered images to given parameters it allows developers to focus only on the creation of their webpage while pichasso is handling the images. 
 Since not every time the sizes are fitting to the image pichasso offers intelligent ways to crop the image fitting to the needs with features like a face detection
 to avoid cutting people in half. 
@@ -77,13 +77,17 @@ Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in 
 
 ## API
 
+### /image route
+
+Sample url: http://url.tld/image?file=IMAGE_URL&width=180
+
 | Parameter | Values | Description |
 | --- | --- | --- |
-| **image** | url | Image which will be processed and returned |
+| **file** | url | Image which will be processed and returned |
 | **width** | number | A number greater than zero which defines the width |
 | **height** | number | A number greater than zero which defines the height |
 | **crop** | fill | uses one `gravity` effect to fill the whole size |
-|  | fit | The image is fit inside the width and height attributes |
+|  | fit | The image is fitted inside the width and height attributes |
 |  | scale | The image is scaled into both width and height attributes |
 | **gravity** | entropy | Returns the image according to Shannon entropy |
 |  | faces | Centers the image around the faces in the image |
@@ -97,12 +101,16 @@ Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in 
 
 
 ## PDF Compression Service
+
+### /pdf route
+
 Instead of entering an image URL it is also possible to add a PDF url which then will be adjusted according to the following 
-parameter. 
+parameter. Sample url: http://url.tld/pdf?file=PDF_URL&quality=printer&download=1
+
 | Parameter | Values | Description |
 | --- | --- | --- |
 | **pdf** | url | PDF which will be processed and returned |
-| **quality** | printer, screen | Defines the quality whether it is for screen or for printing |
+| **quality** | printer, screen | Defines the quality whether it is for screen or for printing which scales images to 72 or 300 dpi |
 | **download** | 1 or 0 | If 1 is selected the files will be downloaded when the process is finished |
 
 
