@@ -3,7 +3,7 @@
 
 ### Introduction
 
-pichasso is an image service which helps to deliver optimal performance and to reduce the data transmitted. 
+Pichasso is an image service which helps to deliver optimal performance and to reduce the data transmitted. 
 By adjusting the delivered images to given parameters it allows developers to focus only on the creation of their webpage while pichasso is handling the images. 
 Since not every time the sizes are fitting to the image pichasso offers intelligent ways to crop the image fitting to the needs with features like a face detection
 to avoid cutting people in half. 
@@ -21,23 +21,26 @@ We recommend to combine pichasso with a CDN to allow faster response times aroun
 This feature can be easily integrated by using image source sets: 
 
 ```html
-    <picture>
-      <source
-      media="(min-width: 768_px_)" 
-      srcset="imageservice.url.jpg imageservice.url2x.jpg, 2x">
-      <!--Fallback-->
-      <img src="imageservice.url.jpg" alt="Description">
-    </picture>
+<picture>
+  <source media="(max-width: 767px)" 
+          srcset="compressed_image_mobile_tablet.jpg, 
+                  compressed_image_mobile_tablet_double_size.jpg 2x">
+  <source media="(min-width: 768px)" 
+          srcset="default_image.jpg, 
+                  default_image_double_size.jpg 2x">
+  <!-- Fallback for IE -->
+  <img src="default_image.jpg" alt="Description">
+</picture>
    ```
 
 ### Setup
 
-Smart image cropping and compression service
+Smart image cropping and compression service can run using docker-compose after cloning.
 
 1. `docker-compose build`
 2. `docker-compose up`
 
-The web service runs on port `3000`. Debugging is available on port `9229`.
+The web service runs on port `3000`. Debugging is available on port `9229` by default.
 
 ### Binding ports locally
 
@@ -55,12 +58,12 @@ services:
 
 ## Service Test
 
-Open route `/image/test`, page will show all options available on this service.
-Start pichassso with `npm start`.
+Open route `/image/test`, page will show all options available on this service. The pdf test interface is available on route `/pdf/test`.
+Start pichassso with second step of setup or locally using `npm start`.
 
 ## Test
 
-`npm test`
+Locally use `npm test` or for docker try `docker-compose exec web npm test` instead.
 or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
 
@@ -69,7 +72,7 @@ or `npm run lint` (will only lint)
 To adjust the configuration to own wishes create `/config/production.json` and 
 overwrite the parameters you want to change. To start pichasso for production 
 use `npm run production` which not only starts the service without test environment 
-and debugging but as well sets the `NODE_ENV=production`.
+and debugging but as well sets the `NODE_ENV=production`. The test pages mentioned above are disabled in production mode.
 
 ## Clear Cache
 
@@ -77,13 +80,17 @@ Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in 
 
 ## API
 
+### /image route
+
+Sample url: http://url.tld/image?file=IMAGE_URL&width=180
+
 | Parameter | Values | Description |
 | --- | --- | --- |
-| **image** | url | Image which will be processed and returned |
+| **file** | url | Image which will be processed and returned |
 | **width** | number | A number greater than zero which defines the width |
 | **height** | number | A number greater than zero which defines the height |
 | **crop** | fill | uses one `gravity` effect to fill the whole size |
-|  | fit | The image is fit inside the width and height attributes |
+|  | fit | The image is fitted inside the width and height attributes |
 |  | scale | The image is scaled into both width and height attributes |
 | **gravity** | entropy | Returns the image according to Shannon entropy |
 |  | faces | Centers the image around the faces in the image |
@@ -97,12 +104,16 @@ Call a get request to route `/clear/{hash}` while `{hash}` has to be defined in 
 
 
 ## PDF Compression Service
+
+### /pdf route
+
 Instead of entering an image URL it is also possible to add a PDF url which then will be adjusted according to the following 
-parameter. 
+parameter. Sample url: http://url.tld/pdf?file=PDF_URL&quality=printer&download=1
+
 | Parameter | Values | Description |
 | --- | --- | --- |
 | **pdf** | url | PDF which will be processed and returned |
-| **quality** | printer, screen | Defines the quality whether it is for screen or for printing |
+| **quality** | printer, screen | Defines the quality whether it is for screen or for printing which scales images to 72 or 300 dpi |
 | **download** | 1 or 0 | If 1 is selected the files will be downloaded when the process is finished |
 
 
