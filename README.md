@@ -21,23 +21,26 @@ We recommend to combine pichasso with a CDN to allow faster response times aroun
 This feature can be easily integrated by using image source sets: 
 
 ```html
-    <picture>
-      <source
-      media="(min-width: 768_px_)" 
-      srcset="imageservice.url.jpg imageservice.url2x.jpg, 2x">
-      <!--Fallback-->
-      <img src="imageservice.url.jpg" alt="Description">
-    </picture>
+<picture>
+  <source media="(max-width: 767px)" 
+          srcset="compressed_image_mobile_tablet.jpg, 
+                  compressed_image_mobile_tablet_double_size.jpg 2x">
+  <source media="(min-width: 768px)" 
+          srcset="default_image.jpg, 
+                  default_image_double_size.jpg 2x">
+  <!-- Fallback for IE -->
+  <img src="default_image.jpg" alt="Description">
+</picture>
    ```
 
 ### Setup
 
-Smart image cropping and compression service
+Smart image cropping and compression service can run using docker-compose after cloning.
 
 1. `docker-compose build`
 2. `docker-compose up`
 
-The web service runs on port `3000`. Debugging is available on port `9229`.
+The web service runs on port `3000`. Debugging is available on port `9229` by default.
 
 ### Binding ports locally
 
@@ -55,12 +58,12 @@ services:
 
 ## Service Test
 
-Open route `/image/test`, page will show all options available on this service.
-Start pichassso with `npm start`.
+Open route `/image/test`, page will show all options available on this service. The pdf test interface is available on route `/pdf/test`.
+Start pichassso with second step of setup or locally using `npm start`.
 
 ## Test
 
-`npm test`
+Locally use `npm test` or for docker try `docker-compose exec web npm test` instead.
 or `npm run mocha` (will only run mocha)
 or `npm run lint` (will only lint)
 
@@ -69,7 +72,7 @@ or `npm run lint` (will only lint)
 To adjust the configuration to own wishes create `/config/production.json` and 
 overwrite the parameters you want to change. To start pichasso for production 
 use `npm run production` which not only starts the service without test environment 
-and debugging but as well sets the `NODE_ENV=production`.
+and debugging but as well sets the `NODE_ENV=production`. The test pages mentioned above are disabled in production mode.
 
 ## Clear Cache
 
