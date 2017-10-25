@@ -31,7 +31,8 @@ describe('Cache', () => {
         .get('/image?file=' + sampleImageUrl)
         .end((err, res) => {
           res.status.should.equal(200);
-          const filePath = config.get('Caching.Directory') + res.headers.etag;
+          const hash = res.headers.etag.substr(1, res.headers.etag.length - 2);
+          const filePath = config.get('Caching.Directory') + hash;
           fs.exists(filePath, (exists) => {
             exists.should.be.true;
             done();
@@ -65,8 +66,6 @@ describe('Cache', () => {
               .get(`/image?file=${sampleImageUrl}`)
               .set('If-None-Match', res.headers.etag)
               .end((sndErr, sndRes) => {
-                console.log(res.headers.etag);
-                console.log(sndRes.headers.etag);
                 sndRes.status.should.equal(304);
                 done();
               });
@@ -88,12 +87,12 @@ describe('Cache', () => {
           setTimeout(function () {
             // wait until file persisted
             chai.request(server)
-            .get(path)
-            .end((err, res) => {
-              res.should.be.ok;
-              fileCache.load.calledOnce.should.be.true;
-              done();
-            });
+              .get(path)
+              .end((err, res) => {
+                res.should.be.ok;
+                fileCache.load.calledOnce.should.be.true;
+                done();
+              });
           }, 500);
         });
     });
@@ -104,14 +103,14 @@ describe('Cache', () => {
         .get(`/image?file=${sampleImageUrl}`)
         .end((err, res) => {
           res.status.should.equal(200);
-          const etag = res.headers.etag;
-          const cachedFilePath = config.get('Caching.Directory') + etag;
+          const hash = res.headers.etag.substr(1, res.headers.etag.length - 2);
+          const cachedFilePath = config.get('Caching.Directory') + hash;
           fs.unlink(cachedFilePath);
           chai.request(server)
             .get(`/image?file=${sampleImageUrl}`)
             .end((err, res) => {
               res.should.be.ok;
-              fileCache.remove.calledWith(etag);
+              fileCache.remove.calledWith(hash);
               done();
             });
         });
@@ -135,7 +134,8 @@ describe('Cache', () => {
         .get(`/pdf?file=${samplePdfUrl}`)
         .end((err, res) => {
           res.status.should.equal(200);
-          const filePath = config.get('Caching.Directory') + res.headers.etag;
+          const hash = res.headers.etag.substr(1, res.headers.etag.length - 2);
+          const filePath = config.get('Caching.Directory') + hash;
           fs.exists(filePath, (exists) => {
             exists.should.be.true;
             done();
@@ -187,12 +187,12 @@ describe('Cache', () => {
           setTimeout(function () {
             // wait until file persisted
             chai.request(server)
-            .get(path)
-            .end((sndErr, sndRes) => {
-              sndRes.should.be.ok;
-              fileCache.load.calledOnce.should.be.true;
-              done();
-            });
+              .get(path)
+              .end((sndErr, sndRes) => {
+                sndRes.should.be.ok;
+                fileCache.load.calledOnce.should.be.true;
+                done();
+              });
           }, 1000);
         });
     });
@@ -203,14 +203,14 @@ describe('Cache', () => {
         .get(`/pdf?file=${samplePdfUrl}`)
         .end((err, res) => {
           res.status.should.equal(200);
-          const etag = res.headers.etag;
-          const cachedFilePath = config.get('Caching.Directory') + etag;
+          const hash = res.headers.etag.substr(1, res.headers.etag.length - 2);
+          const cachedFilePath = config.get('Caching.Directory') + hash;
           fs.unlink(cachedFilePath);
           chai.request(server)
             .get(`/pdf?file=${samplePdfUrl}`)
             .end((err, res) => {
               res.should.be.ok;
-              fileCache.remove.calledWith(etag);
+              fileCache.remove.calledWith(hash);
               done();
             });
         });

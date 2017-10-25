@@ -47,7 +47,7 @@ describe('Image Controller', () => {
 
   it('should return not found', (done) => {
     chai.request(server)
-      .get('/image?file=https://http.cat/900')
+      .get('/image?file=http://google.de/404')
       .end((err, res) => {
         res.status.should.equal(404);
         res.text.should.have.string('Request failed');
@@ -295,8 +295,8 @@ describe('Image Controller', () => {
     it('should return the cropped (faces) image with face', function (done) {
       this.timeout(10000);
       chai.request(server)
-        .get('/image?file=http://www.loupiote.com/photos_l/15703433919-tristan-savatier-mountain-hiking' +
-        '-indian-himalayas-joshimath-india.jpg&width=100&height=150&crop=fill&gravity=faces')
+        .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/5/5d/Half_Dome--cables.jpeg' +
+        '&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();

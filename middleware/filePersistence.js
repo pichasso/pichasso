@@ -10,7 +10,7 @@ function filePersistence(req, res, next) {
   fileCache.add(req.fileHash, req.file, req.query);
   logger.info(logTag, 'Save request', JSON.stringify(req.query), 'with hash', req.fileHash);
 
-  res.set('Etag', req.fileHash);
+  res.set('Etag', `"${req.fileHash}"`);
 
   return next();
 }
