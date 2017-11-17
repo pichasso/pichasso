@@ -8,6 +8,7 @@ const path = require('path');
 const index = require('./routes/index');
 const image = require('./routes/image');
 const pdf = require('./routes/pdf');
+const thumbnail = require('./routes/thumbnail');
 
 const checkConfig = require('./controllers/checkConfig');
 const errorImage = require('./middleware/errorImage');
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/image', image);
 app.use('/pdf', pdf);
+app.use('/thumbnail', thumbnail)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

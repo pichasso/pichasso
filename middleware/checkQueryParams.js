@@ -59,7 +59,7 @@ function checkQueryParams(req, res, next) {
    * Check image specific params
    */
 
-  if (req.baseUrl.startsWith('/image')) {
+  if (req.baseUrl.startsWith('/image') || req.baseUrl.startsWith('/thumbnail')) {
     removeIllegalParameters(constants.imageQuery, req.query);
 
     const maxEdgeLength = config.get('ImageConversion.MaxEdgeLength') > 0 ?
@@ -124,6 +124,93 @@ function checkQueryParams(req, res, next) {
     }
     if (req.query.format) {
       logger.debug(logTag, 'Format', req.query.format);
+    }
+  }
+
+  /**
+   * Check thumbnail specific params
+   */
+
+   // default values
+   const defaultWidth = config.get('Thumbnail.DefaultWidth');
+   const defaultHeight = config.get('Thumbnail.DefaultHeight');
+   const maxWidth = config.get('Thumbnail.MaxWidth');
+   const maxHeight = config.get('Thumbnail.MaxHeight');
+   // web defaults
+   const defaultViewportWidth = config.get('Thumbnail.DefaultViewportWidth');
+   const defaultViewportHeight = config.get('Thumbnail.DefaultViewportHeight');
+   const defaultViewportScale = config.get('Thumbnail.DefaultViewPortScale');
+   // pdf defaults
+   const defaultPage = config.get('Thumbnail.DefaultPage');
+
+  if (req.baseUrl.startsWith('thumbnail')) {
+    if (req.query.page) {
+      const page = parseIntWithLimits(req.query.page, 1, Number.MAX_SAFE_INTEGER);
+      if (isNaN(page)) {
+        return next(new error.BadRequest(`Invalid page. Expected integer between 1 and ${Number.MAX_SAFE_INTEGER}, ` +
+          `but received ${req.query.page}.`));
+      }
+      req.query.page = page;
+      logger.debug(logTag, 'Page', req.query.page);
+    }
+    if (!req.query.height) {
+      const height = height || parseInt(defaultHeight);
+      height = parseIntWithLimits(height, 1, maxHeight);
+      if(isNaN(height)){
+        return next(new error.BadRequest(`Invalid height. Expected integer between 1 and ${maxHeight}, ` +
+        `but received ${req.query.height}.`));
+      }
+      req.query.height = height
+      logger.debug(logTag, 'Height', req.query.height);
+    }
+    if (!req.query.width) {
+      const width = width || parseInt(defaultWidth);
+      width = parseIntWithLimits(width, 1, maxWidth);
+      if(isNaN(width)){
+        return next(new error.BadRequest(`Invalid width. Expected integer between 1 and ${maxWidth}, ` +
+        `but received ${req.query.width}.`));
+      }
+      req.query.width = width
+      logger.debug(logTag, 'Width', req.query.width);
+    }
+    if (req.query.browserwidth) {
+      const browserwidth = parseIntWithLimits(req.query.browserwidth, 1, 4096);
+      if (isNaN(browserwidth)) {
+        return next(new error.BadRequest('Invalid browserwidth. Expected integer between 1 and 4096, ' +
+          `but received ${req.query.browserwidth}.`));
+      } else {
+        req.query.browserwidth = browserwidth;
+        logger.debug(logTag, 'Browserwidth', req.query.browserwidth);
+      }
+    }
+    if (req.query.browserheight) {
+      const browserheight = parseIntWithLimits(req.query.browserheight, 1, 4096);
+      if (isNaN(browserheight)) {
+        return next(new error.BadRequest('Invalid browserheight. Expected integer between 1 and 4096, ' +
+          `but received ${req.query.browserheight}.`));
+      } else {
+        req.query.browserheight = browserheight;
+        logger.debug(logTag, 'Browserheight', req.query.browserheight);
+      }
+    }
+    if (req.query.browserscale) {
+      const browserscale = parseIntWithLimits(req.query.browserscale, 1, 2);
+      if (isNaN(browserscale)) {
+        return next(new error.BadRequest('Invalid browserscale. Expected integer between 1 and 2, ' +
+          `but received ${req.query.browserscale}.`));
+      } else {
+        req.query.browserscale = browserscale;
+        logger.debug(logTag, 'Browserscale', req.query.browserscale);
+      }
+    }
+    if (req.query.page) {
+      const page = parseIntWithLimits(req.query.page, 1, Number.MAX_SAFE_INTEGER);
+      if (isNaN(page)) {
+        return next(new error.BadRequest(`Invalid page. Expected integer between 1 and ${Number.MAX_SAFE_INTEGER}, ` +
+          `but received ${req.query.page}.`));
+      }
+      req.query.page = page;
+      logger.debug(logTag, 'Page', req.query.page);
     }
   }
 
