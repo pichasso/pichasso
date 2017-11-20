@@ -22,6 +22,16 @@
       "MaxEdgeLength": 3840,
       "Progressive": true
   },
+  "Thumbnail": {
+      "PDF": {
+          "DefaultPage": 1
+      },
+      "Browser": {
+          "DefaultViewportWidth": 1000,
+          "DefaultViewportHeight": 800,
+          "DefaultViewPortScale": 2
+      }
+  },
   "PDFConversion": {
       "DefaultQuality": "printer",
       "Attachment": "inline",
