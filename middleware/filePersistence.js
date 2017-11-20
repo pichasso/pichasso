@@ -6,7 +6,7 @@ function filePersistence(req, res, next) {
   if (req.completed) {
     return next();
   }
-
+  req.query['route'] = req.baseUrl;
   fileCache.add(req.fileHash, req.file, req.query);
   logger.info(logTag, 'Save request', JSON.stringify(req.query), 'with hash', req.fileHash);
 
