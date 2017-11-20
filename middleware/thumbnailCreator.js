@@ -1,12 +1,18 @@
 const error = require('http-errors');
 const puppeteer = require('puppeteer');
 const request = require('request');
+const config = require('config');
 
 
 function thumbnailCreator(req, res, next) {
   if (req.completed) {
     return next();
   }
+
+  const isLandscape = req.query.landscape || config.get('Thumbnail.Browser.Landscape');
+  const isTouch = req.query.touch || config.get('Thumbnail.Browser.Touch');
+  const isMobile = req.query.mobile || config.get('Thumbnail.Browser.Mobile');
+  const fullPage = req.query.fullpage || config.get('Thumbnail.Browser.FullPage');
 
   function calculateImageProperties(viewport) {
     const width = viewport.width * viewport.deviceScaleFactor;
@@ -21,7 +27,7 @@ function thumbnailCreator(req, res, next) {
 
   function checkContentType(err, response, body) {
     if (err) {
-      if(err.code === 'ENOTFOUND'){
+      if (err.code === 'ENOTFOUND') {
         return next(new error.NotFound('Could not resolve given hostname.'));
       }
       return next(new error.InternalServerError(err));
@@ -43,29 +49,33 @@ function thumbnailCreator(req, res, next) {
     request(options, checkContentType);
   }
 
-  function createDocumentThumbnail(){
+  function createDocumentThumbnail() {
 
   }
 
   function createWebpageThumbnail() {
     // TODO puppeteer should run in sandbox for security reasons but currently not supported inside docker
-    puppeteer.launch({args:['--no-sandbox']}).then(async (browser) => {
+    puppeteer.launch({ args: ['--no-sandbox'] }).then(async (browser) => {
       const page = await browser.newPage();
       if (req.query.device) {
         await page.emulate(req.query.device);
         req.imageProperties = calculateImageProperties(req.query.device.viewport);
       } else {
         const properties = {
-          width: req.query.browserwidth,
-          height: req.query.browserheight,
-          deviceScaleFactor: req.query.browserscale,
+          'width': req.query.browserwidth,
+          'height': req.query.browserheight,
+          'deviceScaleFactor': req.query.browserscale,
+          'isLandscape': isLandscape,
+          'hasTouch': isTouch,
+          'isMobile': isMobile
         };
         await page.setViewport(properties);
         req.imageProperties = calculateImageProperties(properties);
       }
       await page.goto(req.query.file);
       return page.screenshot({
-        format: 'png',
+        'format': 'png',
+        'fullPage': fullPage
       }).then(async (buf) => {
         await browser.close();
         return buf;

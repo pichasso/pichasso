@@ -39,6 +39,10 @@
         "device",
         "browserwidth",
         "browserheight",
-        "browserscale"
+        "browserscale",
+        "landscape",
+        "mobile",
+        "touch",
+        "fullpage"
     ]
 }

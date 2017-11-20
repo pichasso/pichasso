@@ -204,6 +204,26 @@ function checkQueryParams(req, res, next) {
       req.query.filename = 'screenshot';
     }
     console.log(logTag, 'Filename', req.query.filename);
+
+    if(req.query.landscape){
+      req.query.landscape = true;
+      console.log(logTag, "Landscape", req.query.landscape);
+    }
+    
+    if(req.query.mobile){
+      req.query.mobile = true;
+      console.log(logTag, "Mobile", req.query.mobile);
+    }
+
+    if(req.query.touch){
+      req.query.touch = true;
+      console.log(logTag, "Touch", req.query.touch);
+    }
+
+    if(req.query.fullpage){
+      req.query.fullpage = true;
+      console.log(logTag, "FullPage", req.query.fullpage);
+    }
   }
 
 

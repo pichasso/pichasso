@@ -29,7 +29,11 @@
       "Browser": {
           "DefaultViewportWidth": 1000,
           "DefaultViewportHeight": 800,
-          "DefaultViewPortScale": 2
+          "DefaultViewPortScale": 2,
+          "Landscape": false,
+          "Touch": false,
+          "Mobile": false,
+          "FullPage": false
       }
   },
   "PDFConversion": {
