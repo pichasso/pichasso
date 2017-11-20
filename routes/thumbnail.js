@@ -33,7 +33,7 @@ router.get('/', checkQueryParams,
     }
     res.type(req.query.format);
     logger.debug(logTag, 'Response headers:', res._headers);
-    res.end(req.file, 'binary'); 
+    res.end(req.file, 'binary');
   });
 
 router.get('/test', onlyDevelopment, function (req, res) {
