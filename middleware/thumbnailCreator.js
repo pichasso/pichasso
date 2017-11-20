@@ -25,7 +25,7 @@ function thumbnailCreator(req, res, next) {
     };
   }
 
-  function checkContentType(err, response, body) {
+  function checkContentType(err, response) {
     if (err) {
       if (err.code === 'ENOTFOUND') {
         return next(new error.NotFound('Could not resolve given hostname.'));
@@ -33,11 +33,11 @@ function thumbnailCreator(req, res, next) {
       return next(new error.InternalServerError(err));
     }
     if ('content-type' in response.headers &&
-      response.headers['content-type'].indexOf('html') != -1) {
+      response.headers['content-type'].indexOf('html') !== -1) {
       createWebpageThumbnail();
     } else {
       createDocumentThumbnail();
-      //return next(new error.UnsupportedMediaType('Response header content-type must contain html.'));
+      // return next(new error.UnsupportedMediaType('Response header content-type must contain html.'));
     }
   }
 
@@ -49,13 +49,11 @@ function thumbnailCreator(req, res, next) {
     request(options, checkContentType);
   }
 
-  function createDocumentThumbnail() {
-
-  }
+  function createDocumentThumbnail() {}
 
   function createWebpageThumbnail() {
     // TODO puppeteer should run in sandbox for security reasons but currently not supported inside docker
-    puppeteer.launch({ args: ['--no-sandbox'] }).then(async (browser) => {
+    puppeteer.launch({args: ['--no-sandbox']}).then(async (browser) => {
       const page = await browser.newPage();
       if (req.query.device) {
         await page.emulate(req.query.device);
@@ -67,7 +65,7 @@ function thumbnailCreator(req, res, next) {
           'deviceScaleFactor': req.query.browserscale,
           'isLandscape': isLandscape,
           'hasTouch': isTouch,
-          'isMobile': isMobile
+          'isMobile': isMobile,
         };
         await page.setViewport(properties);
         req.imageProperties = calculateImageProperties(properties);
@@ -75,7 +73,7 @@ function thumbnailCreator(req, res, next) {
       await page.goto(req.query.file);
       return page.screenshot({
         'format': 'png',
-        'fullPage': fullPage
+        'fullPage': fullPage,
       }).then(async (buf) => {
         await browser.close();
         return buf;

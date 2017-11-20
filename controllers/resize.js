@@ -26,12 +26,24 @@ function resize(req, res, next) {
     height = req.query.height;
   }
 
+  let defaultCropping = config.get('ImageConversion.DefaultCropping');
+  let defaultGravity = config.get('ImageConversion.DefaultGravity');
+  // override image conversion configuration defaults if thumbnail
+  if (req.baseUrl.startsWith('/thumbnail')) {
+    if (config.has('Thumbnail.OverrideImageConversion.DefaultCropping')) {
+      defaultCropping = config.get('Thumbnail.OverrideImageConversion.DefaultCropping');
+    }
+    if (config.has('Thumbnail.OverrideImageConversion.DefaultGravity')) {
+      defaultGravity = config.get('Thumbnail.OverrideImageConversion.DefaultGravity');
+    }
+  }
+
   const aspectRatio = width / height;
-  const crop = req.query.crop || config.get('ImageConversion.DefaultCropping');
+  const crop = req.query.crop || defaultCropping;
 
   let gravity;
   if (!req.query.gravity) {
-    gravity = config.get('ImageConversion.DefaultGravity');
+    gravity = defaultGravity;
     logger.debug(logTag, 'Use default gravity', gravity);
   } else if (sharp.gravity[req.query.gravity]) {
     gravity = sharp.gravity[req.query.gravity];
