@@ -1,12 +1,12 @@
 const error = require('http-errors');
 const puppeteer = require('puppeteer');
+const request = require('request');
 
 
 function thumbnailCreator(req, res, next) {
   if (req.completed) {
     return next();
   }
-
 
   function calculateImageProperties(viewport) {
     const width = viewport.width * viewport.deviceScaleFactor;
@@ -19,32 +19,65 @@ function thumbnailCreator(req, res, next) {
     };
   }
 
-  puppeteer.launch().then(async (browser) => {
-    const page = await browser.newPage();
-    if (req.query.device) {
-      await page.emulate(req.query.device);
-      req.imageProperties = calculateImageProperties(req.query.device.viewport);
-    } else {
-      const properties = {
-        width: req.query.browserwidth,
-        height: req.query.browserheight,
-        deviceScaleFactor: req.query.browserscale,
-      };
-      await page.setViewport(properties);
-      req.imageProperties = calculateImageProperties(properties);
+  function checkContentType(err, response, body) {
+    if (err) {
+      if(err.code === 'ENOTFOUND'){
+        return next(new error.NotFound('Could not resolve given hostname.'));
+      }
+      return next(new error.InternalServerError(err));
     }
-    await page.goto(req.query.file);
-    return page.screenshot({
-      format: 'png',
-    }).then(async (buf) => {
-      await browser.close();
-      return buf;
-    })
-      .then((buf) => {
-        req.file = buf;
-        return next();
-      }).catch(err => next(new error.InternalServerError(err))).catch(err => next(new error.InternalServerError(err)));
-  });
+    if ('content-type' in response.headers &&
+      response.headers['content-type'].indexOf('html') != -1) {
+      createWebpageThumbnail();
+    } else {
+      createDocumentThumbnail();
+      //return next(new error.UnsupportedMediaType('Response header content-type must contain html.'));
+    }
+  }
+
+  function createThumbnail(url) {
+    let options = {
+      url: url,
+      method: 'HEAD',
+    };
+    request(options, checkContentType);
+  }
+
+  function createDocumentThumbnail(){
+
+  }
+
+  function createWebpageThumbnail() {
+    // TODO puppeteer should run in sandbox for security reasons but currently not supported inside docker
+    puppeteer.launch({args:['--no-sandbox']}).then(async (browser) => {
+      const page = await browser.newPage();
+      if (req.query.device) {
+        await page.emulate(req.query.device);
+        req.imageProperties = calculateImageProperties(req.query.device.viewport);
+      } else {
+        const properties = {
+          width: req.query.browserwidth,
+          height: req.query.browserheight,
+          deviceScaleFactor: req.query.browserscale,
+        };
+        await page.setViewport(properties);
+        req.imageProperties = calculateImageProperties(properties);
+      }
+      await page.goto(req.query.file);
+      return page.screenshot({
+        format: 'png',
+      }).then(async (buf) => {
+        await browser.close();
+        return buf;
+      })
+        .then((buf) => {
+          req.file = buf;
+          return next();
+        });
+    }).catch(err => next(new error.InternalServerError(err)));
+  }
+
+  createThumbnail(req.query.file);
 }
 
 module.exports = thumbnailCreator;

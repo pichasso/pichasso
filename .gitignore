@@ -67,3 +67,6 @@ docker-compose.override.yml
 # Mac
 .DS_Store
 package-lock.json
+
+# Puppeteer profiles
+puppeteer_dev_profile*
