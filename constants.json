@@ -33,12 +33,5 @@
         "file",
         "quality",
         "filename"
-    ],
-    "thumbnailQuery":[
-        "file",
-        "device",
-        "browserwidth",
-        "browserheight",
-        "browserscale"
     ]
 }

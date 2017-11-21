@@ -117,20 +117,7 @@ parameter. Sample url: http://url.tld/pdf?file=PDF_URL&quality=printer&download=
 | **download** | 1 or 0 | If 1 is selected the files will be downloaded when the process is finished |
 
 
-## Thumbnail Service
 
-### `/thumbnail` route
 
-For creation of webpage thumbnails there is an GET-API using [puppeteer](https://github.com/GoogleChrome/puppeteer) behind the `/thumbnail` route.
-
-| Parameter | Values | Description |
-| --- | --- | --- |
-| **file** | url | url pointing to a webpage |
-| **device** | [Device](https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js) | puppeteer device descriptor name like `iPhone%206` or `iPad` (url encoded slash), alternatively use: |
-| **browserwidth** | number | viewport width, default `1000` |
-| **browserheight** | number | viewport height, default `800`  |
-| **browserscale** | number | viewport scaling factor, default `2` |
-
-The parameters above are used to take screenshots with defined size. All image conversion/cropping options of the `/image` route are supported and can be added to finally resize the taken screenshot.
 
 
