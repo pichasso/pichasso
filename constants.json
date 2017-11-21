@@ -43,6 +43,7 @@
         "landscape",
         "mobile",
         "touch",
-        "fullpage"
+        "fullpage",
+        "auth"
     ]
 }

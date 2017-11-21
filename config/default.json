@@ -38,6 +38,16 @@
         "OverrideImageConversion": {
             "DefaultCropping": "fill",
             "DefaultGravity": "north"
+        },
+        "Verification": {
+            "Enabled": false,
+            "Accounts": [
+                {
+                    "Description": "sampledescription",
+                    "Enabled": false,
+                    "Token": "sampletoken"
+                }
+            ]
         }
     },
     "PDFConversion": {

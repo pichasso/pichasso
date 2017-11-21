@@ -1,5 +1,6 @@
 const express = require('express');
 const router = new express.Router();
+const error = require('http-errors');
 const config = require('config');
 const logger = require('../controllers/logger');
 const logTag = '[ThumbnailRoutet]';
@@ -12,9 +13,28 @@ const resize = require('../controllers/resize');
 const convert = require('../controllers/convert');
 const persist = require('../middleware/filePersistence');
 const thumbnailCreator = require('../middleware/thumbnailCreator');
+const authentication = require('../middleware/authentication');
+const createHash = require('../middleware/createHash');
+
+router.get('/verify/:token/:file', (req, res, next) => {
+  const tokens = config.get('Thumbnail.Verification.Accounts')
+    .filter(account => account.Enabled)
+    .map(account => account.Token);
+  console.log('token', req.params.token, 'tokens', tokens);
+  if (tokens.indexOf(req.params.token) !== -1) {
+    res.end(createHash(req.params.token, req.params.file), 'utf8');
+  } else {
+    next(new error.Forbidden());
+  }
+});
+
+router.get('/test', onlyDevelopment, function (req, res) {
+  res.render('pdf');
+});
 
 /* GET thumbnail. */
 router.get('/', checkQueryParams,
+  authentication,
   checkEtag,
   checkCache,
   thumbnailCreator,
@@ -36,8 +56,5 @@ router.get('/', checkQueryParams,
     res.end(req.file, 'binary');
   });
 
-router.get('/test', onlyDevelopment, function (req, res) {
-  res.render('pdf');
-});
 
 module.exports = router;
