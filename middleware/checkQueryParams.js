@@ -184,7 +184,7 @@ function checkQueryParams(req, res, next) {
       const devices = require('puppeteer/DeviceDescriptors');
       if (req.query.device in devices) {
         req.query.device = devices[req.query.device];
-        console.log(logTag, 'Device', req.query.device);
+        logger.debug(logTag, 'Device', req.query.device);
       } else {
         return next(new error.BadRequest('Unsupported device.'));
       }
@@ -203,26 +203,26 @@ function checkQueryParams(req, res, next) {
     if (!req.query.filename) {
       req.query.filename = 'screenshot';
     }
-    console.log(logTag, 'Filename', req.query.filename);
+    logger.debug(logTag, 'Filename', req.query.filename);
 
     if (req.query.landscape) {
       req.query.landscape = true;
-      console.log(logTag, 'Landscape', req.query.landscape);
+      logger.debug(logTag, 'Landscape', req.query.landscape);
     }
 
     if (req.query.mobile) {
       req.query.mobile = true;
-      console.log(logTag, 'Mobile', req.query.mobile);
+      logger.debug(logTag, 'Mobile', req.query.mobile);
     }
 
     if (req.query.touch) {
       req.query.touch = true;
-      console.log(logTag, 'Touch', req.query.touch);
+      logger.debug(logTag, 'Touch', req.query.touch);
     }
 
     if (req.query.fullpage) {
       req.query.fullpage = true;
-      console.log(logTag, 'FullPage', req.query.fullpage);
+      logger.debug(logTag, 'FullPage', req.query.fullpage);
     }
   }
 
