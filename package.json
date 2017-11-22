@@ -38,7 +38,7 @@
     "debug": "~3.0.0",
     "eslint": "^4.4.1",
     "eslint-plugin-es-beautifier": "^1.0.1",
-    "istanbul": "^0.4.5",
+    "istanbul": "^1.0.0-alpha.2",
     "mocha": "^3.5.0",
     "nodemon": "^1.11.0",
     "sinon": "~3.2.0"
