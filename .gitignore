@@ -70,3 +70,4 @@ package-lock.json
 
 # Puppeteer profiles
 puppeteer_dev_profile*
+gs_*
