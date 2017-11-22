@@ -22,6 +22,7 @@ router.get('/verify/:token/:file', (req, res, next) => {
     .map(account => account.Token);
   console.log('token', req.params.token, 'tokens', tokens);
   if (tokens.indexOf(req.params.token) !== -1) {
+    res.setHeader('content-type', 'text/plain');
     res.end(createHash(req.params.token, req.params.file), 'utf8');
   } else {
     next(new error.Forbidden());

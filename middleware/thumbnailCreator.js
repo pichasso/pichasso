@@ -49,11 +49,16 @@ function thumbnailCreator(req, res, next) {
     request(options, checkContentType);
   }
 
-  function createDocumentThumbnail() {}
+  function createDocumentThumbnail() {
+    return next(new error.NotImplemented());
+  }
 
   function createWebpageThumbnail() {
     // TODO puppeteer should run in sandbox for security reasons but currently not supported inside docker
-    puppeteer.launch({args: ['--no-sandbox']}).then(async (browser) => {
+    puppeteer.launch({
+      //args: ['--no-sandbox'],
+      executablePath: '/usr/bin/google-chrome-stable'
+    }).then(async (browser) => {
       const page = await browser.newPage();
       if (req.query.device) {
         await page.emulate(req.query.device);
