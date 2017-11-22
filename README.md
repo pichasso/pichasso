@@ -130,7 +130,18 @@ For creation of webpage thumbnails there is an GET-API using [puppeteer](https:/
 | **browserwidth** | number | viewport width, default `1000` |
 | **browserheight** | number | viewport height, default `800`  |
 | **browserscale** | number | viewport scaling factor, default `2` |
+| **auth** | string | authentication token to prevent free usage |
 
 The parameters above are used to take screenshots with defined size. All image conversion/cropping options of the `/image` route are supported and can be added to finally resize the taken screenshot.
 
+### Thumbnail authentication
 
+To prevent free access to thumbnail creation, authentication can be enabled in configuration setting `Thumbnail.Verification.Enabled` to be equal `true`. Based on the url given in the file parameter and a secret there will be a hash generated that must be added as get parameter `auth`. The secrets have to be set in configuration under the `Thumbnail.Verification.Accounts` path as list of objects containing the following properties:
+```
+{
+    "Description": "sampledescription",
+    "Enabled": true,
+    "Token": "sampletoken"
+}            
+```
+The required auth parameter can be requested from the server using the route `/thumbnail/verify/{sampletoken}/{url}` while url has to be transfered in url encoded format. The response text can be added as GET parameter `auth`.
