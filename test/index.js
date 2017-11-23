@@ -10,7 +10,7 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('index', function () {
-  beforeEach(function () {
+  afterEach(function () {
     sandbox.restore();
   });
 
@@ -20,6 +20,7 @@ describe('index', function () {
       .then((res) => {
         res.should.have.status(200);
         res.text.should.have.string('Pichasso is running');
+        done();
       })
       .catch((err) => {
         throw err;
@@ -31,6 +32,7 @@ describe('index', function () {
       .head('/')
       .then((res) => {
         res.should.have.status(200);
+        done();
       })
       .catch((err) => {
         throw err;
@@ -40,33 +42,27 @@ describe('index', function () {
   it('should not find this page', () => {
     chai.request(server)
       .get('/notExisting')
-      .end((res) => {
-        res.should.have.status(404);
-      });
+      .end(res => res.should.have.status(404)).then(() => done());
   });
 
   it('clear cache returns forbidden without correct hash', () => {
-    chai.request(server)
+    Promise.all(chai.request(server)
       .get('/clear')
-      .end((res) => {
-        res.should.have.status(403);
-      });
+      .end(res => res.should.have.status(404)),
     chai.request(server)
       .get('/clear/123456')
-      .end((res) => {
+      .end((err, res) => {
         res.should.have.status(403);
-      });
+      })).then(() => done());
   });
 
   it('clear cache executed with correct hash', () => {
     let stub = sandbox.stub(config, 'get');
     stub.withArgs('Caching.ClearHash')
-      .returns('123456');
+      .returns('testhash');
     stub.callThrough();
     chai.request(server)
-      .get('/clear/123456')
-      .end((res) => {
-        res.should.have.status(200);
-      });
+      .get('/clear/testhash')
+      .end((err, res) => res.should.have.status(200)).then(() => done());
   });
 });
