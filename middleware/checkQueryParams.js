@@ -59,8 +59,13 @@ function checkQueryParams(req, res, next) {
    * Check image specific params
    */
 
-  if (req.baseUrl.startsWith('/image')) {
-    removeIllegalParameters(constants.imageQuery, req.query);
+  if (req.baseUrl.startsWith('/image') || req.baseUrl.startsWith('/thumbnail')) {
+    if (req.baseUrl.startsWith('/image')) {
+      removeIllegalParameters(constants.imageQuery, req.query);
+    } else {
+      let allowedParameters = constants.imageQuery.concat(constants.thumbnailQuery);
+      removeIllegalParameters(allowedParameters, req.query);
+    }
 
     const maxEdgeLength = config.get('ImageConversion.MaxEdgeLength') > 0 ?
       config.get('ImageConversion.MaxEdgeLength') : Number.MAX_SAFE_INTEGER;
@@ -126,6 +131,101 @@ function checkQueryParams(req, res, next) {
       logger.debug(logTag, 'Format', req.query.format);
     }
   }
+
+
+  /**
+   * Check thumbnail specific params
+   */
+
+  // web defaults
+  const defaultViewportWidth = config.get('Thumbnail.Browser.DefaultViewportWidth');
+  const defaultViewportHeight = config.get('Thumbnail.Browser.DefaultViewportHeight');
+  const defaultViewportScale = config.get('Thumbnail.Browser.DefaultViewPortScale');
+  // pdf defaults
+  const defaultPage = config.get('Thumbnail.PDF.DefaultPage');
+
+  if (req.baseUrl.startsWith('/thumbnail')) {
+    const page = parseIntWithLimits(req.query.page || defaultPage, 1, Number.MAX_SAFE_INTEGER);
+    if (isNaN(page)) {
+      return next(new error.BadRequest(`Invalid page. Expected integer between 1 and ${Number.MAX_SAFE_INTEGER}, ` +
+        `but received ${req.query.page}.`));
+    }
+    req.query.page = page;
+    logger.debug(logTag, 'Page', req.query.page);
+
+    const browserwidth = parseIntWithLimits(req.query.browserwidth || defaultViewportWidth, 1, 4096);
+    if (isNaN(browserwidth)) {
+      return next(new error.BadRequest('Invalid browserwidth. Expected integer between 1 and 4096, ' +
+        `but received ${req.query.browserwidth}.`));
+    } else {
+      req.query.browserwidth = browserwidth;
+      logger.debug(logTag, 'Browserwidth', req.query.browserwidth);
+    }
+
+    const browserheight = parseIntWithLimits(req.query.browserheight || defaultViewportHeight, 1, 4096);
+    if (isNaN(browserheight)) {
+      return next(new error.BadRequest('Invalid browserheight. Expected integer between 1 and 4096, ' +
+        `but received ${req.query.browserheight}.`));
+    } else {
+      req.query.browserheight = browserheight;
+      logger.debug(logTag, 'Browserheight', req.query.browserheight);
+    }
+
+    const browserscale = parseIntWithLimits(req.query.browserscale || defaultViewportScale, 1, 2);
+    if (isNaN(browserscale)) {
+      return next(new error.BadRequest('Invalid browserscale. Expected integer between 1 and 2, ' +
+        `but received ${req.query.browserscale}.`));
+    } else {
+      req.query.browserscale = browserscale;
+      logger.debug(logTag, 'Browserscale', req.query.browserscale);
+    }
+
+    if (req.query.device) {
+      const devices = require('puppeteer/DeviceDescriptors');
+      if (req.query.device in devices) {
+        req.query.device = devices[req.query.device];
+        logger.debug(logTag, 'Device', req.query.device);
+      } else {
+        return next(new error.BadRequest('Unsupported device.'));
+      }
+    }
+
+    if (req.query.page) {
+      const page = parseIntWithLimits(req.query.page, 1, Number.MAX_SAFE_INTEGER);
+      if (isNaN(page)) {
+        return next(new error.BadRequest(`Invalid page. Expected integer between 1 and ${Number.MAX_SAFE_INTEGER}, ` +
+          `but received ${req.query.page}.`));
+      }
+      req.query.page = page;
+      logger.debug(logTag, 'Page', req.query.page);
+    }
+
+    if (!req.query.filename) {
+      req.query.filename = 'screenshot';
+    }
+    logger.debug(logTag, 'Filename', req.query.filename);
+
+    if (req.query.landscape) {
+      req.query.landscape = true;
+      logger.debug(logTag, 'Landscape', req.query.landscape);
+    }
+
+    if (req.query.mobile) {
+      req.query.mobile = true;
+      logger.debug(logTag, 'Mobile', req.query.mobile);
+    }
+
+    if (req.query.touch) {
+      req.query.touch = true;
+      logger.debug(logTag, 'Touch', req.query.touch);
+    }
+
+    if (req.query.fullpage) {
+      req.query.fullpage = true;
+      logger.debug(logTag, 'FullPage', req.query.fullpage);
+    }
+  }
+
 
   /**
    * Check PDF specific params
