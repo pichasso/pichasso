@@ -4,8 +4,14 @@ const logger = require('../controllers/logger');
 const logTag = '[CheckCache]';
 
 function checkCache(req, res, next) {
-  // generate hash and check if image exists in cache
-  const queryHash = hash(req.query);
+  // generate hash and check if file exists in cache
+  // remove authentication information, if exists
+  let cleanQuery = {};
+  Object.assign(cleanQuery, req.query);
+  if (cleanQuery['auth']) {
+    delete cleanQuery.auth;
+  }
+  const queryHash = hash(cleanQuery);
   req.fileHash = queryHash;
 
   try {

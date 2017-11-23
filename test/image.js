@@ -151,6 +151,10 @@ describe('Image Controller', () => {
     }));
 
   describe('(width and height)', () => {
+    afterEach(() => {
+      sandbox.restore();
+    });
+
     it('should return an invalid width error', (done) => {
       chai.request(server)
         .get('/image?file=https://http.cat/100&width=0')
@@ -215,6 +219,10 @@ describe('Image Controller', () => {
   });
 
   describe('(crop)', () => {
+    afterEach(() => {
+      sandbox.restore();
+    });
+
     it('should return the invalid crop error', (done) => {
       chai.request(server)
         .get('/image?file=https://http.cat/100&width=100&crop=notExisting')
@@ -254,6 +262,10 @@ describe('Image Controller', () => {
   });
 
   describe('(gravity)', () => {
+    afterEach(() => {
+      sandbox.restore();
+    });
+
     it('should return the invalid gravity error', (done) => {
       chai.request(server)
         .get('/image?file=https://http.cat/100&width=100&height=150&crop=fill&gravity=notExisting')
@@ -305,6 +317,10 @@ describe('Image Controller', () => {
   });
 
   describe('(quality)', () => {
+    afterEach(() => {
+      sandbox.restore();
+    });
+
     it('should return the invalid quality error', (done) => {
       chai.request(server)
         .get('/image?file=https://http.cat/100&quality=0')
@@ -334,6 +350,10 @@ describe('Image Controller', () => {
   });
 
   describe('(format)', () => {
+    afterEach(() => {
+      sandbox.restore();
+    });
+
     it('should return invalid format error', (done) => {
       chai.request(server)
         .get('/image?file=https://http.cat/100&format=notExisting')

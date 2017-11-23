@@ -10,7 +10,7 @@
     "lint": "eslint ./**/*.js",
     "mocha": "node ./node_modules/mocha/bin/mocha",
     "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "test": "npm run lint && npm run istanbul",
+    "test": "npm run beautify && npm run istanbul",
     "beautify": "eslint --fix . --ignore-path .gitignore"
   },
   "dependencies": {
@@ -23,7 +23,9 @@
     "node-gs": "^0.1.1",
     "object-hash": "1.1.8",
     "pug": "~2.0.0-rc.3",
+    "puppeteer": "^0.13.0",
     "request": "~2.81.0",
+    "sha256": "^0.2.0",
     "sharp": "~0.18.2",
     "smartcrop-sharp": "~1.0.5",
     "winston": "~2.3.1",
@@ -36,7 +38,7 @@
     "debug": "~3.0.0",
     "eslint": "^4.4.1",
     "eslint-plugin-es-beautifier": "^1.0.1",
-    "istanbul": "^0.4.5",
+    "istanbul": "^1.0.0-alpha.2",
     "mocha": "^3.5.0",
     "nodemon": "^1.11.0",
     "sinon": "~3.2.0"
