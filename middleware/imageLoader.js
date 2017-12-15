@@ -29,7 +29,7 @@ function imageLoader(req, res, next) {
     }
 
     const statusCode = response.statusCode;
-    const contentLength = Number(response.headers['content-length']);
+    const contentLength = body ? body.length : Number(response.headers['content-length']);
     const contentType = response.headers['content-type'];
     const sizeLimit = config.get('ImageSource.MaxFileSize');
 
