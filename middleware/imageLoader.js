@@ -16,8 +16,8 @@ function imageLoader(req, res, next) {
     url: req.query.file,
     encoding: 'binary',
     headers: {
-      "Connection": "keep-alive"
-    }
+      'Connection': 'keep-alive',
+    },
   }, (err, response, body) => {
     if (err) {
       if (err.code === 'ENOTFOUND') {
