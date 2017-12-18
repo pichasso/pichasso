@@ -23,5 +23,3 @@ RUN npm install
 RUN mkdir -p /tmp/pichasso
 
 #ADD ./ /usr/src/app
-
-CMD npm start

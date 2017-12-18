@@ -128,9 +128,18 @@ describe('Image Controller', () => {
   });
 
   it('should return file too large', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('ImageSource.MaxFileSize')
+      .returns(4000);
+    stub.withArgs('ImageSource.LoadExternalData.Enabled')
+      .returns(true);
+    stub.withArgs('ImageSource.LoadExternalData.WhitelistRegex')
+      .returns([]);
+    stub.callThrough();
     chai.request(server)
-      .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/2/2c/' +
-      'A_new_map_of_Great_Britain_according_to_the_newest_and_most_exact_observations_%288342715024%29.jpg')
+      .get('/image?file=' +
+        'https://upload.wikimedia.org/wikipedia/commons/2/24/' +
+        'Willaerts_Adam_The_Embarkation_of_the_Elector_Palantine_Oil_Canvas-huge.jpg')
       .end((err, res) => {
         res.status.should.equal(400);
         res.text.should.have.string('File exceeds size limit');
@@ -297,7 +306,7 @@ describe('Image Controller', () => {
       this.timeout(10000);
       chai.request(server)
         .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/8/8c/Telefunken_FuBK.jpg' +
-        '&width=100&height=150&crop=fill&gravity=faces')
+          '&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
@@ -308,7 +317,7 @@ describe('Image Controller', () => {
       this.timeout(10000);
       chai.request(server)
         .get('/image?file=https://upload.wikimedia.org/wikipedia/commons/5/5d/Half_Dome--cables.jpeg' +
-        '&width=100&height=150&crop=fill&gravity=faces')
+          '&width=100&height=150&crop=fill&gravity=faces')
         .end((err, res) => {
           res.status.should.equal(200);
           done();
@@ -441,4 +450,3 @@ describe('Image Controller', () => {
       });
   });
 });
-

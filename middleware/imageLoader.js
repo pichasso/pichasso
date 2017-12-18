@@ -15,6 +15,9 @@ function imageLoader(req, res, next) {
   const r = request({
     url: req.query.file,
     encoding: 'binary',
+    headers: {
+      'Connection': 'keep-alive',
+    },
   }, (err, response, body) => {
     if (err) {
       if (err.code === 'ENOTFOUND') {
@@ -23,6 +26,22 @@ function imageLoader(req, res, next) {
         logger.error(logTag, 'Request failed', err);
         return next(new error.BadRequest(`Request failed: ${err.message}`));
       }
+    }
+
+    const statusCode = response.statusCode;
+    const contentLength = body ? body.length : Number(response.headers['content-length']);
+    const contentType = response.headers['content-type'];
+    const sizeLimit = config.get('ImageSource.MaxFileSize');
+
+    if (statusCode !== 200) {
+      r.abort();
+      return next(new error.NotFound('Request failed.'));
+    } else if (contentType && !contentType.startsWith('image/')) {
+      r.abort();
+      return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
+    } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
+      r.abort();
+      return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
     }
 
     if (!req.query.filename) {
@@ -41,22 +60,6 @@ function imageLoader(req, res, next) {
         logger.error(logTag, 'Sharp is unable to load image', err);
         return next(new error.BadRequest(`Request failed: ${err.message}`));
       });
-  }).on('response', (response) => {
-    const statusCode = response.statusCode;
-    const contentLength = Number(response.headers['content-length']);
-    const contentType = response.headers['content-type'];
-    const sizeLimit = config.get('ImageSource.MaxFileSize');
-
-    if (statusCode !== 200) {
-      r.abort();
-      return next(new error.NotFound('Request failed.'));
-    } else if (contentType && !contentType.startsWith('image/')) {
-      r.abort();
-      return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
-    } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
-      r.abort();
-      return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
-    }
   });
 }
 
