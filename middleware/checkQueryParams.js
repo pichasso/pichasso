@@ -24,12 +24,14 @@ function checkQueryParams(req, res, next) {
       return next(new error.BadRequest(`Protocol not allowed. Expected one of ${allowedProtocols.join(', ')}`));
     }
 
-    const whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
-    if (whitelistRegex.length > 0) {
-      logger.debug(logTag, 'Match url', req.query.file, 'with whitelist', whitelistRegex);
-      const whitelisted = whitelistRegex.some(regex => req.query.file.match(regex));
-      if (!whitelisted) {
-        return next(new error.BadRequest('Domain source not allowed.'));
+    if (req.baseUrl.startsWith('/image') || req.baseUrl.startsWith('/pdf')) {
+      const whitelistRegex = config.get('ImageSource.LoadExternalData.WhitelistRegex');
+      if (whitelistRegex.length > 0) {
+        logger.debug(logTag, 'Match url', req.query.file, 'with whitelist', whitelistRegex);
+        const whitelisted = whitelistRegex.some(regex => req.query.file.match(regex));
+        if (!whitelisted) {
+          return next(new error.BadRequest('Domain source not allowed.'));
+        }
       }
     }
   } else {
