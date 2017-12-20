@@ -20,7 +20,7 @@ module.exports = {
     "curly": 2,
     "eol-last": 2,
     "eqeqeq": [2, "smart"],
-    "max-depth": [1, 3],
+    "max-depth": [1, 4],
     "max-len": [1, 120],
     // "max-statements": [1, 15],
     "new-cap": 1,
