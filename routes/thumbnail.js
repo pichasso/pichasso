@@ -20,13 +20,13 @@ router.get('/verify/:token/:file', (req, res, next) => {
   const tokens = config.get('Thumbnail.Verification.Accounts')
     .filter(account => account.Enabled && account.Type !== 'hostname')
     .map(account => account.Token);
-  const tokens_hostname = config.get('Thumbnail.Verification.Accounts')
+  const tokensHostname = config.get('Thumbnail.Verification.Accounts')
     .filter(account => account.Enabled && account.Type === 'hostname')
     .map(account => account.Token);
-  const token_valid = tokens.indexOf(req.params.token) !== -1 ||
-    tokens_hostname.indexOf(req.params.token) !== -1;
-  if (req.params.token && token_valid) {
-    const checkHostNameOnly = tokens_hostname.indexOf(req.params.token) !== -1;
+  const tokenValid = tokens.indexOf(req.params.token) !== -1 ||
+    tokensHostname.indexOf(req.params.token) !== -1;
+  if (req.params.token && tokenValid) {
+    const checkHostNameOnly = tokensHostname.indexOf(req.params.token) !== -1;
     res.setHeader('content-type', 'text/plain');
     res.end(createHash(req.params.token, req.params.file, checkHostNameOnly), 'utf8');
   } else {
