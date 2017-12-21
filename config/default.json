@@ -45,7 +45,14 @@
                 {
                     "Description": "sampledescription",
                     "Enabled": true,
+                    "Type": "url",
                     "Token": "sampletoken"
+                },
+                {
+                    "Description": "sampledescription_host_only",
+                    "Enabled": true,
+                    "Type": "hostname",
+                    "Token": "sampletoken2"
                 }
             ]
         }
