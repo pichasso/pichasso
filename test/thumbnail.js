@@ -123,4 +123,98 @@ describe('Thumbnail Controller verification', function () {
         done();
       });
   });
+
+  it('should create hostname specific verification key only', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true);
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Type': 'hostname',
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const path = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Wikipedia:Hauptseite');
+    const path2 = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Portal:Wissenschaft');
+    const auth = '13f62f';
+    console.log('request verification path', path);
+    chai.request(server)
+      .get(path)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.text.should.equal(auth);
+        done();
+      });
+  });
+  
+  it('should match hostname specific verification key', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true);
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Type': 'hostname',
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const path = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Wikipedia:Hauptseite');
+    const path2 = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Portal:Wissenschaft');
+    const auth = '13f62f';
+    console.log('request verification path', path2);
+    chai.request(server)
+      .get(path)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.text.should.equal(auth);
+        done();
+      });
+  });
+
+  it('should create url specific verification key', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true);
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Type': 'url', // or without Type
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const path = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Wikipedia:Hauptseite');
+    const path2 = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Portal:Wissenschaft');
+    const auth = '1659cf';
+    console.log('request verification path', path);
+    chai.request(server)
+      .get(path)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.text.should.equal(auth);
+        console.log('hostname unspecific auth key 1:', res.text)
+        done();
+      });
+  });
+
+  it('should not match url specific verification key', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true);
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Type': 'url', // or without Type
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const path = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Wikipedia:Hauptseite');
+    const path2 = '/thumbnail/verify/sampletoken/' + encodeURIComponent('https://de.wikipedia.org/wiki/Portal:Wissenschaft');
+    const auth = '1659cf';
+    console.log('request verification path', path2);
+    chai.request(server)
+      .get(path)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        res.text.should.equal(auth);
+        console.log('hostname unspecific auth key 1:', res.text)
+        done();
+      });
+  });
 });
