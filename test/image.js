@@ -414,6 +414,9 @@ describe('Image Controller', () => {
     });
 
     it('should not return the image as webp automatically, if accepted', (done) => {
+      const stub = sandbox.stub(config, 'get');
+      stub.withArgs('ImageConversion.DefaultFormatDetection').returns(false);
+      stub.callThrough();
       chai.request(server)
         .get('/image?file=https://http.cat/100')
         .set('Accept', 'image/webp')
