@@ -18,12 +18,17 @@ const createHash = require('../middleware/createHash');
 
 router.get('/verify/:token/:file', (req, res, next) => {
   const tokens = config.get('Thumbnail.Verification.Accounts')
-    .filter(account => account.Enabled)
+    .filter(account => account.Enabled && account.Type !== 'hostname')
     .map(account => account.Token);
-  console.log('token', req.params.token, 'tokens', tokens);
-  if (tokens.indexOf(req.params.token) !== -1) {
+  const tokens_hostname = config.get('Thumbnail.Verification.Accounts')
+    .filter(account => account.Enabled && account.Type === 'hostname')
+    .map(account => account.Token);
+  const token_valid = tokens.indexOf(req.params.token) !== -1 ||
+    tokens_hostname.indexOf(req.params.token) !== -1;
+  if (req.params.token && token_valid) {
+    const checkHostNameOnly = tokens_hostname.indexOf(req.params.token) !== -1;
     res.setHeader('content-type', 'text/plain');
-    res.end(createHash(req.params.token, req.params.file), 'utf8');
+    res.end(createHash(req.params.token, req.params.file, checkHostNameOnly), 'utf8');
   } else {
     next(new error.Forbidden());
   }

@@ -19,8 +19,11 @@ function verifyAuthentication(req, res, next) {
 
   const authorizationKey = req.query.auth;
   const url = req.query.file;
-  const tokens = config.get('Thumbnail.Verification.Accounts')
-    .filter(account => account.Enabled)
+  const tokens_url = config.get('Thumbnail.Verification.Accounts')
+    .filter(account => account.Enabled && account.Type !== 'hostname')
+    .map(account => account.Token);
+  const tokens_hostname = config.get('Thumbnail.Verification.Accounts')
+    .filter(account => account.Enabled && account.Type === 'hostname')
     .map(account => account.Token);
 
   function verify() {
@@ -28,8 +31,14 @@ function verifyAuthentication(req, res, next) {
       if (!authorizationKey) {
         reject('authorization key missing');
       }
-      tokens.forEach((token) => {
+      tokens_url.forEach((token) => {
         const hash = createHash(token, url);
+        if (hash === authorizationKey) {
+          resolve(token);
+        }
+      });
+      tokens_hostname.forEach((token) => {
+        const hash = createHash(token, hostname, hostname = true);
         if (hash === authorizationKey) {
           resolve(token);
         }
@@ -38,7 +47,7 @@ function verifyAuthentication(req, res, next) {
     });
   }
 
-  verify()
+  return verify()
     .then(() => next()).catch(err => next(new error.Forbidden(err)));
 }
 module.exports = verifyAuthentication;
