@@ -6,7 +6,6 @@ const logger = require('../controllers/logger');
 const logTag = '[ThumbnailRoutet]';
 
 const checkQueryParams = require('../middleware/checkQueryParams');
-const onlyDevelopment = require('../middleware/onlyDevelopment');
 const checkEtag = require('../middleware/checkEtag');
 const checkCache = require('../middleware/checkCache');
 const resize = require('../controllers/resize');

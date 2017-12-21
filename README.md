@@ -145,3 +145,14 @@ To prevent free access to thumbnail creation, authentication can be enabled in c
 }            
 ```
 The required auth parameter can be requested from the server using the route `/thumbnail/verify/{sampletoken}/{url}` while url has to be transfered in url encoded format. The response text can be added as GET parameter `auth`.
+
+If there are many screenshots requested from one site but different pages, it is possible to create an `auth` that tests only the hostname of the given domain name. To do so, add an Account of type hostname as follows:
+```
+{
+    "Description": "sampledescription_host",
+    "Enabled": true,
+    "Type": "hostname"
+    "Token": "sampletoken2"
+}            
+```
+The generated `auth` using the route `/thumbnail/verify/sampletoken2/{url}` would be reusable for all pages with the same hostname.

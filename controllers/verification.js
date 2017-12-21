@@ -1,11 +1,10 @@
 const sha256 = require('sha256');
 const config = require('config');
 const {
-  URL
+  URL,
 } = require('url');
 
 class Verification {
-
   createHash(token, url) {
     if (this.isHostNameToken(token)) {
       return sha256(token + new URL(url).hostname).substring(0, 6);
@@ -63,7 +62,6 @@ class Verification {
       reject('authorization failed');
     });
   }
-
 }
 
 module.exports = new Verification();
