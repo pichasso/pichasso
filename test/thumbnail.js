@@ -30,6 +30,61 @@ describe('Thumbnail Controller', function () {
         res.status.should.equal(200);
         done();
       });
+  });  
+  
+  it('should create website thumbnail with auth verification', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true); 
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const auth = '103655';
+    const url = encodeURIComponent('https://google.com');
+    chai.request(server)
+      .get(`/thumbnail?auth=${auth}&file=${url}`)
+      .end((err, res) => {
+        res.status.should.equal(200);
+        done();
+      });
+  });
+
+  it('should not create website thumbnail with auth verification', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true); 
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const auth = 'wrong';
+    chai.request(server)
+      .get(`/thumbnail?auth=${auth}&file=https://google.com`)
+      .end((err, res) => {
+        res.status.should.equal(403);
+        done();
+      });
+  });
+
+  it('should not create website thumbnail with auth verification', (done) => {
+    const stub = sandbox.stub(config, 'get');
+    stub.withArgs('Thumbnail.Verification.Enabled').returns(true); 
+    stub.withArgs('Thumbnail.Verification.Accounts').returns([{
+      'Description': 'sampledescription',
+      'Enabled': true,
+      'Token': 'sampletoken',
+    }]);
+    stub.callThrough();
+    const auth = ''; // empty/undefined but verification enabled
+    chai.request(server)
+      .get(`/thumbnail?auth=${auth}&file=https://google.com`)
+      .end((err, res) => {
+        res.status.should.equal(403);
+        done();
+      });
   });
 
   it('should return 404 for non existing domain', (done) => {
