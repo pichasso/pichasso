@@ -58,6 +58,16 @@ function checkQueryParams(req, res, next) {
   }
 
   /**
+   * Check cache
+   */
+
+  if (req.query.nocache) {
+    req.query.nocache = true;
+  } else {
+    req.query.nocache = false;
+  }
+
+  /**
    * Check image specific params
    */
 

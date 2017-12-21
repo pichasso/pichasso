@@ -15,12 +15,17 @@ function checkCache(req, res, next) {
   req.fileHash = queryHash;
 
   try {
-    if (cache.exists(queryHash)) {
+    if (!req.query.nocache && cache.exists(queryHash)) {
+      logger.debug(logTag, 'Load data from cache...', queryHash);
       req.file = cache.load(queryHash);
       req.query = cache.metadata(queryHash);
       logger.debug(logTag, 'Metadata', req.query);
       res.set('Etag', `"${queryHash}"`);
       req.completed = true;
+    } else {
+      logger.debug(logTag, 'Ignore cache because of',
+        req.query.nocache ? 'nocache was set' : 'cache miss', 'for',
+        queryHash);
     }
   } catch (error) {
     logger.error(logTag, 'Unable to load cached file:', error);
