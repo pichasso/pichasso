@@ -97,6 +97,30 @@ describe('Cache', () => {
         });
     });
 
+    it('should not serve files from cache', (done) => {
+      sandbox.spy(fileCache, 'load');
+      let path = `/image?file=${sampleImageUrl}&nocache=1`;
+      fileCache.clear();
+      chai.request(server)
+        .get(path)
+        .end((err, res) => {
+          if (err) {
+            console.log(err);
+          }
+          res.status.should.equal(200);
+          setTimeout(function () {
+            // wait until file persisted
+            chai.request(server)
+              .get(path)
+              .end((err, res) => {
+                res.should.be.ok;
+                fileCache.load.calledOnce.should.be.false;
+                done();
+              });
+          }, 500);
+        });
+    });
+
     it('should download the file again, if cache fails', (done) => {
       sandbox.spy(fileCache, 'remove');
       chai.request(server)
@@ -227,4 +251,3 @@ describe('Cache', () => {
     done();
   });
 });
-

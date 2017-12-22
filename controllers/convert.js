@@ -7,7 +7,7 @@ function convert(req, res, next) {
   if (req.completed) {
     return next();
   }
-  let sharpInstance = sharp(req.file);
+  let sharpInstance = req.sharpInstance || sharp(req.file);
   let format = req.query.format ? sharp.format[req.query.format] : undefined;
   let quality = req.query.quality;
 

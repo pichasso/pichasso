@@ -101,6 +101,7 @@ Sample url: http://url.tld/image?file=IMAGE_URL&width=180
 |  | jpeg | Returns the image in the jpeg format. If there is transparency the background color will be white |
 |  | png | Returns the image in the png format |
 | **quality** | quality | Adjust the quality between 0 and 100. Higher means better quality |
+| **nocache** | bool | Set this to any value like `1` to regenerate a file. This will prevent loading data from cache but updates the cache with new file. |
 
 
 ## PDF Compression Service
