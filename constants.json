@@ -19,6 +19,7 @@
         "west"
     ],
     "imageQuery": [
+        "nocache",
         "file",
         "width",
         "height",
@@ -29,12 +30,14 @@
         "filename"
     ],
     "pdfQuery": [
+        "nocache",
         "download",
         "file",
         "quality",
         "filename"
     ],
     "thumbnailQuery":[
+        "nocache",
         "file",
         "device",
         "browserwidth",

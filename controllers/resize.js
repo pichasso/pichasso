@@ -58,19 +58,15 @@ function resize(req, res, next) {
   logger.debug(logTag, 'Cropping method', crop);
 
   return cropImage(req, width, height, aspectRatio, crop, gravity)
-    .then(sharpInstance =>
-      sharpInstance.toBuffer()
-        .then((buffer) => {
-          req.file = buffer;
-          return next();
-        })
-    )
-    .catch(error => next(error));
+    .then((sharpInstance) => {
+      req.sharpInstance = sharpInstance;
+      return next();
+    }).catch(error => next(error));
 }
 
 function cropImage(req, width, height, aspectRatio, crop, gravity) {
   return new Promise((resolve, reject) => {
-    const sharpInstance = sharp(req.file);
+    const sharpInstance = req.sharpInstance || sharp(req.file);
 
     switch (crop) {
       case 'fill':
