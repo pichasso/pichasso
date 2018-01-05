@@ -1,7 +1,5 @@
 FROM siomiz/node-opencv:2.4.x
 
-ENV NODE_ENV production
-
 RUN apt-get update -y
 RUN apt-get clean
 RUN apt-get install -fyqq ghostscript 
@@ -15,11 +13,12 @@ RUN apt-get update && apt-get -y install google-chrome-stable
 EXPOSE 3000
 
 RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
 
-ADD ./package.json /usr/src/app/
-RUN npm install 
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
 
 RUN mkdir -p /tmp/pichasso
 
-#ADD ./ /usr/src/app
+ADD ./ /usr/src/app
+WORKDIR /usr/src/app

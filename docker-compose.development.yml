@@ -4,13 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: npm run production
-    restart: always
+    command: npm run development
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
     ports:
-      - 80:3000
+      - 3000:3000
+      - 9229:9229
     volumes:
-      - /usr/src/app
+      - /usr/src/app     
       - /usr/src/app/node_modules
       - /tmp/pichasso
