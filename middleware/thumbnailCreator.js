@@ -14,12 +14,12 @@ function thumbnailCreator(req, res, next) {
   const isMobile = req.query.mobile || config.get('Thumbnail.Browser.Mobile');
   const fullPage = req.query.fullpage || config.get('Thumbnail.Browser.FullPage');
 
-  function calculateImageProperties(viewport) {
+  function calculateImageProperties(viewport, fullPage) {
     const width = viewport.width * viewport.deviceScaleFactor;
     const height = viewport.height * viewport.deviceScaleFactor;
     return {
       width: parseInt(width),
-      height: parseInt(height),
+      height: fullPage ? null : parseInt(height),
       aspectRatio: width / height,
       format: 'png',
     };
@@ -61,7 +61,7 @@ function thumbnailCreator(req, res, next) {
       const page = await browser.newPage();
       if (req.query.device) {
         await page.emulate(req.query.device);
-        req.imageProperties = calculateImageProperties(req.query.device.viewport);
+        req.imageProperties = calculateImageProperties(req.query.device.viewport, fullPage);
       } else {
         const properties = {
           'width': req.query.browserwidth,
@@ -72,7 +72,7 @@ function thumbnailCreator(req, res, next) {
           'isMobile': isMobile,
         };
         await page.setViewport(properties);
-        req.imageProperties = calculateImageProperties(properties);
+        req.imageProperties = calculateImageProperties(properties, fullPage);
       }
       await page.goto(req.query.file);
       return page.screenshot({
