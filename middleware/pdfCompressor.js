@@ -38,7 +38,7 @@ class PDFCompressor {
       retValue.push(`-downScaleFactor=${this._downScaleFactor}`);
     }
 
-    if(this._pageList != null){
+    if (this._pageList != null) {
       retValue.push(`-sPageList=${this._pageList}`);
     }
 
@@ -61,17 +61,17 @@ class PDFCompressor {
     return this;
   }
 
-  pageList(value){
+  pageList(value) {
     this._pageList = value;
     return this;
   }
 
-  resolution(dpi){
+  resolution(dpi) {
     this._resolution = dpi;
     return this;
   }
 
-  downScaleFactor(factor){
+  downScaleFactor(factor) {
     this._downScaleFactor = factor;
     return this;
   }

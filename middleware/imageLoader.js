@@ -65,9 +65,9 @@ function imageLoader(req, res, next) {
 
     if (contentType === 'application/pdf') {
       const compressor = new PDFCompressor();
-      compressor 
-        .outputDevice('png16m')   
-        .resolution('300') 
+      compressor
+        .outputDevice('png16m')
+        .resolution('300')
         .pageList('1')
         .exec(body, (err, data) => {
           if (err) {
@@ -80,7 +80,6 @@ function imageLoader(req, res, next) {
       req.file = Buffer.alloc(body.length, body, 'binary');
       loadImage();
     }
-
   });
 }
 
