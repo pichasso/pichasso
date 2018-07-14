@@ -71,7 +71,7 @@ function imageLoader(req, res, next) {
         .pageList('1')
         .exec(body, (err, data) => {
           if (err) {
-            return next(`PDF Compression failed: ${err.message}`);
+            return next(new error.BadRequest(`PDF Compression failed: ${err.message}`));
           }
           req.file = data;
           loadImage();
