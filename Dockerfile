@@ -6,6 +6,9 @@ RUN apt-get update -y
 RUN apt-get clean
 RUN apt-get install -fyqq ghostscript 
 
+# See https://crbug.com/795759
+RUN apt-get install -yq libgconf-2-4 
+
 # Set the Chrome repo.
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
