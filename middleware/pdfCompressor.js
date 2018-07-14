@@ -9,6 +9,7 @@ class PDFCompressor {
     this._outputDevice = 'pdfwrite';
     this._resolution = null;
     this._downScaleFactor = null;
+    this._pageList = null;
   }
 
   _initArgs() {
@@ -37,8 +38,14 @@ class PDFCompressor {
       retValue.push(`-downScaleFactor=${this._downScaleFactor}`);
     }
 
+    if(this._pageList != null){
+      retValue.push(`-sPageList=${this._pageList}`);
+    }
+
     retValue.push('-sOutputFile=-');
     retValue.push('-');
+
+    return retValue;
   }
 
   dpi(value) {
@@ -51,6 +58,11 @@ class PDFCompressor {
 
   outputDevice(device) {
     this._outputDevice = device;
+    return this;
+  }
+
+  pageList(value){
+    this._pageList = value;
     return this;
   }
 
