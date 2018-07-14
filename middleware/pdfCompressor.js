@@ -1,4 +1,7 @@
 const spawn = require('child_process').spawn;
+const logger = require('../controllers/logger');
+const logTag = '[PDF Compressor]';
+
 
 class PDFCompressor {
   constructor() {
@@ -72,6 +75,7 @@ class PDFCompressor {
     let pdfBuffer;
     const args = this._initArgs();
     const gs = spawn('gs', args, {stdio: ['pipe']});
+    logger.debug(logTag, 'GS', ...args);
 
     gs.on('error', callback);
     gs.on('close', (code) => {
