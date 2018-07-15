@@ -453,3 +453,28 @@ describe('Image Controller', () => {
       });
   });
 });
+
+describe('PDF conversion', () => {
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it('should create image from pdf', (done) => {
+    chai.request(server)
+      .get('/image/?file=http://www.pdf995.com/samples/pdf.pdf')
+      .end((err, res) => {
+        res.should.have.status(200);
+        done();
+      });
+  });
+
+  it('should create image from multipage pdf', (done) => {
+    chai.request(server)
+      .get('/image/?file=https://www.adobe.com/support/products/' +
+           'enterprise/knowledgecenter/media/c4611_sample_explain.pdf')
+      .end((err, res) => {
+        res.should.have.status(200);
+        done();
+      });
+  });
+});

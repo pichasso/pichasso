@@ -1,17 +1,24 @@
 const spawn = require('child_process').spawn;
+const logger = require('../controllers/logger');
+const logTag = '[PDF Compressor]';
+
 
 class PDFCompressor {
   constructor() {
     this._dpi = 300;
+    this._outputDevice = 'pdfwrite';
+    this._resolution = null;
+    this._downScaleFactor = null;
+    this._pageList = null;
   }
 
   _initArgs() {
     // https://stackoverflow.com/questions/10450120/optimize-pdf-files-with-ghostscript-or-other#10453202
-    return [
+    let retValue = [
       '-dQUIET',
       '-dBATCH',
       '-dNOPAUSE',
-      '-sDEVICE=pdfwrite',
+      `-sDEVICE=${this._outputDevice}`,
       '-dCompabilityLevel=1.4',
       '-dCompressFonts=true',
       '-dDetectDuplicateImages=true',
@@ -21,9 +28,24 @@ class PDFCompressor {
       `-dColorImageResolution=${this._dpi}`,
       `-dGrayImageResolution=${this._dpi}`,
       `-dMonoImageResolution=${this._dpi}`,
-      '-sOutputFile=-',
-      '-',
     ];
+
+    if (this._resolution != null) {
+      retValue.push(`-r${this._resolution}`);
+    }
+
+    if (this._downScaleFactor != null) {
+      retValue.push(`-downScaleFactor=${this._downScaleFactor}`);
+    }
+
+    if (this._pageList != null) {
+      retValue.push(`-sPageList=${this._pageList}`);
+    }
+
+    retValue.push('-sOutputFile=-');
+    retValue.push('-');
+
+    return retValue;
   }
 
   dpi(value) {
@@ -31,6 +53,26 @@ class PDFCompressor {
       throw new Error('Expected value to be of type Integer.');
     }
     this._dpi = value;
+    return this;
+  }
+
+  outputDevice(device) {
+    this._outputDevice = device;
+    return this;
+  }
+
+  pageList(value) {
+    this._pageList = value;
+    return this;
+  }
+
+  resolution(dpi) {
+    this._resolution = dpi;
+    return this;
+  }
+
+  downScaleFactor(factor) {
+    this._downScaleFactor = factor;
     return this;
   }
 
@@ -45,6 +87,7 @@ class PDFCompressor {
     let pdfBuffer;
     const args = this._initArgs();
     const gs = spawn('gs', args, {stdio: ['pipe']});
+    logger.debug(logTag, 'GS', ...args);
 
     gs.on('error', callback);
     gs.on('close', (code) => {
