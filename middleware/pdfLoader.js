@@ -33,7 +33,7 @@ function pdfLoader(req, res, next) {
       .dpi(dpi)
       .exec(body, (err, data) => {
         if (err) {
-          return next(`Compression failed: ${err.message}`);
+          return next(new error.BadRequest(`Compression failed: ${err.message}`));
         }
         req.file = data;
         next();

@@ -5,6 +5,7 @@ const logTag = '[ImageLoader]';
 const request = require('request');
 
 const extractFilename = require('./extractFilename');
+const PDFCompressor = require('./pdfCompressor');
 const sharp = require('sharp');
 
 function imageLoader(req, res, next) {
@@ -36,9 +37,9 @@ function imageLoader(req, res, next) {
     if (statusCode !== 200) {
       r.abort();
       return next(new error.NotFound('Request failed.'));
-    } else if (contentType && !contentType.startsWith('image/')) {
+    } else if (contentType && !(contentType.startsWith('image/') || contentType.endsWith('application/pdf'))) {
       r.abort();
-      return next(new error.BadRequest(`Invalid content-type. Expected image, but received ${contentType}.`));
+      return next(new error.BadRequest(`Invalid content-type. Expected image or pdf, but received ${contentType}.`));
     } else if (sizeLimit && contentLength && contentLength / 1024 >= sizeLimit) {
       r.abort();
       return next(new error.BadRequest(`File exceeds size limit of ${sizeLimit} KB.`));
@@ -48,18 +49,37 @@ function imageLoader(req, res, next) {
       req.query.filename = extractFilename(response, req.query.file);
     }
 
-    req.file = Buffer.alloc(body.length, body, 'binary');
-    sharp(req.file)
-      .metadata()
-      .then((metadata) => {
-        req.imageProperties = metadata;
-        req.imageProperties.aspectRatio = metadata.width / metadata.height;
-        next();
-      })
-      .catch((err) => {
-        logger.error(logTag, 'Sharp is unable to load image', err);
-        return next(new error.BadRequest(`Request failed: ${err.message}`));
-      });
+    function loadImage() {
+      sharp(req.file)
+        .metadata()
+        .then((metadata) => {
+          req.imageProperties = metadata;
+          req.imageProperties.aspectRatio = metadata.width / metadata.height;
+          next();
+        })
+        .catch((err) => {
+          logger.error(logTag, 'Sharp is unable to load image', err);
+          return next(new error.BadRequest(`Request failed: ${err.message}`));
+        });
+    }
+
+    if (contentType === 'application/pdf') {
+      const compressor = new PDFCompressor();
+      compressor
+        .outputDevice('png16m')
+        .resolution('300')
+        .pageList('1')
+        .exec(body, (err, data) => {
+          if (err) {
+            return next(new error.BadRequest(`PDF Compression failed: ${err.message}`));
+          }
+          req.file = data;
+          loadImage();
+        });
+    } else {
+      req.file = Buffer.alloc(body.length, body, 'binary');
+      loadImage();
+    }
   });
 }
 
