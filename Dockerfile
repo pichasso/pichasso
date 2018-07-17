@@ -25,9 +25,9 @@ EXPOSE 3000
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-ADD ./package.json /usr/src/app/
+ADD ./ /usr/src/app/
 RUN npm install 
 
 RUN mkdir -p /tmp/pichasso
 
-#ADD ./ /usr/src/app
+CMD npm run start 
