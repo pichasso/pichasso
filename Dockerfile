@@ -30,4 +30,4 @@ RUN npm install
 
 RUN mkdir -p /tmp/pichasso
 
-CMD npm run development 
+CMD npm run start 
