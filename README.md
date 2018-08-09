@@ -33,7 +33,156 @@ This feature can be easily integrated by using image source sets:
 </picture>
    ```
 
-### Setup
+### Setup based on Docker hub image
+
+For running pichasso you need to create a `default.json` file in the mounted volume (here in folder `./config`). 
+
+* ImageSource
+  * LoadById allows to reduce the file parameter to be extended by the given SourcePath if no complete URI is given
+  *  LoadExternalData you may reduce the allowd URIs to the Regex's given in the array WhitelistRegex. If there is no Regex given, all URI are allowed.
+  * MaxFileSize limits the input file size.
+
+ * ImageConversion
+  * DefaultCropping `fill|fit|scale`, defaults to `fill`
+  * DefaultFormatDetection analyses the request header for `webp` accepted as resonse or not.
+  * DefaultGravity `entropy|attention|faces|center|north|east|south|west`, defaults to `entropy`
+  * DefaultQuality number range 1...100
+  * MaxEdgeLength limits the output file edge length
+  * Progressive `true|false` 
+
+Further settings see descriptions below.
+
+```
+{
+    "ImageSource": {
+        "LoadById": {
+            "Enabled": false,
+            "SourcePath": "https://your.url/files/{id}"
+        },
+        "LoadExternalData": {
+            "Enabled": true,
+            "ProtocolsAllowed": [
+                "https",
+                "http"
+            ],
+            "WhitelistRegex": []
+        },
+        "MaxFileSize": 51200
+    },
+    "ImageConversion": {
+        "DefaultCropping": "fill",
+        "DefaultFormatDetection": false,
+        "DefaultGravity": "entropy",
+        "DefaultQuality": 80,
+        "MaxEdgeLength": 3840,
+        "Progressive": true
+    },
+    "Thumbnail": {
+        "PDF": {
+            "DefaultPage": 1
+        },
+        "Browser": {
+            "DefaultViewportWidth": 1000,
+            "DefaultViewportHeight": 800,
+            "DefaultViewPortScale": 2,
+            "Landscape": false,
+            "Touch": false,
+            "Mobile": false,
+            "FullPage": false
+        },
+        "OverrideImageConversion": {
+            "DefaultCropping": "fill",
+            "DefaultGravity": "north"
+        },
+        "Verification": {
+            "Enabled": false,
+            "Accounts": [
+                {
+                    "Description": "sampledescription",
+                    "Enabled": true,
+                    "Type": "url",
+                    "Token": "sampletoken"
+                },
+                {
+                    "Description": "sampledescription_host_only",
+                    "Enabled": true,
+                    "Type": "hostname",
+                    "Token": "sampletoken2"
+                }
+            ]
+        }
+    },
+    "PDFConversion": {
+        "DefaultQuality": "printer",
+        "Attachment": "inline",
+        "MaxFileSize": 51200
+    },
+    "Caching": {
+        "Expires": 2629000000,
+        "CleanupCronInterval": "00 30 3 * * 7",
+        "ClearHash": "0a6305a03d0610942046c64acb0c7579",
+        "RemoveFilesAfterExpiration": true,
+        "Directory": "/tmp/pichasso/"
+    },
+    "Logging": {
+        "EnableErrorImages": false,
+        "Directory": "./log/",
+        "Console": {
+            "Enabled": true,
+            "Level": "silly"
+        },
+        "File": {
+            "Enabled": false,
+            "Level": "warn"
+        }
+    }
+}
+```
+
+#### Docker compose development
+
+The development mode serves test interfaces at http://localhost:3000/image/test and http://localhost:3000/pdf/test and produces more detailed error information.
+
+```
+version: '3'
+services:
+  web:
+    image: tobiasw/pichasso
+    container_name: pichasso
+    command: npm run development
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+    volumes:
+      - /tmp/pichasso
+      - ./config:/usr/src/app/config
+
+``` 
+
+#### Docker compose production
+
+The production mode does not serve test interfaces and is preferred for production.
+
+```
+version: '3'
+services:
+  web:
+    image: tobiasw/pichasso
+    container_name: pichasso
+    command: npm run production
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    volumes:
+      - /tmp/pichasso
+      - ./config:/usr/src/app/config
+
+``` 
+
+### Setup based on Github repository
 
 Smart image cropping and compression service can run using docker-compose after cloning.
 
