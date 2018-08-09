@@ -1,7 +1,5 @@
 FROM siomiz/node-opencv:2.4.x
 
-ENV NODE_ENV production
-
 RUN apt-get update -y
 RUN apt-get clean
 RUN apt-get install -fyqq ghostscript 
@@ -20,14 +18,15 @@ RUN apt-get update && apt-get install -y wget --no-install-recommends \
     && apt-get purge --auto-remove -y curl \
     && rm -rf /src/*.deb
     
-EXPOSE 3000
+EXPOSE 3000 9229
 
 RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+
+VOLUME /usr/src/app/config
 
 ADD ./ /usr/src/app/
+
+WORKDIR /usr/src/app
 RUN npm install 
 
 RUN mkdir -p /tmp/pichasso
-
-CMD npm run start 
