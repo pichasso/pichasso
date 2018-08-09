@@ -27,6 +27,6 @@ VOLUME /usr/src/app/config
 ADD ./ /usr/src/app/
 
 WORKDIR /usr/src/app
-RUN npm install 
+RUN npm install --dev
 
 RUN mkdir -p /tmp/pichasso
