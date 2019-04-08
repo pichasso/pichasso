@@ -10,10 +10,12 @@
     "lint": "eslint ./**/*.js",
     "mocha": "node ./node_modules/mocha/bin/mocha",
     "istanbul": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "test": "npm run beautify && npm run istanbul",
+    "test": "npm run istanbul",
     "beautify": "eslint --fix . --ignore-path .gitignore"
   },
-  "dependencies": {
+ "dependencies": {
+    "acorn": "^6.1.1",
+    "ajv": "^5.0.0",
     "config": "~3.0.1",
     "cron": "^1.2.1",
     "express": "~4.16.4",
@@ -26,10 +28,10 @@
     "puppeteer": "^1.14.0",
     "request": "~2.88.0",
     "sha256": "^0.2.0",
-    "sharp": "~0.22.0",
+    "sharp": "^0.22.0",
     "smartcrop-sharp": "~2.0.3",
-    "winston": "~3.2.1",
-    "winston-daily-rotate-file": "~3.8.0"
+    "winston": "^2.4.3",
+    "winston-daily-rotate-file": "^1.4.6"
   },
   "devDependencies": {
     "chai": "^4.1.1",
