@@ -215,3 +215,16 @@ RUN npm install puppeteer@1.11.0
 ######## VIPS ############ https://sharp.dimens.io/en/stable/install/#alpine-linux
 
 RUN apk add vips-dev@testing fftw-dev@edge build-base@edge --update-cache 
+
+######## PICHASSO ############
+
+WORKDIR /usr/src/app   
+
+COPY package.json package.json
+
+RUN ls -lah
+
+RUN set -x && \
+	npm set progress=true && \
+	npm config set depth 0 && \
+	npm install --dev
