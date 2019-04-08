@@ -1,33 +1,48 @@
-FROM siomiz/node-opencv:2.4.x
+FROM schulcloud/pichasso:builder
 
-ENV NODE_ENV production
+WORKDIR /usr/src/app   
 
-RUN apt-get update -y
-RUN apt-get clean
-RUN apt-get install -fyqq ghostscript 
+# create volume for chaching directory
+VOLUME /tmp/pichasso
 
-# See https://crbug.com/795759
-RUN apt-get install -yq libgconf-2-4 
+# replace node_modules from within of mounted volume
+COPY . .
 
-# Set the Chrome repo.
-RUN apt-get update && apt-get install -y wget --no-install-recommends \
-    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-    && apt-get update \
-    && apt-get install -y google-chrome-unstable \
-      --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get purge --auto-remove -y curl \
-    && rm -rf /src/*.deb
-    
-EXPOSE 3000
+# should display everything has been already installed
+RUN npm i
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+EXPOSE 3000 
+EXPOSE 9229 
 
-ADD ./package.json /usr/src/app/
-RUN npm install 
+CMD npm start
 
-RUN mkdir -p /tmp/pichasso
+# # ------------ main ------------
+# # base image https://hub.docker.com/_/node/
+# FROM node:8.15-alpine
 
-#ADD ./ /usr/src/app
+# WORKDIR /usr/src/app
+
+# COPY . .
+# COPY --from=builder /usr/src/app/node_modules /usr/src/app/node_modules
+# RUN ls -lah
+
+# RUN echo "@testing https://alpine.global.ssl.fastly.net/alpine/edge/testing/" >> /etc/apk/repositories
+# RUN echo "@community https://alpine.global.ssl.fastly.net/alpine/edge/community/" >> /etc/apk/repositories
+# RUN echo "@edge https://alpine.global.ssl.fastly.net/alpine/edge/main/" >> /etc/apk/repositories
+
+# RUN apk update && apk upgrade && \
+#   apk add --no-cache \
+#   chromium@edge \
+#   nss@edge \
+#   freetype@edge \
+#   harfbuzz@edge \
+#   ttf-freefont@edge
+
+# # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
+# RUN apk add vips-dev@testing fftw-dev@edge build-base@edge --update-cache 
+
+# RUN npm i shape
+
+# RUN npm install

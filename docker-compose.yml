@@ -1,16 +1,14 @@
 version: '3'
 services:
   web:
-    build:
+    build: 
       context: .
-      dockerfile: Dockerfile.development
-    command: npm run development
+      dockerfile: development.Dockerfile
+    command: sh -c "sh install.sh && npm install && npm run development"
     environment:
       NODE_ENV: development
     ports:
       - 3000:3000
       - 9229:9229
     volumes:
-      - .:/usr/src/app     
-      - /usr/src/app/node_modules
-      - /tmp/pichasso
+      - .:/usr/src/app
