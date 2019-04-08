@@ -55,8 +55,6 @@ typings/
 # dotenv environment variables file
 .env
 
-.vscode
-
 # intellij idea
 /.idea/*
 *.iml
@@ -66,7 +64,6 @@ docker-compose.override.yml
 
 # Mac
 .DS_Store
-package-lock.json
 
 # Puppeteer profiles
 puppeteer_dev_profile*
