@@ -56,7 +56,7 @@ function thumbnailCreator(req, res, next) {
   function createWebpageThumbnail() {
     // TODO puppeteer should run in sandbox for security reasons but currently not supported inside docker
     puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/chromium-browser'
     }).then(async (browser) => {
       const page = await browser.newPage();
       if (req.query.device) {
