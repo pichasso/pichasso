@@ -1,4 +1,8 @@
-# pichasso [![Build Status](https://travis-ci.org/pichasso/pichasso.svg?branch=master)](https://travis-ci.org/pichasso/pichasso)[![Code Coverage](https://codecov.io/github/pichasso/pichasso/coverage.svg?branch=master)](https://codecov.io/github/pichasso/pichasso) [![Greenkeeper badge](https://badges.greenkeeper.io/pichasso/pichasso.svg)](https://greenkeeper.io/)![Github All Releases](https://img.shields.io/github/downloads/pichasso/pichasso/total.svg)
+# pichasso 
+[![Build Status](https://travis-ci.org/pichasso/pichasso.svg?branch=master)](https://travis-ci.org/pichasso/pichasso)
+[![Code Coverage](https://codecov.io/github/pichasso/pichasso/coverage.svg?branch=master)](https://codecov.io/github/pichasso/pichasso) 
+[![Greenkeeper badge](https://badges.greenkeeper.io/pichasso/pichasso.svg)](https://greenkeeper.io/) 
+![Github All Releases](https://img.shields.io/github/downloads/pichasso/pichasso/total.svg)
 
 
 ### Introduction
