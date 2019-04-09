@@ -186,20 +186,20 @@ RUN rm -rf /var/cache/apk/*
 
 # Installs latest Chromium (72) package.
 RUN apk update && apk upgrade && \
-	# echo @edgeChrome http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
-	# echo @edgeChrome http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
+	echo @edgeChrome http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
+	echo @edgeChrome http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
 	apk add --no-cache \
-	chromium@edge \
-	nss@edge \
-	freetype@edge \
-	harfbuzz@edge \
-	ttf-freefont@edge
+	chromium@edgeChrome \
+	nss@edgeChrome \
+	freetype@edgeChrome \
+	harfbuzz@edgeChrome \
+	ttf-freefont@edgeChrome
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # Puppeteer v1.11.0 works with Chromium 72.
-RUN npm install puppeteer@1.11.0
+# RUN npm install puppeteer@1.11.0
 
 # # Add user so we don't need --no-sandbox.
 # RUN addgroup -S pptruser && adduser -S -g pptruser pptruser \
