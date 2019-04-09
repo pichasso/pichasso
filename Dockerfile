@@ -1,9 +1,9 @@
 FROM schulcloud/pichasso:builder
 
-WORKDIR /usr/src/app   
-
 # create volume for chaching directory
 VOLUME /tmp/pichasso
+
+WORKDIR /usr/src/app   
 
 # replace node_modules from within of mounted volume
 COPY . .
@@ -12,7 +12,8 @@ COPY . .
 RUN npm i
 
 EXPOSE 3000 
-EXPOSE 9229 
+
+# RUN npm test
 
 CMD npm start
 
