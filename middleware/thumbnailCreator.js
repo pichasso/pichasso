@@ -56,8 +56,11 @@ function thumbnailCreator(req, res, next) {
   function createWebpageThumbnail() {
     // TODO puppeteer should run in sandbox for security reasons but currently not supported inside docker
     puppeteer.launch({
+      // args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-setuid-sandbox'],
       executablePath: '/usr/bin/chromium-browser'
     }).then(async (browser) => {
+      // todo createIncognitoBrowserContext()
       const page = await browser.newPage();
       if (req.query.device) {
         await page.emulate(req.query.device);
@@ -85,8 +88,14 @@ function thumbnailCreator(req, res, next) {
         .then((buf) => {
           req.file = buf;
           return next();
+        })
+        .catch(async err => {
+          if (browser) { await browser.close(); }
+          throw err;
         });
-    }).catch(err => next(new error.InternalServerError(err)));
+    }).catch(err => {
+      next(new error.InternalServerError(err));
+    });
   }
 
   createThumbnail(req.query.file);

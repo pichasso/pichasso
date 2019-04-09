@@ -5,5 +5,6 @@ if [ -d "$DIRECTORY" ]; then
 fi
 if [ ! -d "$DIRECTORY" ]; then
   echo "install prebuild node_modules..."
-	mv /usr/src/node_modules /usr/src/app/node_modules
+	cp /usr/src/node_modules /usr/src/app/node_modules
 fi
+echo "execute npm install now..."
