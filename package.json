@@ -41,7 +41,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-es-beautifier": "^1.0.1",
     "istanbul": "^1.0.0-alpha.2",
-    "mocha": "^6.0.2",
+    "mocha": "6.1.2",
     "nodemon": "^1.11.0",
     "sinon": "~7.3.1"
   }
