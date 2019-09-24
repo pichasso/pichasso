@@ -14,7 +14,7 @@
     "beautify": "eslint --fix . --ignore-path .gitignore"
   },
   "dependencies": {
-    "acorn": "^6.1.1",
+    "acorn": "^7.1.0",
     "ajv": "^5.0.0",
     "config": "~3.0.1",
     "cron": "^1.2.1",
