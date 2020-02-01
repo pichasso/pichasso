@@ -36,7 +36,7 @@
   "devDependencies": {
     "chai": "^4.1.1",
     "chai-http": "^4.2.1",
-    "codecov": "^3.2.0",
+    "codecov": "^3.6.4",
     "debug": "~4.1.1",
     "eslint": "^5.16.0",
     "eslint-plugin-es-beautifier": "^1.0.1",
