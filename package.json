@@ -28,7 +28,7 @@
     "puppeteer": "1.11.0",
     "request": "~2.88.0",
     "sha256": "^0.2.0",
-    "sharp": "^0.22.0",
+    "sharp": "^0.25.1",
     "smartcrop-sharp": "~2.0.3",
     "winston": "^2.4.3",
     "winston-daily-rotate-file": "^1.4.6"
